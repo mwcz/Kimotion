@@ -1,0 +1,23 @@
+{
+  "name": "dimo-2015-renderer",
+  "version": "0.0.0",
+  "description": "A spiffy, new, ultra customizable visualization renderer for interactive art exhibits.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/geekspark-rh/dimo-2015-renderer.git"
+  },
+  "author": "Michael Clayton palebluepixel.org",
+  "license": "GPLv2",
+  "bugs": {
+    "url": "https://github.com/geekspark-rh/dimo-2015-renderer/issues"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.5",
+    "bower": "~1.3.12",
+    "grunt-bower-requirejs": "~2.0.0"
+  }
+}
