@@ -19,7 +19,13 @@
     "test",
     "tests"
   ],
+  "dependencies": {
+    "threejs": "*",
+    "requirejs": "~2.1.16",
+    "requirejs-text": "~2.0.14",
+    "lodash-amd": "~3.5.0"
+  },
   "devDependencies": {
-    "threejs": "*"
+    "r.js": "~2.1.16"
   }
 }

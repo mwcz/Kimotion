@@ -1,4 +1,9 @@
 {
+    "globals": {
+        "define": false,
+        "require": false,
+        "console": false
+    },
     "esnext": true,
     "curly": true,
     "eqeqeq": true,
@@ -12,8 +17,7 @@
     "maxstatements": 8,
     "noarg": true,
     "quotmark": "single",
-    "unused": true,
+    "unused": false,
     "undef": true,
-    "singleGroups": true,
     "shadow": "inner"
 }

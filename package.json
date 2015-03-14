@@ -26,6 +26,7 @@
     "grunt-babel": "~4.0.0",
     "grunt-contrib-clean": "~0.6.0",
     "grunt-tree-prepare": "~0.9.1",
-    "grunt-contrib-copy": "~0.8.0"
+    "grunt-contrib-copy": "~0.8.0",
+    "grunt-contrib-requirejs": "~0.4.4"
   }
 }

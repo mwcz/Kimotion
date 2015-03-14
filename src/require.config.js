@@ -4,8 +4,11 @@ requirejs.config({
     baseUrl: '.',
     paths: {
         shaders: 'shaders',
-        threejs: 'bower_components/threejs/build/three',
-        requirejs: 'bower_components/requirejs/require'
+        lodash: 'lib/lodash-amd/compat/main',
+        threejs: 'lib/threejs/build/three',
+        requirejs: 'lib/requirejs/require',
+        'requirejs-text': 'lib/requirejs-text/text',
+        'lodash-amd': 'lib/lodash-amd/compat/main'
     },
     shim: {
         threejs: {
@@ -17,4 +20,6 @@ requirejs.config({
     ]
 });
 
-require(['app']);
+require(['bundle'], function () {
+    require(['app']);
+});
