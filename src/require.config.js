@@ -1,18 +1,20 @@
-/* global requirejs */
+/* global requirejs, require */
 
 requirejs.config({
     baseUrl: '.',
     paths: {
-        shaders    : 'shaders',
+        shaders: 'shaders',
+        threejs: 'bower_components/threejs/build/three',
+        requirejs: 'bower_components/requirejs/require'
     },
     shim: {
-        'three'  : { exports: 'THREE', },
+        threejs: {
+            exports: 'THREE'
+        }
     },
-    // packages: [
-    //     {
-    //         name     : 'dimo',
-    //         location : 'js',
-    //         main     : 'main.min',
-    //     },
-    // ],
+    packages: [
+
+    ]
 });
+
+require(['app']);

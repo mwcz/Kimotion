@@ -1,3 +1,19 @@
 {
-    "esnext": true
+    "esnext": true,
+    "curly": true,
+    "eqeqeq": true,
+    "es3": false,
+    "freeze": true,
+    "funcscope": false,
+    "latedef": false,
+    "maxcomplexity": 4,
+    "maxdepth": 2,
+    "maxparams": 4,
+    "maxstatements": 8,
+    "noarg": true,
+    "quotmark": "single",
+    "unused": true,
+    "undef": true,
+    "singleGroups": true,
+    "shadow": "inner"
 }

@@ -1,0 +1,25 @@
+{
+  "name": "dimo-2015-renderer",
+  "version": "0.0.0",
+  "homepage": "https://github.com/geekspark-rh/dimo-2015-renderer",
+  "authors": [
+    "mwcz <mwc@clayto.com>"
+  ],
+  "description": "A spiffy, new, ultra customizable visualization renderer for interactive art exhibits.",
+  "moduleType": [
+    "amd",
+    "es6"
+  ],
+  "license": "GPLv2",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "threejs": "*"
+  }
+}
