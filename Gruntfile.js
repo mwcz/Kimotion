@@ -43,6 +43,7 @@ module.exports = function(grunt) {
                 tasks: ['bowerRequirejs', 'copy:src-to-dist', 'lint', 'babel'],
                 options: {
                     spawn: false,
+                    atBegin: true,
                 },
             },
             html: {
