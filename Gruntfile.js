@@ -37,6 +37,29 @@ module.exports = function(grunt) {
             }
         },
 
+        watch: {
+            scripts: {
+                files: ['src/**/*.js', '!src/require.config.js'],
+                tasks: ['bowerRequirejs', 'copy:src-to-dist', 'lint', 'babel'],
+                options: {
+                    spawn: false,
+                },
+            },
+            html: {
+                files: ['src/**/*.html'],
+                tasks: ['bowerRequirejs', 'copy:src-to-dist', 'lint', 'babel'],
+                options: {
+                    spawn: false,
+                },
+            },
+            gruntfile: {
+                files: ['Gruntfile.js'],
+                options: {
+                    reload: true,
+                },
+            },
+        },
+
         bowerRequirejs: {
             'merge-into-config': {
                 rjsConfig: 'src/require.config.js',
