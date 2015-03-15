@@ -2,11 +2,11 @@
 import THREE from 'threejs';
 import * as state from 'state';
 import * as input from 'input';
+import * as transforms from 'contrib/transforms/all';
 
 // The default transform function is merely an identity function.  It returns
 // exactly what's passed in.
 
-let default_transform = x => x;
 let transform;
 let timeout_id;
 
