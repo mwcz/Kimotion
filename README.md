@@ -4,7 +4,7 @@ Digital Motion Renderer, 2015
 A spiffy, new, ultra customizable visualization renderer for interactive art
 exhibits.
 
-![DiMo 2014 Silhouettes photo](images/dimo2014silhouettes.jpg)
+![DiMo 2014 Silhouettes photo](src/images/dimo2014silhouettes.jpg)
 
 What's so new?
 --------------
