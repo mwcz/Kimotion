@@ -4,6 +4,7 @@
         "require": false,
         "console": false
     },
+    "browser": true,
     "esnext": true,
     "curly": true,
     "eqeqeq": true,
