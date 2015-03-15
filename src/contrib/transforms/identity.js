@@ -1,3 +1,3 @@
-const identity = x => x;
+const identity = data => data;
 
 export { identity };

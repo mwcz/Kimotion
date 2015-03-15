@@ -1,5 +1,4 @@
-
-import THREE from 'threejs';
+import * as renderer from 'renderer';
 import * as state from 'state';
 import * as input from 'input';
 import * as transforms from 'contrib/transforms/all';
@@ -7,44 +6,43 @@ import * as transforms from 'contrib/transforms/all';
 // The default transform function is merely an identity function.  It returns
 // exactly what's passed in.
 
-let transform;
-let timeout_id;
+let transform = transforms.identity;
 
 function set_transform(func) {
-    transform = func;
+    state.clear();
+    transform = typeof func === 'string' ? transforms[func] : func;
 }
 
 function create() {
-    set_transform( transforms.random );
-    timeout_id = setInterval(update, 500);
+    // init whatever renderer we're using
+    renderer.create();
+
+    // start the update train a-loopin'
+    update();
 }
 
 function update() {
 
-    // get latest input
+    requestAnimationFrame(update);
+
+    // TODO consider moving this input-gathering code outside of RAF
+    // because it doesn't *necessarily* need to be updated every frame.
+    // gathering input a couple times per second might be better than 60 times
+    // per second.
     var newinput = input.read();
 
-    // pass it to the transform function
     var newdata = transform({
         depth  : newinput.depth,
         traits : newinput.traits,
         state  : state.current(),
     });
+    // end of consider moving...
 
-    // pass the transformed data to the renderer
-
-    // the renderer is just raw json for now :)
-    var output = JSON.stringify(newdata, null, 4)
-    .replace(/\[\n\s+(\d+)/g, '[ $1')  // make the
-    .replace(/(\d+)\n\s+\]/g, '$1 ]')  // json pretty print
-    .replace(/\,\n\s+(\d+)/g, ', $1'); // prettier
-
-    document.getElementById('output').innerText = output;
+    renderer.update(newdata);
 }
 
 function teardown() {
     state.clear();
-    clearTimeout(timeout_id);
 }
 
 create();
