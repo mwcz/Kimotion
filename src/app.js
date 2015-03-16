@@ -15,7 +15,7 @@ function set_transform(func) {
 
 function create() {
     // init whatever renderer we're using
-    renderer.create();
+    renderer.create( input.read() );
 
     // start the update train a-loopin'
     update();
