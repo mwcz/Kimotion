@@ -33,8 +33,8 @@ Then, in another terminal...
 Open [http://localhost:9001](http://localhost:9001) in your browser, and...
 
 You won't see much, because you also need a Kinect and the [dimo input
-server][] running.  If you do have that server running, put in its hostname or
-IP address and port, and you'll see something like this!
+server][dimoserver] running.  If you do have that server running, put in its
+hostname or IP address and port, and you'll see something like this!
 
 ![DiMo 2014 Silhouettes photo](src/images/readme_img.png)
 
