@@ -1,9 +1,9 @@
 
-#define SIZE 32.0
+#define SIZE 8.0
 
-attribute vec3 customColor;
+attribute float customColor;
 
-varying vec3 vColor;
+varying float vColor;
 
 void main() {
 

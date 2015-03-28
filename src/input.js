@@ -1,72 +1,57 @@
-import { each, map, extend } from 'lodash';
+/* global prompt */
+
+import { map, partial } from 'lodash';
 import * as tween from 'tween';
 
-// This will be data from the Kinect-powered server, but for now it's static
-// mock data.
+const _ = partial.placeholder;
 
-const FAKE_DEPTH_MAP = [
-    [ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
-    [ 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
-    [ 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
-    [ 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
-    [ 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 ],
-    [ 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0 ],
-    [ 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0 ],
-    [ 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0 ],
-    [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0 ],
-    [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0 ],
-    [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0 ],
-    [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0 ],
-    [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0 ],
-    [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ],
-];
+const WIDTH = 640;
+const HEIGHT = 480;
 
-const FAKE_TRAITS = {
-    hands: [
-        [  3.17,  1.41 ],
-        [  1.30, -2.10 ],
-        [ -2.46,  3.94 ],
-        [ -1.17, -1.33 ],
-        [  2.17,  0.41 ],
-        [  2.30, -1.10 ],
-        [ -3.46,  2.94 ],
-        [ 0.17, -2.33 ],
-    ],
-    faces: [
-        [ 3, 9 ],
-        [ 8, 3 ],
-    ]
-};
+const MAX_DEPTH = 2047;
+const MIN_DEPTH = 0;
 
-let TRAITS = extend(FAKE_TRAITS);
-each( TRAITS.hands, tween_trait );
+let depth;
 
-function get_depth_map() {
-    return FAKE_DEPTH_MAP;
+function ask_for_ws_server() {
+    let ws_url = prompt('Where is the input server?', localStorage.ws_url || 'localhost:1337');
+    localStorage.ws_url = ws_url;
+    return ws_url;
 }
 
-
-function tween_trait(trait, index, collection) {
-    const TIME = 1600;
-    let tween_a = new tween.Tween(trait)
-    .to({
-        0: FAKE_TRAITS.hands[ (index+1) % collection.length ][0],
-        1: FAKE_TRAITS.hands[ (index+1) % collection.length ][1],
-    }, TIME)
-    .repeat(Infinity)
-    .yoyo()
-    .start();
+function create_ws_connection(ws_url) {
+    let ws = new WebSocket('ws://' + ws_url);
+    ws.onopen = handle_open;
+    ws.onmessage = handle_message;
+    ws.onerror = handle_error;
+    ws.onclose = handle_close;
 }
 
-function get_traits() {
-    return FAKE_TRAITS;
+function handle_open() {
+    console.log(`WebSocket connection to ${this.URL} established.`);
 }
+
+function handle_message( ws_message ) {
+    depth = JSON.parse(ws_message.data);
+}
+
+function handle_error(event) {
+    console.log(`WebSocket error during connection to ${this.URL}`);
+}
+
+function handle_close() {
+    console.log(`WebSocket connection to ${this.URL} closed.` );
+}
+
+function fake_random_depth() {
+    return parseInt(Math.random()*MAX_DEPTH);
+}
+
+create_ws_connection(ask_for_ws_server());
 
 function read() {
-    tween.update();
     return {
-        depth  : get_depth_map(),
-        traits : get_traits()
+        depth : depth,
     };
 }
 

@@ -1,16 +1,23 @@
 import THREE from 'threejs';
-import { map, each } from 'lodash';
+import { map, each, extend } from 'lodash';
 import * as frag from 'text!contrib/shaders/particle.frag';
 import * as vert from 'text!contrib/shaders/vertex.vert';
 
+const create_json = function () {};
 const render_json = function render_json (data) {
     // the renderer is just raw json for now :)
-    var output = JSON.stringify(data, null, 4)
+    let data_to_print = extend(data || {});
+
+    // only print the first 32, otherwise updating the JSON gets really slow
+    // if (data_to_print.input.depth.length > 32) {
+    //     data_to_print.input.depth = data_to_print.input.depth.subarray(0, 32);
+    // }
+    var output = JSON.stringify(data_to_print, null, 4)
     .replace(/\[\n\s+(\d+)/g, '[ $1')  // make the
     .replace(/(\d+)\n\s+\]/g, '$1 ]')  // json pretty print
     .replace(/\,\n\s+(\d+)/g, ', $1'); // prettier
 
-    document.getElementById('output').innerText = output;
+    document.getElementById('output').innerHTML = output;
 };
 
 let scene;
@@ -67,24 +74,43 @@ function add_particle_system(data) {
         fragmentShader : frag,
         blending       : THREE.AdditiveBlending,
         depthTest      : false,
-        transparent    : true
-
+        transparent    : true,
     });
-    add_particle_system_attributes(pgeometry, data.traits.hands.length);
+    add_particle_system_attributes(pgeometry, 640*480);
     psystem = new THREE.PointCloud( pgeometry, pmaterial );
     psystem.sortParticles = true;
     scene.add( psystem );
 }
 
 function add_particle_system_attributes(geo, count) {
-    ppositions  = new Float32Array( count * 3 );
-    pcolors     = map(new Float32Array( count * 3 ) , () => 1);
+    ppositions  = get_initial_particle_positions(count);
+    pcolors     = new Float32Array( count );
     geo.addAttribute( 'position'    , new THREE.BufferAttribute( ppositions , 3 ) );
-    geo.addAttribute( 'customColor' , new THREE.BufferAttribute( pcolors    , 3 ) );
+    geo.addAttribute( 'customColor' , new THREE.BufferAttribute( pcolors    , 1 ) );
+}
+
+function get_initial_particle_positions(count) {
+    let ppositions  = new Float32Array( count * 3 );
+    let x, y, j;
+    for (let i = 0; i < ppositions.length; i += 3) {
+
+        j = Math.floor(i / 3);
+
+        x = (j % 640);
+        // y must be flipped since kinect's coordinate system has +y going down and threejs has +y going up.
+        y = 480 - (Math.floor(j / 640));
+
+        ppositions[i  ] = x;
+        ppositions[i+1] = y;
+        ppositions[i+2] = 0;
+    }
+    return ppositions;
 }
 
 function position_camera() {
-    camera.position.z = 5;
+    camera.position.z = 300;
+    camera.position.x = 320;
+    camera.position.y = 240;
 }
 
 function update_cube_rotation() {
@@ -94,26 +120,42 @@ function update_cube_rotation() {
 
 function create(data) {
     init_threejs();
-    add_cube();
     add_particle_system(data);
-    // add_particle_system_attributes(data.traits.hands.length);
     position_camera();
 }
 
 function update_positions(data) {
     let pos = pgeometry.attributes.position.array;
-    pos = each(pos, function (v, i, c) {
-        if (i%3 === 2) { return v; }
-        let ii = ~~(i%(c.length/3));
-        pos[i] = data.traits.hands[ii][i%3];
-    });
+    let z = 0, j = 0;
+    for (let i = 2; i < pos.length; i += 3) {
+        j = Math.floor(i/3);
+        z = data.input.depth[j] / 2 - 500;
+        pos[i] = z;
+    }
+    pgeometry.attributes.position.needsUpdate = true;
 }
 
+function update_colors(data) {
+    let colors = pgeometry.attributes.customColor.array;
+    let z = 0;
+    for (let i = 0; i < colors.length; i += 1) {
+        z = data.input.depth[i] / 2048;
+        colors[i] = z;
+    }
+    pgeometry.attributes.customColor.needsUpdate = true;
+}
+
+function NaNPositionError(message) {
+    this.name = 'NaNPositionError';
+    this.message = message || '';
+}
+NaNPositionError.prototype = Error.prototype;
+
 function update(data) {
-    update_cube_rotation();
     update_positions(data);
-    pgeometry.attributes.position.needsUpdate = true;
+    update_colors(data);
     renderer.render(scene, camera);
 }
 
+// export { create_json as create, render_json as update };
 export { create, update };

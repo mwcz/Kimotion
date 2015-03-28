@@ -16,8 +16,6 @@ function set_transform(func) {
 function create() {
     // init whatever renderer we're using
     renderer.create( input.read() );
-
-    // start the update train a-loopin'
     update();
 }
 
@@ -32,8 +30,7 @@ function update() {
     var newinput = input.read();
 
     var newdata = transform({
-        depth  : newinput.depth,
-        traits : newinput.traits,
+        input  : newinput,
         state  : state.current(),
     });
     // end of consider moving...
@@ -45,6 +42,6 @@ function teardown() {
     state.clear();
 }
 
-create();
+setTimeout(create, 2000);
 
 export { set_transform };

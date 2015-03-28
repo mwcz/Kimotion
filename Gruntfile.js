@@ -15,6 +15,45 @@ module.exports = function(grunt) {
     // Project configuration.
     grunt.initConfig({
 
+        // Project configuration.
+        connect: {
+            server: {
+                options: {
+                    port: 9001,
+                    base: 'dist',
+                    hostname: 'localhost',
+                    livereload: true,
+                    debug: true,
+                    keepalive: true
+                }
+            }
+        },
+
+        // watch: {
+        //     scripts: {
+        //         files: ['src/**/*.js', '!src/require.config.js'],
+        //         tasks: ['build:dev'],
+        //         options: {
+        //             spawn: false,
+        //             interrupt: true,
+        //             livereload: true,
+        //         },
+        //     },
+        //     html: {
+        //         files: 'src/**/*.html',
+        //         tasks: ['build:dev'],
+        //         options: {
+        //             spawn: false,
+        //             interrupt: true,
+        //             livereload: true,
+        //         },
+        //     },
+        //     gruntfile: {
+        //         files: 'Gruntfile.js',
+        //         options: { reload: true },
+        //     },
+        // },
+
         pkg: grunt.file.readJSON('package.json'),
 
         babel: {
@@ -38,23 +77,23 @@ module.exports = function(grunt) {
         },
 
         watch: {
-            scripts: {
-                files: ['src/**/*.js', '!src/require.config.js'],
-                tasks: ['bowerRequirejs', 'copy:src-to-dist', 'lint', 'babel'],
+            app: {
+                files: [
+                    'src/**/*.html',
+                    'src/**/*.js',
+                    'src/**/*.frag',
+                    'src/**/*.vert',
+                    '!src/require.config.js'
+                ],
+                tasks: ['build:dev'],
                 options: {
-                    spawn: false,
+                    interrupt: true,
                     atBegin: true,
                 },
             },
-            html: {
-                files: ['src/**/*.html'],
-                tasks: ['bowerRequirejs', 'copy:src-to-dist', 'lint', 'babel'],
-                options: {
-                    spawn: false,
-                },
-            },
             gruntfile: {
-                files: ['Gruntfile.js'],
+                files: 'Gruntfile.js',
+                tasks: ['jshint:gruntfile'],
                 options: {
                     reload: true,
                 },
@@ -99,9 +138,11 @@ module.exports = function(grunt) {
                 jshintrc: '.jshintrc',
                 reporter: require('jshint-stylish'),
             },
+            gruntfile: [
+                'Gruntfile.js',
+            ],
             all: [
                 'src/**/*.js',
-                'Gruntfile.js',
                 '!src/lib/**/*',
             ],
         },
@@ -128,7 +169,6 @@ module.exports = function(grunt) {
 
     grunt.registerTask('build', function (target) {
         var t = [];
-        t.push('clean');
         t.push('bowerRequirejs');
         t.push('copy:src-to-dist');
         t.push('lint');
