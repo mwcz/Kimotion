@@ -17,10 +17,12 @@ contributions.
 Installation
 ------------
 
-First, install [Node.js][node].  It comes with the npm package manager, which
-you can use to install the rest of the dependencies.
+First, install [Node.js][node].  It should come with the npm package manager,
+which you can use to install the rest of the dependencies.  If your platform's
+Node.js package doesn't include npm, install it separately.  On Fedora, you can
+run `yum install npm`.
 
-After cloning this repo, cd into it and...
+Then clone this (dimo-2015-renderer) repo, cd into it and...
 
     npm install -g bower grunt-cli
     npm install && bower install
