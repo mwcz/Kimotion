@@ -1,4 +1,4 @@
-/* global prompt */
+/* global prompt, FileReaderSync */
 
 import { map, partial } from 'lodash';
 import * as tween from 'tween';
@@ -11,7 +11,7 @@ const HEIGHT = 480;
 const MAX_DEPTH = 2047;
 const MIN_DEPTH = 0;
 
-let depth;
+let depth = new Int16Array(WIDTH * HEIGHT);
 
 function ask_for_ws_server() {
     let ws_url = prompt('Where is the input server?', localStorage.ws_url || 'localhost:1337');
@@ -21,6 +21,7 @@ function ask_for_ws_server() {
 
 function create_ws_connection(ws_url) {
     let ws = new WebSocket('ws://' + ws_url);
+    ws.binaryType = 'arraybuffer';
     ws.onopen = handle_open;
     ws.onmessage = handle_message;
     ws.onerror = handle_error;
@@ -31,8 +32,14 @@ function handle_open() {
     console.log(`WebSocket connection to ${this.URL} established.`);
 }
 
+function cpybuf(src, trg) {
+    for (let i = 0; i < src.length; i += 1) {
+        trg[i] = src[i];
+    }
+}
+
 function handle_message( ws_message ) {
-    depth = JSON.parse(ws_message.data);
+    depth = new Int16Array(ws_message.data);
 }
 
 function handle_error(event) {

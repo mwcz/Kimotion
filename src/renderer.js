@@ -152,8 +152,10 @@ function NaNPositionError(message) {
 NaNPositionError.prototype = Error.prototype;
 
 function update(data) {
-    update_positions(data);
-    update_colors(data);
+    if (data.input.depth) {
+        update_positions(data);
+        update_colors(data);
+    }
     renderer.render(scene, camera);
 }
 
