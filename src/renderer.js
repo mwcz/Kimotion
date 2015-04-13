@@ -108,7 +108,7 @@ function get_initial_particle_positions(count) {
 }
 
 function position_camera() {
-    camera.position.z = 300;
+    camera.position.z = 500;
     camera.position.x = 320;
     camera.position.y = 240;
 }
@@ -129,7 +129,7 @@ function update_positions(data) {
     let z = 0, j = 0;
     for (let i = 2; i < pos.length; i += 3) {
         j = Math.floor(i/3);
-        z = data.input.depth[j] / 2 - 500;
+        z = data.input.depth[j] / 4;
         pos[i] = z;
     }
     pgeometry.attributes.position.needsUpdate = true;
