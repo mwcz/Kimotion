@@ -25,7 +25,6 @@ let camera;
 let renderer;
 let geometry;
 let material;
-let cube;
 let psystem;
 let pmaterial;
 let pgeometry;
@@ -41,19 +40,10 @@ function init_threejs() {
     document.body.appendChild( renderer.domElement );
 }
 
-function add_cube() {
-    geometry = new THREE.BoxGeometry( 1, 1, 1 );
-    material = new THREE.MeshDepthMaterial({
-        color: 0x00ff00,
-        wireframe: true,
-    });
-    cube = new THREE.Mesh( geometry, material );
-    scene.add( cube );
-}
-
 function get_uniforms() {
     return {
-        color     : { type : 'c',  value : new THREE.Color( 0x00ff00 ) },
+        near_color: { type : 'c',  value : new THREE.Color( 0xff0000 ) },
+        far_color : { type : 'c',  value : new THREE.Color( 0x0000ff ) },
         texture   : { type : 't',  value : THREE.ImageUtils.loadTexture('images/glow.png') },
         // mouse     : { type : 'v2', value : new THREE.Vector2() },
     };
@@ -61,7 +51,7 @@ function get_uniforms() {
 
 function get_attributes() {
     return {
-        customColor  : { type : 'c',  value : null },
+        //customColor  : { type : 'c',  value : null },
     };
 }
 
@@ -86,7 +76,6 @@ function add_particle_system_attributes(geo, count) {
     ppositions  = get_initial_particle_positions(count);
     pcolors     = new Float32Array( count );
     geo.addAttribute( 'position'    , new THREE.BufferAttribute( ppositions , 3 ) );
-    geo.addAttribute( 'customColor' , new THREE.BufferAttribute( pcolors    , 1 ) );
 }
 
 function get_initial_particle_positions(count) {
@@ -113,11 +102,6 @@ function position_camera() {
     camera.position.y = 240;
 }
 
-function update_cube_rotation() {
-    cube.rotation.x += 0.01;
-    cube.rotation.y += 0.01;
-}
-
 function create(data) {
     init_threejs();
     add_particle_system(data);
@@ -135,15 +119,15 @@ function update_positions(data) {
     pgeometry.attributes.position.needsUpdate = true;
 }
 
-function update_colors(data) {
-    let colors = pgeometry.attributes.customColor.array;
-    let z = 0;
-    for (let i = 0; i < colors.length; i += 1) {
-        z = data.input.depth[i] / 2048;
-        colors[i] = z;
-    }
-    pgeometry.attributes.customColor.needsUpdate = true;
-}
+// function update_colors(data) {
+//     let colors = pgeometry.attributes.customColor.array;
+//     let z = 0;
+//     for (let i = 0; i < colors.length; i += 1) {
+//         z = data.input.depth[i] / 2048;
+//         colors[i] = z;
+//     }
+//     pgeometry.attributes.customColor.needsUpdate = true;
+// }
 
 function NaNPositionError(message) {
     this.name = 'NaNPositionError';
@@ -154,10 +138,32 @@ NaNPositionError.prototype = Error.prototype;
 function update(data) {
     if (data.input.depth) {
         update_positions(data);
-        update_colors(data);
+        // update_colors(data);
     }
     renderer.render(scene, camera);
 }
 
+function set_color(prop, c) {
+    pmaterial.uniforms[prop].value = new THREE.Color(c.r/255, c.g/255, c.b/255);
+}
+
+function set_near_color(c) {
+    set_color('near_color', c);
+}
+
+function set_far_color(c) {
+    set_color('far_color', c);
+}
+
+function zoom_camera(v) {
+    camera.position.z = v;
+}
+
 // export { create_json as create, render_json as update };
-export { create, update };
+export {
+    create,
+    update,
+    set_near_color,
+    set_far_color,
+    zoom_camera
+};

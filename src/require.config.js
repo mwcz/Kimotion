@@ -11,11 +11,15 @@ requirejs.config({
         'requirejs-text': 'lib/requirejs-text/text',
         'lodash-amd': 'lib/lodash-amd/compat/main',
         tweenjs: 'lib/tweenjs/gulpfile',
-        tween: 'lib/tweenjs/src/Tween'
+        tween: 'lib/tweenjs/src/Tween',
+        'dat-gui': 'lib/dat-gui/build/dat.gui'
     },
     shim: {
         threejs: {
             exports: 'THREE'
+        },
+        'dat-gui': {
+            exports: 'dat'
         }
     },
     packages: [

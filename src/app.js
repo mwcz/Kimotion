@@ -2,6 +2,8 @@ import * as renderer from 'renderer';
 import * as state from 'state';
 import * as input from 'input';
 import * as transforms from 'contrib/transforms/all';
+import * as conf_panel from 'conf-panel';
+import conf from 'conf';
 
 // The default transform function is merely an identity function.  It returns
 // exactly what's passed in.
@@ -14,6 +16,7 @@ function set_transform(func) {
 }
 
 function create() {
+    conf_panel.init(conf);
     // init whatever renderer we're using
     renderer.create( input.read() );
     update();

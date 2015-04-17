@@ -1,30 +1,27 @@
-#define PI4 12.56637
 #define PI2 6.283185
-#define PI  3.141592
-#define HPI 1.57080
-#define MAX_Z 512.0
+#define MAX_Z 256.0
 
-uniform float color;
+uniform vec3 near_color;
+uniform vec3 far_color;
 uniform sampler2D texture;
 
-varying float vColor;
 varying vec3 pos;
 
-vec3 cycler;
+vec4 cycler;
 float v;
-
-vec3 near = vec3(0.0, 0.0, 1.0);
-vec3 far  = vec3(1.0, 0.0, 0.0);
-
 
 void main() {
 
     /* Interpolate from near color to far color. */
 
-    float near_factor = pos.z / MAX_Z;
-    float far_factor  = (MAX_Z - pos.z) / MAX_Z;
+    float far_factor  = min(pos.z / MAX_Z, 1.0);
+    float near_factor = 1.0 - far_factor;
 
-    cycler = near_factor * near + far_factor * far;
+    cycler = vec4(near_factor * near_color + far_factor * far_color, 1.0);
+
+    if (pos.z > MAX_Z) {
+        cycler = vec4(1.0, 1.0, 1.0, 0.0);
+    }
 
     /* Cycle through colors. */
 
@@ -34,6 +31,6 @@ void main() {
     /* cycler += 1.0; */
     /* cycler /= 2.0; */
 
-    gl_FragColor = vec4(vec3(cycler), 1.0) * texture2D( texture, gl_PointCoord );
+    gl_FragColor = cycler * texture2D( texture, gl_PointCoord );
 
 }

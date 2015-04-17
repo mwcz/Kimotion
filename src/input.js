@@ -1,4 +1,4 @@
-/* global prompt, FileReaderSync */
+/* global prompt */
 
 import { map, partial } from 'lodash';
 import * as tween from 'tween';
