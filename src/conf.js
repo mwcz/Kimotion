@@ -5,7 +5,8 @@ let conf = {
     displayOutline: false,
     near_color: { r: 255, g: 0, b: 0 },
     far_color:  { r: 0, g: 0, b: 255 },
-    zoom_camera: 500
+    camera_distance: 500,
+    particle_size: 4.0,
 };
 
 export default conf;

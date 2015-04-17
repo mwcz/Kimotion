@@ -42,9 +42,10 @@ function init_threejs() {
 
 function get_uniforms() {
     return {
-        near_color: { type : 'c',  value : new THREE.Color( 0xff0000 ) },
-        far_color : { type : 'c',  value : new THREE.Color( 0x0000ff ) },
-        texture   : { type : 't',  value : THREE.ImageUtils.loadTexture('images/glow.png') },
+        near_color    : { type : 'c',  value : new THREE.Color( 0xff0000 ) },
+        far_color     : { type : 'c',  value : new THREE.Color( 0x0000ff ) },
+        particle_size : { type : 'f',  value : 4.0 },
+        texture       : { type : 't',  value : THREE.ImageUtils.loadTexture('images/glow.png') },
         // mouse     : { type : 'v2', value : new THREE.Vector2() },
     };
 }
@@ -155,8 +156,12 @@ function set_far_color(c) {
     set_color('far_color', c);
 }
 
-function zoom_camera(v) {
+function set_camera_distance(v) {
     camera.position.z = v;
+}
+
+function set_particle_size(c) {
+    pmaterial.uniforms.particle_size.value = c;
 }
 
 // export { create_json as create, render_json as update };
@@ -165,5 +170,6 @@ export {
     update,
     set_near_color,
     set_far_color,
-    zoom_camera
+    set_camera_distance,
+    set_particle_size
 };

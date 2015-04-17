@@ -1,5 +1,5 @@
 import * as dat from 'dat-gui';
-import { set_near_color, set_far_color, zoom_camera } from 'renderer';
+import * as renderer from 'renderer';
 
 function init(conf) {
     let gui = new dat.GUI();
@@ -8,14 +8,18 @@ function init(conf) {
     gui.add(conf, 'displayOutline');
     gui.addColor(conf, 'near_color')
         .name('Near color')
-        .onChange(set_near_color);
+        .onChange(renderer.set_near_color);
     gui.addColor(conf, 'far_color')
         .name('Far color')
-        .onChange(set_far_color);
+        .onChange(renderer.set_far_color);
 
-    gui.add(conf, 'zoom_camera', 200, 1000)
-        .name('Camera zoom')
-        .onChange(zoom_camera);
+    gui.add(conf, 'camera_distance', 200, 1000)
+        .name('Camera distance')
+        .onChange(renderer.set_camera_distance);
+
+    gui.add(conf, 'particle_size', 0, 64)
+        .name('Particle size')
+        .onChange(renderer.set_particle_size);
 
 }
 
