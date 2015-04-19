@@ -1,7 +1,6 @@
 /* global prompt */
 
 import { map, partial } from 'lodash';
-import * as tween from 'tween';
 
 const _ = partial.placeholder;
 

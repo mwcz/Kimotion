@@ -23,7 +23,11 @@ requirejs.config({
         }
     },
     packages: [
-
+        {
+            name: 'tweenjs',
+            main: 'src/Tween.js',
+            location: 'lib/tweenjs'
+        }
     ]
 });
 
