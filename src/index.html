@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width">
         <title>dimo 2015 client</title>
         <style type="text/css" media="screen">
-            body { background: black; color: white; font-family: monospace; padding: 0; margin: 0; }
+            body { background: black; color: white; font-family: monospace; padding: 0; margin: 0; overflow: hidden; }
             #output { position: absolute; top: 10px; left: 10px; right: 10px; bottom: 10px; overflow-y: auto; }
             #output::selection { background-color: #999; color: white; }
         </style>
@@ -13,6 +13,5 @@
     <body>
         <pre id="output"></pre>
         <script src="lib/requirejs/require.js" data-main="require.config.js"></script>
-        <script src="//localhost:35729/livereload.js"></script>
     </body>
 </html>
