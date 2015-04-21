@@ -3,9 +3,6 @@ import * as renderer from 'renderer';
 
 function init(conf) {
     let gui = new dat.GUI();
-    gui.add(conf, 'message');
-    gui.add(conf, 'speed', -5, 5);
-    gui.add(conf, 'displayOutline');
     gui.addColor(conf, 'near_color')
         .name('Near color')
         .onChange(renderer.set_near_color);
