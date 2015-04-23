@@ -1,10 +1,8 @@
-import { map, partial } from 'lodash';
-
-const _ = partial.placeholder; // for clarity
-
 function random(data) {
-    // turn all the depth values into random numbers
-    data.depth = map(data.depth, partial(map, _, Math.random));
+    // multiple all depth values by random numbers
+    for (let i = 0; i < data.input.depth.length; i += 1) {
+        data.input.depth[i] = data.input.depth[i] * Math.random();
+    }
     return data;
 }
 

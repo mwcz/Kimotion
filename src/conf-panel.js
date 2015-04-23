@@ -10,9 +10,17 @@ function init(conf) {
         .name('Far color')
         .onChange(renderer.set_far_color);
 
-    gui.add(conf, 'camera_distance', 200, 1000)
-        .name('Camera distance')
-        .onChange(renderer.set_camera_distance);
+    gui.add(conf, 'camera_x', -1000, 1000)
+        .name('Camera x')
+        .onChange(renderer.set_camera_x);
+
+    gui.add(conf, 'camera_y', -1000, 1000)
+        .name('Camera y')
+        .onChange(renderer.set_camera_y);
+
+    gui.add(conf, 'camera_z', -1000, 1000)
+        .name('Camera z')
+        .onChange(renderer.set_camera_z);
 
     gui.add(conf, 'particle_size', 0, 64)
         .name('Particle size')

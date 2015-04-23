@@ -16,8 +16,8 @@ void main() {
 
     /* Interpolate from near color to far color. */
 
-    float far_factor  = min((pos.z - MIN_Z) / (MAX_Z - MIN_Z) - DEPTH_COLOR_OFFSET, 1.0);
-    float near_factor = 1.0 - far_factor;
+    float near_factor  = min((pos.z - MIN_Z) / (MAX_Z - MIN_Z) - DEPTH_COLOR_OFFSET, 1.0);
+    float far_factor = 1.0 - near_factor;
 
     cycler = vec4(near_factor * near_color + far_factor * far_color, 1.0);
 

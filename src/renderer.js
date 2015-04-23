@@ -156,8 +156,22 @@ function set_far_color(c) {
     set_color('far_color', c);
 }
 
-function set_camera_distance(v) {
+
+const CENTER = { x: 320, y: 240, z: 128 };
+
+function set_camera_z(v) {
     camera.position.z = v;
+    camera.lookAt(CENTER);
+}
+
+function set_camera_x(x) {
+    camera.position.x = x;
+    camera.lookAt(CENTER);
+}
+
+function set_camera_y(y) {
+    camera.position.y = y;
+    camera.lookAt(CENTER);
 }
 
 function set_particle_size(c) {
@@ -170,6 +184,8 @@ export {
     update,
     set_near_color,
     set_far_color,
-    set_camera_distance,
-    set_particle_size
+    set_particle_size,
+    set_camera_x,
+    set_camera_y,
+    set_camera_z
 };
