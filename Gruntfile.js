@@ -168,9 +168,9 @@ module.exports = function(grunt) {
 
     grunt.registerTask('build', function (target) {
         var t = [];
+        t.push('lint');
         t.push('bowerRequirejs');
         t.push('copy:src-to-dist');
-        t.push('lint');
         t.push('babel');
         if (target !== 'dev') {
             t.push('requirejs');
