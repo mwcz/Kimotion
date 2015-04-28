@@ -2,6 +2,7 @@
 
 requirejs.config({
     baseUrl: '.',
+    waitSeconds: Infinity,
     paths: {
         shaders: 'shaders',
         lodash: 'lib/lodash-amd/compat/main',
