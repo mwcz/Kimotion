@@ -38,7 +38,16 @@ function cpybuf(src, trg) {
 }
 
 function handle_message( ws_message ) {
-    depth = new Int16Array(ws_message.data);
+    avg(depth, new Int16Array(ws_message.data), 0.7);
+}
+
+/* TODO make this a plugin */
+function avg(tar1, tar2, scale=0.5) {
+    for (let i = 0; i < tar1.length; i += 1) {
+        tar1[i] *= scale;
+        tar2[i] *= 1 - scale;
+        tar1[i] += tar2[i];
+    }
 }
 
 function handle_error(event) {
