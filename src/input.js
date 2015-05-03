@@ -11,6 +11,7 @@ const MAX_DEPTH = 2047;
 const MIN_DEPTH = 0;
 
 let depth = new Int16Array(WIDTH * HEIGHT);
+var ws;
 
 function ask_for_ws_server() {
     let ws_url = prompt('Where is the input server?', localStorage.ws_url || 'localhost:1337');
@@ -25,6 +26,7 @@ function create_ws_connection(ws_url) {
     ws.onmessage = handle_message;
     ws.onerror = handle_error;
     ws.onclose = handle_close;
+    return ws;
 }
 
 function handle_open() {
@@ -39,6 +41,14 @@ function cpybuf(src, trg) {
 
 function handle_message( ws_message ) {
     avg(depth, new Int16Array(ws_message.data), 0.7);
+}
+
+function send_message( app_message ) {
+    console.log(app_message);
+    console.log(ws);
+    if (ws.readyState === 1) {
+        ws.send(app_message);
+    }
 }
 
 /* TODO make this a plugin */
@@ -62,7 +72,7 @@ function fake_random_depth() {
     return parseInt(Math.random()*MAX_DEPTH);
 }
 
-create_ws_connection(ask_for_ws_server());
+ws = create_ws_connection(ask_for_ws_server());
 
 function read() {
     return {
@@ -70,4 +80,7 @@ function read() {
     };
 }
 
-export { read };
+export {
+    read,
+    send_message
+};

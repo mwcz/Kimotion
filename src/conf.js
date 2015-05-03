@@ -1,3 +1,5 @@
+import * as input from 'input';
+
 
 let conf = {
     message: 'dat.gui',
@@ -9,6 +11,7 @@ let conf = {
     camera_y: 240,
     camera_z: 500,
     particle_size: 4.0,
+    kinect_tilt: 0,
 };
 
 export default conf;

@@ -1,5 +1,6 @@
 import * as dat from 'dat-gui';
 import * as renderer from 'renderer';
+import * as input from 'input';
 
 function init(conf) {
     let gui = new dat.GUI();
@@ -26,6 +27,9 @@ function init(conf) {
         .name('Particle size')
         .onChange(renderer.set_particle_size);
 
+    gui.add(conf, 'kinect_tilt', 0, 30)
+        .name('Kinect Tilt')
+        .onChange(input.send_message);
 }
 
 export { init };
