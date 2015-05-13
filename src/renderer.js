@@ -1,7 +1,5 @@
 import THREE from 'threejs';
 import { map, each, extend } from 'lodash';
-import * as frag from 'text!contrib/shaders/particle.frag';
-import * as vert from 'text!contrib/shaders/vertex.vert';
 
 const create_json = function () {};
 const render_json = function render_json (data) {
@@ -56,13 +54,13 @@ function get_attributes() {
     };
 }
 
-function add_particle_system(data) {
+function add_particle_system(data, plugin) {
     pgeometry = new THREE.BufferGeometry();
     pmaterial = new THREE.ShaderMaterial({
         uniforms       : get_uniforms(),
         attributes     : get_attributes(),
-        vertexShader   : vert,
-        fragmentShader : frag,
+        vertexShader   : plugin.shaders.vert,
+        fragmentShader : plugin.shaders.frag,
         blending       : THREE.AdditiveBlending,
         depthTest      : false,
         transparent    : true,
@@ -103,9 +101,9 @@ function position_camera() {
     camera.position.y = 240;
 }
 
-function create(data) {
+function create(data, plugin) {
     init_threejs();
-    add_particle_system(data);
+    add_particle_system(data, plugin);
     position_camera();
 }
 

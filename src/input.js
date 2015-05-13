@@ -40,7 +40,8 @@ function cpybuf(src, trg) {
 }
 
 function handle_message( ws_message ) {
-    avg(depth, new Int16Array(ws_message.data), 0.7);
+    depth = new Int16Array(ws_message.data);
+    //avg(depth, new Int16Array(ws_message.data), 0.7);
 }
 
 function send_message( app_message ) {
@@ -66,10 +67,6 @@ function handle_error(event) {
 
 function handle_close() {
     console.log(`WebSocket connection to ${this.URL} closed.` );
-}
-
-function fake_random_depth() {
-    return parseInt(Math.random()*MAX_DEPTH);
 }
 
 ws = create_ws_connection(ask_for_ws_server());
