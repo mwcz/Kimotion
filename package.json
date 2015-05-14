@@ -21,7 +21,7 @@
     "grunt-bower-requirejs": "~2.0.0",
     "time-grunt": "~1.1.0",
     "load-grunt-tasks": "~3.1.0",
-    "grunt-contrib-jshint": "~0.11.0",
+    "grunt-contrib-jshint": "~0.11.2",
     "jshint-stylish": "~1.0.1",
     "grunt-babel": "~4.0.0",
     "grunt-contrib-clean": "~0.6.0",
