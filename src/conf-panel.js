@@ -11,15 +11,15 @@ function init(conf) {
         .name('Far color')
         .onChange(renderer.set_far_color);
 
-    gui.add(conf, 'camera_x', -1000, 1000)
+    gui.add(conf.camera, 'x', -1000, 1000)
         .name('Camera x')
         .onChange(renderer.set_camera_x);
 
-    gui.add(conf, 'camera_y', -1000, 1000)
+    gui.add(conf.camera, 'y', -1000, 1000)
         .name('Camera y')
         .onChange(renderer.set_camera_y);
 
-    gui.add(conf, 'camera_z', -1000, 1000)
+    gui.add(conf.camera, 'z', -1000, 1000)
         .name('Camera z')
         .onChange(renderer.set_camera_z);
 

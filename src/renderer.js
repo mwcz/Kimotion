@@ -1,5 +1,6 @@
 import THREE from 'threejs';
-import { map, each, extend } from 'lodash';
+import conf from 'conf';
+import { map, each, extend, partial } from 'lodash';
 
 const create_json = function () {};
 const render_json = function render_json (data) {
@@ -96,9 +97,10 @@ function get_initial_particle_positions(count) {
 }
 
 function position_camera() {
-    camera.position.z = 500;
-    camera.position.x = 320;
-    camera.position.y = 240;
+    camera.position.x = conf.camera.x;
+    camera.position.y = conf.camera.y;
+    camera.position.z = conf.camera.z;
+    camera.lookAt(conf.camera.origin);
 }
 
 function create(data, plugin) {
@@ -154,23 +156,14 @@ function set_far_color(c) {
     set_color('far_color', c);
 }
 
-
-const CENTER = { x: 320, y: 240, z: 128 };
-
-function set_camera_z(v) {
-    camera.position.z = v;
-    camera.lookAt(CENTER);
+function set_camera(axis, v) {
+    camera.position[axis] = v;
+    camera.lookAt(conf.camera.origin);
 }
 
-function set_camera_x(x) {
-    camera.position.x = x;
-    camera.lookAt(CENTER);
-}
-
-function set_camera_y(y) {
-    camera.position.y = y;
-    camera.lookAt(CENTER);
-}
+function set_camera_x(v) { set_camera('x', v); }
+function set_camera_y(v) { set_camera('y', v); }
+function set_camera_z(v) { set_camera('z', v); }
 
 function set_particle_size(c) {
     pmaterial.uniforms.particle_size.value = c;

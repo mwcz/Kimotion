@@ -33,8 +33,8 @@ function update() {
     var newinput = input.read();
 
     var newdata = {
-        input  : newinput,
-        state  : state.current(),
+        input : newinput,
+        state : state.current(),
     };
 
     plugin.update(newdata);
@@ -46,7 +46,6 @@ function teardown() {
     state.clear();
 }
 
-// setTimeout(create, 2000);
 create();
 
 export { set_plugin };
