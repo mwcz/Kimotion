@@ -1,6 +1,6 @@
 import * as dat from 'dat-gui';
 import * as renderer from 'renderer';
-import * as input from 'input';
+import input from 'input';
 
 function init(conf) {
     let gui = new dat.GUI();

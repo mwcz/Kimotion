@@ -1,16 +1,14 @@
 /* global prompt */
 
 import { map, partial } from 'lodash';
+import conf from 'conf';
 
 const _ = partial.placeholder;
-
-const WIDTH = 640;
-const HEIGHT = 480;
 
 const MAX_DEPTH = 2047;
 const MIN_DEPTH = 0;
 
-let depth = new Int16Array(WIDTH * HEIGHT);
+var depth = new Int16Array(conf.kinect.res.width * conf.kinect.res.height);
 var ws;
 
 function ask_for_ws_server() {
@@ -33,13 +31,8 @@ function handle_open() {
     console.log(`WebSocket connection to ${this.URL} established.`);
 }
 
-function cpybuf(src, trg) {
-    for (let i = 0; i < src.length; i += 1) {
-        trg[i] = src[i];
-    }
-}
-
 function handle_message( ws_message ) {
+    console.log('ws msg');
     depth = new Int16Array(ws_message.data);
 }
 
@@ -60,12 +53,12 @@ function handle_close() {
 ws = create_ws_connection(ask_for_ws_server());
 
 function read() {
-    return {
-        depth : depth,
-    };
+    return { depth };
 }
 
-export {
+var exports = {
     read,
     send_message
 };
+
+export default exports;
