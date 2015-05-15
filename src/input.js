@@ -33,7 +33,7 @@ function handle_open() {
 
 function handle_message( ws_message ) {
     console.log('ws msg');
-    depth = new Int16Array(ws_message.data);
+    depth = new Uint16Array(ws_message.data);
 }
 
 function send_message( app_message ) {

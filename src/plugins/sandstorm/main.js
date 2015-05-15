@@ -5,7 +5,7 @@ import input from 'input';
 import conf from 'conf';
 
 const shaders = { frag, vert };
-var depth = new Int16Array(conf.kinect.res.width * conf.kinect.res.height);
+var depth = new Uint16Array(conf.kinect.res.width * conf.kinect.res.height);
 
 function create() {}
 
