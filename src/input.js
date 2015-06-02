@@ -1,6 +1,6 @@
 /* global prompt */
 
-import { map, partial } from 'lodash';
+import { map, partial, noop } from 'lodash';
 import conf from 'conf';
 
 const _ = partial.placeholder;
@@ -24,6 +24,7 @@ function create_ws_connection(ws_url) {
     ws.onmessage = handle_message;
     ws.onerror = handle_error;
     ws.onclose = handle_close;
+    window.onbeforeunload = ws.close.bind(ws);
     return ws;
 }
 
