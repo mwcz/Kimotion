@@ -33,7 +33,6 @@ function handle_open() {
 }
 
 function handle_message( ws_message ) {
-    console.log('ws msg');
     depth = new Uint16Array(ws_message.data);
 }
 

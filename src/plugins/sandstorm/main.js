@@ -26,11 +26,6 @@ function avg(tar1, tar2, scale=0.5) {
     }
 }
 
-function cpybuf(src, trg) {
-    for (let i = 0; i < src.length; i += 1) {
-        trg[i] = src[i];
-    }
-}
 export default {
     create,
     update,

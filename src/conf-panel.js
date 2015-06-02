@@ -1,12 +1,19 @@
 import * as dat from 'dat-gui';
 import * as renderer from 'renderer';
+import * as pluginctrl from 'pluginctrl';
 import input from 'input';
 
 function init(conf) {
     let gui = new dat.GUI();
+
+    gui.add(conf, 'plugins', conf.plugins)
+        .name('Plugins')
+        .onChange(pluginctrl.set);
+
     gui.addColor(conf, 'near_color')
         .name('Near color')
         .onChange(renderer.set_near_color);
+
     gui.addColor(conf, 'far_color')
         .name('Far color')
         .onChange(renderer.set_far_color);
