@@ -55,6 +55,13 @@ function get_attributes() {
     };
 }
 
+// THREE.NoBlending
+// THREE.NormalBlending
+// THREE.AdditiveBlending
+// THREE.SubtractiveBlending
+// THREE.MultiplyBlending
+// THREE.CustomBlending
+
 function add_particle_system(data, plugin) {
     pgeometry = new THREE.BufferGeometry();
     pmaterial = new THREE.ShaderMaterial({
