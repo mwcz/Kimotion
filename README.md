@@ -47,5 +47,5 @@ Last years' DiMo
  - [DiMo 2014][dimo2014]
 
 [dimo2014]: http://palebluepixel.org/projects/dimo/
-[dimoserver]: /tree/master/server
+[dimoserver]: /server
 [node]: https://nodejs.org/
