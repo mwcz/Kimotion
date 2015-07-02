@@ -1,14 +1,14 @@
 import * as dat from 'dat-gui';
 import * as renderer from 'renderer';
-import * as pluginctrl from 'pluginctrl';
+import * as modctrl from 'modctrl';
 import input from 'input';
 
 function init(conf) {
     let gui = new dat.GUI();
 
-    gui.add(conf, 'plugins', conf.plugins)
-        .name('Plugins')
-        .onChange(pluginctrl.set);
+    gui.add(conf, 'mods', conf.mods)
+        .name('Mods')
+        .onChange(modctrl.set);
 
     gui.addColor(conf, 'near_color')
         .name('Near color')

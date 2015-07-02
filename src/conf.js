@@ -1,7 +1,8 @@
 import { keys, without } from 'lodash';
 
 let conf = {
-    plugins: ['sandstorm', 'default'],
+    // TODO dynamically populate mods
+    mods: ['sandstorm', 'default'],
     near_color: { r: 255, g: 0, b: 0 },
     far_color:  { r: 0, g: 0, b: 255 },
     kinect: {

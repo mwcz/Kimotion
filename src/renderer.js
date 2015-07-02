@@ -62,13 +62,13 @@ function get_attributes() {
 // THREE.MultiplyBlending
 // THREE.CustomBlending
 
-function add_particle_system(data, plugin) {
+function add_particle_system(data, mod) {
     pgeometry = new THREE.BufferGeometry();
     pmaterial = new THREE.ShaderMaterial({
         uniforms       : get_uniforms(),
         attributes     : get_attributes(),
-        vertexShader   : plugin.shaders.vert,
-        fragmentShader : plugin.shaders.frag,
+        vertexShader   : mod.shaders.vert,
+        fragmentShader : mod.shaders.frag,
         blending       : THREE.AdditiveBlending,
         depthTest      : false,
         transparent    : true,
@@ -110,9 +110,9 @@ function position_camera() {
     camera.lookAt(conf.camera.origin);
 }
 
-function create(data, plugin) {
+function create(data, mod) {
     init_threejs();
-    add_particle_system(data, plugin);
+    add_particle_system(data, mod);
     position_camera();
 }
 
