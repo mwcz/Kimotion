@@ -1,4 +1,8 @@
-dimo-input
-==========
+Kimotion server
+===============
 
-Find players, send info to the connected renderer... simple eh
+A WebSocket server that distributes Kinect depth data.
+
+Author: [iphands][iphands]
+
+[iphands]: https://github.com/iphands
