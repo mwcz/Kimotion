@@ -47,5 +47,5 @@ Last years' DiMo
  - [DiMo 2014][dimo2014]
 
 [dimo2014]: http://palebluepixel.org/projects/dimo/
-[dimoserver]: https://github.com/geekspark-rh/dimo-2015-server
+[dimoserver]: /tree/master/server
 [node]: https://nodejs.org/
