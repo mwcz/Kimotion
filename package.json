@@ -1,5 +1,5 @@
 {
-  "name": "dimo-2015-renderer",
+  "name": "Kimotion",
   "version": "0.0.0",
   "description": "A spiffy, new, ultra customizable visualization renderer for interactive art exhibits.",
   "main": "index.js",
@@ -8,12 +8,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/geekspark-rh/dimo-2015-renderer.git"
+    "url": "git://github.com/mwcz/Kimotion.git"
   },
   "author": "mwcz palebluepixel.org",
   "license": "GPLv2",
   "bugs": {
-    "url": "https://github.com/geekspark-rh/dimo-2015-renderer/issues"
+    "url": "https://github.com/mwcz/Kimotion/issues"
   },
   "devDependencies": {
     "grunt": "~0.4.5",
