@@ -4,7 +4,7 @@ Make a Kimotion!
 A spiffy, new, ultra customizable visualization renderer for interactive art
 exhibits.
 
-*Originally built for the Digital Motion exhibit at SparkCON, 2015*
+![Kimotion sample](src/images/readme_hero.png)
 
 What's so new?
 --------------
