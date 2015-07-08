@@ -14,7 +14,7 @@ building a JavaScript-based web renderer from the ground up.  The only shared
 code was some re-pasted WebSockets boilerplate.
 
 Kimotion standardizes on a single renderer, with a streamlined approach for
-contributing special mods.
+contributing custom mods of *your* design.
 
 Installation
 ------------
