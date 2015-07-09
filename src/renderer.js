@@ -2,23 +2,6 @@ import THREE from 'threejs';
 import conf from 'conf';
 import { map, each, extend, partial } from 'lodash';
 
-const create_json = function () {};
-const render_json = function render_json (data) {
-    // the renderer is just raw json for now :)
-    let data_to_print = extend(data || {});
-
-    // only print the first 32, otherwise updating the JSON gets really slow
-    // if (data_to_print.input.depth.length > 32) {
-    //     data_to_print.input.depth = data_to_print.input.depth.subarray(0, 32);
-    // }
-    var output = JSON.stringify(data_to_print, null, 4)
-    .replace(/\[\n\s+(\d+)/g, '[ $1')  // make the
-    .replace(/(\d+)\n\s+\]/g, '$1 ]')  // json pretty print
-    .replace(/\,\n\s+(\d+)/g, ', $1'); // prettier
-
-    document.getElementById('output').innerHTML = output;
-};
-
 let scene;
 let camera;
 let renderer;
