@@ -179,6 +179,9 @@ module.exports = function(grunt) {
     grunt.registerTask('default', []);
     grunt.registerTask('lint', ['jshint:all']);
 
+    grunt.registerTask('allgen', function (target) {
+    });
+
     grunt.registerTask('build', function (target) {
         var t = [];
         t.push('lint');
