@@ -1,6 +1,6 @@
-import { mod } from 'mod';
+import mod from 'mod';
 
-class particles extends mod {
+export default class particles extends mod {
     constructor(gfx) {
         super(gfx);
         this.author = 'Michael Clayton';

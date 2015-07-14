@@ -1,6 +1,6 @@
-import effects from 'effects';
+import * as effects from 'effects';
 
-class mod {
+export default class mod {
     constructor(gfx) {
         this.author = '';
         this.title = '';
@@ -11,6 +11,8 @@ class mod {
         // invoke(this.effects, 'update'); // TODO: decide how to do this
     }
     destroy(gfx) {
+        // remove any datgui's that were created for this mod
+        document.querySelector('.dg').remove();
     }
     add_effect(effect) {
         this.effects.push(effects[effect]);

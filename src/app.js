@@ -1,4 +1,3 @@
-import * as renderer from 'renderer';
 import input from 'input';
 import * as mods from 'mods';
 import * as conf_panel from 'conf-panel';
@@ -8,11 +7,15 @@ import conf from 'conf';
 // The default transform function is merely an identity function.  It returns
 // exactly what's passed in.
 
+var gfx = {
+    depth : input.depth,
+    gl    : {} // threejs/webgl values get stored here
+};
+
 function create() {
     conf_panel.init(conf);
-    modctrl.set('sandstorm');
+    modctrl.create(gfx);
     // init whatever renderer we're using
-    renderer.create( input.read(), modctrl.get() );
     update();
 }
 
@@ -20,13 +23,10 @@ function update() {
 
     requestAnimationFrame(update);
 
-    var newdata = {
-        input : input.read()
-    };
+    gfx.depth = input.read();
 
-    modctrl.update(newdata);
+    modctrl.update(gfx);
 
-    renderer.update(newdata);
 }
 
 function teardown() {

@@ -6,16 +6,14 @@
     var _ = require('lodash');
     var path = require('path');
 
-    var is_js = function(str) { return /\.js$/.test(str); };
-
-    function expall(dir) {
-        var mods = _.filter(fs.readdirSync(dir), is_js);
+    function expall(fulldir) {
+        var dir = fulldir.replace(/^src\//, '');
+        var mods = fs.readdirSync(fulldir);
         var out = [];
         _.each(mods, function (mod) {
-            var name = mod.replace(/\.js$/, '');
-            out.push("export { default as " + name + " } from './" + dir + "/" + name + "/" + mod + ";");
+            out.push("export { default as " + mod + " } from './" + dir + "/" + mod + "/" + mod + "';");
         });
-        fs.writeFileSync(path.join(__dirname, dir + '.js'), out.join('\n'));
+        fs.writeFileSync(path.join(__dirname, fulldir + '.js'), out.join('\n'));
     }
 
     // var walk = require('walk');

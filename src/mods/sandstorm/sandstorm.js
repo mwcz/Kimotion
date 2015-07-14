@@ -1,9 +1,9 @@
-import { mod } from 'mod';
+import mod from 'mod';
 import * as frag from 'text!./shaders/particle.frag';
 import * as vert from 'text!./shaders/vertex.vert';
 import conf from 'conf';
 
-class sandstorm extends mod {
+export default class sandstorm extends mod {
     constructor(gfx) {
         super(gfx);
         this.author = 'Michael Clayton';

@@ -8,7 +8,7 @@ const _ = partial.placeholder;
 const MAX_DEPTH = 2047;
 const MIN_DEPTH = 0;
 
-var depth = new Int16Array(conf.kinect.res.width * conf.kinect.res.height);
+var depth = new Uint16Array(conf.kinect.res.width * conf.kinect.res.height);
 var ws;
 
 function ask_for_ws_server() {
@@ -53,7 +53,7 @@ function handle_close() {
 ws = create_ws_connection(ask_for_ws_server());
 
 function read() {
-    return { depth };
+    return depth;
 }
 
 var exports = {
