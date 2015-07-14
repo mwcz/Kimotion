@@ -1,6 +1,6 @@
 import * as renderer from 'renderer';
 import input from 'input';
-import * as mods from 'mods/all';
+import * as mods from 'mods';
 import * as conf_panel from 'conf-panel';
 import * as modctrl from 'modctrl';
 import conf from 'conf';

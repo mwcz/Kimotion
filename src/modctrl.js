@@ -1,4 +1,4 @@
-import * as mods from 'mods/all';
+import * as mods from 'mods';
 
 let mod = mods.sandstorm;
 
@@ -14,8 +14,8 @@ function set(name) {
 function get() {
     return mod;
 }
-function update(input) {
-    mod.update(input);
+function update(gfx) {
+    mod.update(gfx);
 }
 function create() {
     mod.create();

@@ -1,4 +1,2 @@
-export default {
-    'particles': function particles_effect_stub() {},
-    'cube': function bigcube_effect_stub() {}
-};
+export { default as cube } from './src/effects/cube/cube.js;
+export { default as particles } from './src/effects/particles/particles.js;

@@ -4,6 +4,8 @@ module.exports = function(grunt) {
 
     var MINJS = ~~grunt.option('minjs');
 
+    var expall = require('./expall');
+
     // Automatically load grunt tasks
     require('load-grunt-tasks')(grunt);
 
@@ -84,7 +86,7 @@ module.exports = function(grunt) {
                 ],
                 tasks: ['build:dev'],
                 options: {
-                    interrupt: true,
+                    // interrupt: true,
                     atBegin: true,
                 },
             },
@@ -179,11 +181,14 @@ module.exports = function(grunt) {
     grunt.registerTask('default', []);
     grunt.registerTask('lint', ['jshint:all']);
 
-    grunt.registerTask('allgen', function (target) {
+    grunt.registerTask('expall', function (target) {
+        expall('src/effects');
+        expall('src/mods');
     });
 
     grunt.registerTask('build', function (target) {
         var t = [];
+        t.push('expall');
         t.push('lint');
         // t.push('bowerRequirejs');
         t.push('sync');
