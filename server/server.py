@@ -49,6 +49,7 @@ def serve():
 
 
 def main():
+    print('starting server')
     args = get_args()
     loglevel = logging.DEBUG if args.debug else logging.WARNING
     logging.basicConfig(level=loglevel, format='%(levelname)s|%(asctime)s|%(module)s|%(funcName)s:  %(message)s')

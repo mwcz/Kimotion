@@ -29,3 +29,6 @@ dist/
 
 # Users Environment Variables
 .lock-wscript
+
+# don't track individuals' fakenect params
+server/fakenect_params.sh
