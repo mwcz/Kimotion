@@ -10,7 +10,7 @@ module.exports = function(grunt) {
     require('load-grunt-tasks')(grunt);
 
     // Show timing of each grunt task at the end of build
-    require('time-grunt')(grunt);
+    // require('time-grunt')(grunt);
 
     // Project configuration.
     grunt.initConfig({
@@ -191,7 +191,7 @@ module.exports = function(grunt) {
     grunt.registerTask('build', function (target) {
         var t = [];
         t.push('expall');
-        t.push('lint');
+        // t.push('lint');
         // t.push('bowerRequirejs');
         t.push('sync');
         t.push('babel');

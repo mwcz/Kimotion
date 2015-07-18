@@ -9,20 +9,19 @@ export default class sandstorm extends mod {
         this.author = 'Michael Clayton';
         this.title = 'Sandstorm';
         this.add_effect('particles');
-        this.prev_depth = gfx.depth; // or... this.prev_depth = new Uint16Array(conf.kinect.res.width * conf.kinect.res.height);
+        // this.prev_depth = gfx.depth; // or... this.prev_depth = new Uint16Array(conf.kinect.res.width * conf.kinect.res.height);
+        this.prev_depth = new Uint16Array(conf.kinect.res.width * conf.kinect.res.height);
     }
     update(gfx) {
         // drift particles towards their destinations 10% at a time
         avg(gfx.depth, this.prev_depth, 0.1);
         this.prev_depth = gfx.depth;
-        // update each effect in this.effects
-        // invoke(this.effects, 'update'); // TODO: decide how to do this
         super.update(gfx);
     }
 }
 
 /**
- * Average together two arrays with an optional scale value that weights one
+ * Average together two arrays with an optional scale value that weighs one
  * array more highly than the other.
  */
 function avg(tar1, tar2, scale=0.5) {
