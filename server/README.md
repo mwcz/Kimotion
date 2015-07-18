@@ -23,7 +23,7 @@ fakenect build directory.
 
 Then, launch the server:
 
-    python fakenect_launcher.sh
+    bash fakenect_launcher.sh
 
 You can then connect to the server on `ws://localhost:1337`.
 
