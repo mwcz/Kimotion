@@ -6,4 +6,4 @@ fakenect_lib="/home/mwc/workspace/libfreenect/build/lib/fakenect/libfreenect.so"
 freenect_lib="/home/mwc/workspace/libfreenect/build/lib/libfreenect.so"
 
 # the path to the fakenect recording to replay
-recording="/home/mwc/workspace/libfreenect/build/lib/fakenect/thanksgiving0"
+recording="/home/mwc/Downloads/legos0"
