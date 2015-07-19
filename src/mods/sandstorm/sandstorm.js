@@ -1,7 +1,6 @@
 import mod from 'mod';
 import * as frag from 'text!./shaders/particle.frag';
 import * as vert from 'text!./shaders/vertex.vert';
-import conf from 'conf';
 
 export default class sandstorm extends mod {
     constructor(gfx) {
@@ -9,8 +8,8 @@ export default class sandstorm extends mod {
         this.author = 'Michael Clayton';
         this.title = 'Sandstorm';
         this.add_effect('particles');
-        // this.prev_depth = gfx.depth; // or... this.prev_depth = new Uint16Array(conf.kinect.res.width * conf.kinect.res.height);
-        this.prev_depth = new Uint16Array(conf.kinect.res.width * conf.kinect.res.height);
+        // this.prev_depth = gfx.depth; // or... this.prev_depth = new Uint16Array(gfx.conf.kinect.res.width * gfx.conf.kinect.res.height);
+        this.prev_depth = new Uint16Array(gfx.conf.kinect.res.width * gfx.conf.kinect.res.height);
     }
     update(gfx) {
         // drift particles towards their destinations 10% at a time

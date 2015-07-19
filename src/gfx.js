@@ -1,13 +1,14 @@
 import THREE from 'threejs';
 import input from 'input';
 import conf from 'conf';
-import { invoke } from 'lodash';
+import { without, keys, invoke } from 'lodash';
 
 let scene;
 let camera;
 let renderer;
 
 let gfx = {
+    conf,
     reset : function reset() {
         // remove any pre-existing canvases
         invoke(document.querySelectorAll('canvas'), 'remove');
@@ -16,11 +17,14 @@ let gfx = {
         renderer = new THREE.WebGLRenderer();
         renderer.setClearColor( 0x000000, 1 );
         renderer.setSize( window.innerWidth, window.innerHeight );
-        this.gl = { scene, camera, renderer };
         document.body.appendChild( renderer.domElement );
+
+        this.gl = { scene, camera, renderer };
+
         this.update();
+
         // TODO: the gl property is being completely cleared.  should we
-        // totally wipe other properties too?
+        // totally wipe other gfx[properties] too?
     },
     update : function update() {
         this.depth = input.read();

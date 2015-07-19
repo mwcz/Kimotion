@@ -1,5 +1,4 @@
 /* global prompt */
-
 import { map, partial, noop } from 'lodash';
 import conf from 'conf';
 

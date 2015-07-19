@@ -1,12 +1,12 @@
 import THREE from 'threejs';
 import effect from 'effect';
-import conf from 'conf';
 import * as frag from 'text!./shaders/particle.frag';
 import * as vert from 'text!./shaders/vertex.vert';
 
 let scene;
 let camera;
 let renderer;
+let gfx;
 
 let p = {
     system    : undefined,
@@ -16,8 +16,18 @@ let p = {
     colors    : undefined
 };
 
+let myconf = {
+    camera: {
+        origin: { x: 320, y: 240, z: 128 },
+        x: 320,
+        y: 240,
+        z: -175
+    }
+};
+
 export default class particles {
-    constructor(gfx) {
+    constructor(_gfx) {
+        gfx = _gfx;
         scene    = gfx.gl.scene;
         camera   = gfx.gl.camera;
 
@@ -103,10 +113,10 @@ function get_initial_particle_positions(count) {
 }
 
 function position_camera() {
-    camera.position.x = conf.camera.x;
-    camera.position.y = conf.camera.y;
-    camera.position.z = conf.camera.z;
-    camera.lookAt(conf.camera.origin);
+    camera.position.x = myconf.camera.x;
+    camera.position.y = myconf.camera.y;
+    camera.position.z = myconf.camera.z;
+    camera.lookAt(myconf.camera.origin);
 }
 
 
@@ -151,7 +161,7 @@ function set_far_color(c) {
 
 function set_camera(axis, v) {
     camera.position[axis] = v;
-    camera.lookAt(conf.camera.origin);
+    camera.lookAt(myconf.camera.origin);
 }
 
 function set_camera_x(v) { set_camera('x', v); }

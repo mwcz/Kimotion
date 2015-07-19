@@ -3,7 +3,7 @@ import * as mods from 'mods';
 import gfx from 'gfx';
 
 // choose a random mod to be the starting one
-let modnames = without(keys(mods), '__esModule');
+let modnames = names();
 let modcount = size(modnames);
 let i        = sample(range(modcount));
 let curmod;
@@ -17,8 +17,13 @@ function next() {
 function set(modname) {
     i = indexOf(modnames, modname);
     curmod.destroy(gfx);
+    gfx.reset();
     console.log(`trying to set mod to ${modname}`);
     curmod = new mods[modname](gfx);
+}
+
+function names() {
+    return without(keys(mods), '__esModule');
 }
 
 function get() {
@@ -40,6 +45,7 @@ export {
     next,
     get,
     set,
+    names,
     update,
     create
 };
