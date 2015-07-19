@@ -1,5 +1,5 @@
 import * as mods from 'mods';
-import * as conf_panel from 'conf-panel';
+// import * as conf_panel from 'conf-panel';
 import * as modctrl from 'modctrl';
 import conf from 'conf';
 import gfx from 'gfx';
@@ -9,7 +9,7 @@ import gfx from 'gfx';
 
 
 function create() {
-    conf_panel.init(conf);
+    // conf_panel.init(conf);
     modctrl.create(gfx);
     // init whatever renderer we're using
     update();

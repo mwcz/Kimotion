@@ -1,5 +1,4 @@
 import * as dat from 'dat-gui';
-import * as renderer from 'renderer';
 import * as modctrl from 'modctrl';
 import input from 'input';
 
