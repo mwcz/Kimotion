@@ -145,6 +145,7 @@ module.exports = function(grunt) {
             all: [
                 'src/**/*.js',
                 '!src/lib/**/*',
+                '!src/mods/**/*', // don't subject mod authors to the crushing burden of perfection
             ],
         },
 
