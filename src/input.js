@@ -8,7 +8,7 @@ const _ = partial.placeholder;
 const MAX_DEPTH = 2047;
 const MIN_DEPTH = 0;
 
-var depth = new Int16Array(conf.kinect.res.width * conf.kinect.res.height);
+var depth = new Uint16Array(conf.kinect.res.width * conf.kinect.res.height);
 var ws;
 
 function ask_for_ws_server() {
@@ -29,7 +29,7 @@ function create_ws_connection(ws_url) {
 }
 
 function handle_open() {
-    console.log(`WebSocket connection to ${this.URL} established.`);
+    console.log(`WebSocket connection to ${this.url} established.`);
 }
 
 function handle_message( ws_message ) {
@@ -43,17 +43,17 @@ function send_message( app_message ) {
 }
 
 function handle_error(event) {
-    console.log(`WebSocket error during connection to ${this.URL}`);
+    console.log(`WebSocket error during connection to ${this.url}`);
 }
 
 function handle_close() {
-    console.log(`WebSocket connection to ${this.URL} closed.` );
+    console.log(`WebSocket connection to ${this.url} closed.` );
 }
 
 ws = create_ws_connection(ask_for_ws_server());
 
 function read() {
-    return { depth };
+    return depth;
 }
 
 var exports = {

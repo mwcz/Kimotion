@@ -1,29 +1,45 @@
-import * as mods from 'mods/all';
+import { indexOf, without, keys, sample, range, size } from 'lodash';
+import * as mods from 'mods';
+import gfx from 'gfx';
 
-let mod = mods.sandstorm;
+// choose a random mod to be the starting one
+let modnames = without(keys(mods), '__esModule');
+let modcount = size(modnames);
+let i        = sample(range(modcount));
+let curmod;
 
-function set(name) {
-    console.log(`trying to set mod to ${name}`);
-    mod = mods[name] || mods.default;
-    mod.create();
+function next() {
+    i += 1;
+    i %= modcount;
+    set(modnames[i]);
+}
 
-    // TODO if name is not 'default', destroy conf panel if name is default,
-    // show it.
+function set(modname) {
+    i = indexOf(modnames, modname);
+    curmod.destroy(gfx);
+    console.log(`trying to set mod to ${modname}`);
+    curmod = new mods[modname](gfx);
 }
 
 function get() {
-    return mod;
+    return curmod;
 }
-function update(input) {
-    mod.update(input);
+
+function update(gfx) {
+    curmod.update(gfx);
+
+    modnames = without(keys(mods), '__esModule');
+    modcount = size(modnames); // probably need this for DIY station mods
 }
-function create() {
-    mod.create();
+
+function create(gfx) {
+    curmod = new mods[modnames[i]](gfx);
 }
 
 export {
-    set,
+    next,
     get,
+    set,
     update,
     create
 };

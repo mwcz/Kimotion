@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+# must LD_PRELOAD the fakenect symbols, see libfreenect build instructions for
+# creating these
+fakenect_lib="/home/mwc/workspace/libfreenect/build/lib/fakenect/libfreenect.so"
+freenect_lib="/home/mwc/workspace/libfreenect/build/lib/libfreenect.so"
+
+# the path to the fakenect recording to replay
+recording="/home/mwc/Downloads/legos0"
