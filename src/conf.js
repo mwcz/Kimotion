@@ -10,7 +10,7 @@ let conf = {
     kinect: {
         res: { width: 640, height: 480 }
     },
-    gui         : new dat.GUI()
+    gui : new dat.GUI()
 };
 
 conf.gui.add(conf, 'mods', conf.mods)

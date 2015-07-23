@@ -2,9 +2,16 @@ import mod from 'mod';
 import * as frag from 'text!./shaders/particle.frag';
 import * as vert from 'text!./shaders/vertex.vert';
 
+var params = {x:1};
+
 export default class sandstorm extends mod {
     constructor(gfx) {
         super(gfx);
+
+        gfx.conf.gui.add(params, 'x', 0, 10)
+            .name('Sandstorm x')
+            .onChange(function(value) { console.log(`changed x to ${value}`); });
+
         this.author = 'Michael Clayton';
         this.title = 'Sandstorm';
         this.add_effect('particles');
