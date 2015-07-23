@@ -26,6 +26,7 @@ let gfx = {
         // TODO: the gl property is being completely cleared.  should we
         // totally wipe other gfx[properties] too?
     },
+    depth : new Uint16Array(conf.kinect.res.width * conf.kinect.res.height),
     update : function update() {
         this.depth = input.read();
         renderer.render(scene, camera);
