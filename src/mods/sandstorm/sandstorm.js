@@ -8,6 +8,8 @@ export default class sandstorm extends mod {
         this.author = 'Michael Clayton';
         this.title = 'Sandstorm';
         this.add_effect('particles');
+        gfx.gl.particles.material.vertexShader = vert;
+        gfx.gl.particles.material.fragmentShader = frag;
         // this.prev_depth = gfx.depth; // or... this.prev_depth = new Uint16Array(gfx.conf.kinect.res.width * gfx.conf.kinect.res.height);
         this.prev_depth = gfx.depth;
     }
