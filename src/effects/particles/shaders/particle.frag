@@ -28,7 +28,7 @@ void main() {
     float fs = lerp(z, MID_Z, FAR_Z);
 
     if ( z <= MID_Z )
-        color = ( 1.0-ns ) * near_color + ns;
+        color = ( 1.0-ns ) * near_color + ns * mid_color;
     else
         color = ( 1.0-fs ) * mid_color + fs * far_color;
 
