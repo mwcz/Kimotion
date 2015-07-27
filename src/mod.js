@@ -1,5 +1,5 @@
 import * as effects from 'effects';
-import { invoke } from 'lodash';
+import { invoke, each } from 'lodash';
 
 export default class mod {
     constructor(gfx) {
@@ -10,11 +10,11 @@ export default class mod {
     }
     update(gfx) {
         // update each effect in this.effects
-        invoke(this.effects, 'update', gfx); // TODO: decide how to do this
+        invoke(this.effects, 'update', gfx);
     }
     destroy(gfx) {
-        // remove any datgui's that were created for this mod
-        // document.querySelector('.dg').remove();
+        // remove any datgui controllers that were created for this mod
+        each(gfx.conf.gui.__controllers, gfx.conf.gui.remove, gfx.conf.gui);
     }
     add_effect(effect_name) {
         let new_effect = new effects[effect_name](this.gfx);

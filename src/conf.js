@@ -9,17 +9,29 @@ let conf = {
     kinect_tilt : 10,
     kinect: {
         res: { width: 640, height: 480 }
-    },
-    gui : new dat.GUI()
+    }
 };
 
-conf.gui.add(conf, 'mods', conf.mods)
+let gui = new dat.GUI();
+
+let folder = gui.addFolder('Kimotion Global Settings');
+
+folder.add(conf, 'mods', conf.mods)
     .name('Mods')
     .onChange(modctrl.set);
 
-conf.gui.add(conf, 'kinect_tilt', 0, 30)
+folder.add(conf, 'kinect_tilt', 0, 30)
     .name('Kinect Tilt')
     .onChange(input.send_message);
+
+folder.open();
+
+let mod_folder = gui.addFolder('Current Mod Settings');
+
+mod_folder.open();
+
+// expose the mod config folder to mod authors
+conf.gui = mod_folder;
 
 export default conf;
 
