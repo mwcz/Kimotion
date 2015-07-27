@@ -25,6 +25,12 @@ let myconf = {
     }
 };
 
+let default_colors = {
+    'near_color' : '#4C2A3B',
+    'mid_color'  : '#36C6A2',
+    'far_color'  : '#EFE2BF'
+};
+
 export default class particles {
     constructor(_gfx) {
         gfx = _gfx;
@@ -32,11 +38,16 @@ export default class particles {
         camera   = gfx.gl.camera;
 
         // set the background color
-        gfx.gl.renderer.setClearColor( 0xEFE2BF );
+        gfx.gl.renderer.setClearColor( new THREE.Color(default_colors.far_color) );
 
         // attach this effect's stuff to gfx.gl so other mods can twist it to
         // their whims
         gfx.gl.particles = p;
+
+        // add config values
+        gfx.conf.gui.addColor(default_colors, 'near_color').onChange(set_near_color);
+        gfx.conf.gui.addColor(default_colors, 'mid_color').onChange(set_mid_color);
+        gfx.conf.gui.addColor(default_colors, 'far_color').onChange(set_far_color);
 
         add_particle_system();
         position_camera();
@@ -148,15 +159,22 @@ function NaNPositionError(message) {
 NaNPositionError.prototype = Error.prototype;
 
 function set_color(prop, c) {
-    p.material.uniforms[prop].value = new THREE.Color(c.r/255, c.g/255, c.b/255);
+    p.material.uniforms[prop].value = new THREE.Color(c);
 }
 
 function set_near_color(c) {
     set_color('near_color', c);
 }
 
+function set_mid_color(c) {
+    set_color('mid_color', c);
+}
+
 function set_far_color(c) {
     set_color('far_color', c);
+
+    // update the canvas background to match the far color
+    gfx.gl.renderer.setClearColor( default_colors.far_color );
 }
 
 function set_camera(axis, v) {

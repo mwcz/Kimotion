@@ -14,7 +14,7 @@ let conf = {
 
 let gui = new dat.GUI();
 
-let folder = gui.addFolder('Kimotion Global Settings');
+let folder = gui.addFolder('Kimotion global settings');
 
 folder.add(conf, 'mods', conf.mods)
     .name('Mods')
@@ -26,7 +26,7 @@ folder.add(conf, 'kinect_tilt', 0, 30)
 
 folder.open();
 
-let mod_folder = gui.addFolder('Current Mod Settings');
+let mod_folder = gui.addFolder('Mod settings');
 
 mod_folder.open();
 
