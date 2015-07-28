@@ -14,7 +14,9 @@ export default class mod {
     }
     destroy(gfx) {
         // remove any datgui controllers that were created for this mod
-        each(gfx.conf.gui.__controllers, gfx.conf.gui.remove, gfx.conf.gui);
+        for (let i = gfx.conf.gui.__controllers.length - 1; i >= 0; i -= 1) {
+            gfx.conf.gui.remove(gfx.conf.gui.__controllers[i]);
+        }
     }
     add_effect(effect_name) {
         let new_effect = new effects[effect_name](this.gfx);
