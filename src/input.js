@@ -1,6 +1,6 @@
 /* global prompt */
 import { map, partial, noop } from 'lodash';
-import conf from 'conf';
+import { conf } from 'global_conf';
 
 const _ = partial.placeholder;
 
@@ -59,5 +59,9 @@ var exports = {
     read,
     send_message
 };
+
+conf.gui.add(conf, 'kinect_tilt', 0, 30)
+    .name('Kinect Tilt')
+    .onChange(send_message);
 
 export default exports;

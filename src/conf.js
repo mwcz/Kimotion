@@ -1,37 +1,12 @@
 import * as dat from 'dat-gui';
-import * as modctrl from 'modctrl';
-import * as mods from 'mods';
-import input from 'input';
-import { keys, without } from 'lodash';
-
-let conf = {
-    mods : without(keys(mods), '__esModule'),
-    kinect_tilt : 10,
-    kinect: {
-        res: { width: 640, height: 480 }
-    }
-};
-
-let gui = new dat.GUI();
-
-let folder = gui.addFolder('Kimotion global settings');
-
-folder.add(conf, 'mods', conf.mods)
-    .name('Mods')
-    .onChange(modctrl.set);
-
-folder.add(conf, 'kinect_tilt', 0, 30)
-    .name('Kinect Tilt')
-    .onChange(input.send_message);
-
-folder.open();
+import { gui } from 'global_conf';
 
 let mod_folder = gui.addFolder('Mod settings');
 
 mod_folder.open();
 
 // expose the mod config folder to mod authors
-conf.gui = mod_folder;
+let conf = {gui: mod_folder};
 
 export default conf;
 
