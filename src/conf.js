@@ -1,12 +1,27 @@
 import * as dat from 'dat-gui';
-import { gui } from 'global_conf';
+
+let gui = new dat.GUI();
+
+let conf = {
+    mods : [],
+    kinect_tilt : 10,
+    kinect: {
+        res: { width: 640, height: 480 }
+    }
+};
+
+let folder = gui.addFolder('Kimotion global settings');
+
+folder.open();
 
 let mod_folder = gui.addFolder('Mod settings');
 
 mod_folder.open();
 
+// expose the global settings folder
+conf.global = folder;
 // expose the mod config folder to mod authors
-let conf = {gui: mod_folder};
+conf.gui = mod_folder;
 
 export default conf;
 

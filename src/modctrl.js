@@ -1,6 +1,6 @@
 import { indexOf, without, keys, sample, range, size } from 'lodash';
 import * as mods from 'mods';
-import { conf } from 'global_conf';
+import conf from 'conf';
 
 // choose a random mod to be the starting one
 let modnames = names();
@@ -43,7 +43,7 @@ function create(_gfx) {
     curmod = new mods[modnames[i]](gfx);
 }
 
-conf.gui.add(conf, 'mods', without(keys(mods), '__esModule'))
+conf.global.add(conf, 'mods', without(keys(mods), '__esModule'))
     .name('Mods')
     .onChange(set);
 
