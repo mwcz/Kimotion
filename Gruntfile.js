@@ -10,7 +10,7 @@ module.exports = function(grunt) {
     require('load-grunt-tasks')(grunt);
 
     // Show timing of each grunt task at the end of build
-    // require('time-grunt')(grunt);
+    require('time-grunt')(grunt);
 
     // Project configuration.
     grunt.initConfig({
@@ -88,7 +88,7 @@ module.exports = function(grunt) {
                 ],
                 tasks: ['build:dev'],
                 options: {
-                    // interrupt: true,
+                    interrupt: true,
                     atBegin: true,
                 },
             },
@@ -192,10 +192,8 @@ module.exports = function(grunt) {
     grunt.registerTask('build', function (target) {
         var t = [];
         t.push('expall');
-        // t.push('lint');
-        // t.push('bowerRequirejs');
         t.push('sync');
-        t.push('babel');
+        t.push('newer:babel:dist');
         if (target !== 'dev') {
             grunt.config.set('requirejs.compile.options.optimize', 'uglify2');
             t.push('requirejs');
