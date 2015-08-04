@@ -2,14 +2,15 @@ import mod from 'mod';
 import * as frag from 'text!./shaders/particle.frag';
 import * as vert from 'text!./shaders/vertex.vert';
 
-var params = {x:1};
+var params = {storminess:0.5};
 
 export default class sandstorm extends mod {
     constructor(gfx) {
         super(gfx);
 
-        gfx.conf.gui.add(params, 'x', 0, 10)
-            .name('Sandstorm x')
+        gfx.conf.gui.add(params, 'storminess', 0, 0.99)
+            .step(0.01)
+            .name('storminess')
             .onChange(function(value) { console.log(`changed x to ${value}`); });
 
         this.author = 'Michael Clayton';
@@ -22,7 +23,7 @@ export default class sandstorm extends mod {
     }
     update(gfx) {
         // drift particles towards their destinations 10% at a time
-        avg(gfx.depth, this.prev_depth, 0.1);
+        avg(gfx.depth, this.prev_depth, 1 - params.storminess);
         this.prev_depth = gfx.depth;
         super.update(gfx);
     }
