@@ -166,7 +166,10 @@ module.exports = function(grunt) {
                 files: [{
                     cwd: 'src',
                     src: [
-                        '**'
+                        '**/*',
+                        '!**/*.js',
+                        'require.config.js',
+                        'lib/**/*',
                     ],
                     dest: 'dist'
                 }],
