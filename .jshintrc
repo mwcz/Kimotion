@@ -6,7 +6,6 @@
     },
     "browser": true,
     "esnext": true,
-    "curly": true,
     "eqeqeq": true,
     "es3": false,
     "freeze": true,
