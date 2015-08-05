@@ -35,7 +35,7 @@ void main() {
     if ( z > MAX_Z )
         alpha = 0.0;
 
-    gl_FragColor = vec4(color, alpha);
+    gl_FragColor = vec4(color, alpha) * texture2D( texture, gl_PointCoord );
 
     /* Interpolate from near color to far color. */
 
