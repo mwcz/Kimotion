@@ -26,6 +26,8 @@ export default class cube_effect {
         gfx.gl.camera.lookAt(cube.position);
         gfx.gl.camera.position.z = 2;
 
+        gfx.gl.cube = cube;
+
         this.prev_dsum = 0;
     }
     update(gfx) {
