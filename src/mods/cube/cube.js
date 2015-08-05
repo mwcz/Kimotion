@@ -7,10 +7,10 @@ export default class particles extends mod {
         this.title = 'Cube';
         this.add_effect('cube');
 
-        for ( let i = 0; i < gfx.gl.geometry.faces.length; i += 2 ) {
+        for ( let i = 0; i < gfx.gl.cube.geometry.faces.length; i += 2 ) {
             let hex = Math.random() * 0xffffff;
-            gfx.gl.geometry.faces[ i ].color.setHex( hex );
-            gfx.gl.geometry.faces[ i + 1 ].color.setHex( hex );
+            gfx.gl.cube.geometry.faces[ i ].color.setHex( hex );
+            gfx.gl.cube.geometry.faces[ i + 1 ].color.setHex( hex );
         }
 
         this.last_depth = gfx.depth;
