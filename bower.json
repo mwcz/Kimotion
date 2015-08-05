@@ -21,13 +21,14 @@
   ],
   "dependencies": {
     "threejs": "*",
-    "requirejs": "~2.1.16",
+    "requirejs": "~2.1.20",
     "requirejs-text": "~2.0.14",
     "lodash-amd": "~3.5.0",
     "tweenjs": "*",
     "dat-gui": "~0.5.1"
   },
   "devDependencies": {
-    "r.js": "~2.1.16"
+    "r.js": "~2.1.20",
+    "requirejs": "~2.1.20"
   }
 }
