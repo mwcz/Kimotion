@@ -1,6 +1,6 @@
 import mod from 'mod';
 
-export default class particles extends mod {
+export default class torus extends mod {
     constructor(gfx) {
         super(gfx);
         this.author = 'Michael Clayton';
@@ -24,6 +24,7 @@ export default class particles extends mod {
         }
         this.rotation = (1-scale) * this.rotation + scale * dsum/1e8;
         gfx.gl.torus.rotation.y += this.rotation;
+        gfx.gl.torus.rotation.x += this.rotation;
         this.last_depth = gfx.depth;
 
         super.update(gfx);
