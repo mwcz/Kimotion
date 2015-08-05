@@ -196,7 +196,7 @@ module.exports = function(grunt) {
         var t = [];
         t.push('expall');
         t.push('sync');
-        t.push('newer:babel:dist');
+        t.push('babel:dist');
         if (target !== 'dev') {
             grunt.config.set('requirejs.compile.options.optimize', 'uglify2');
             t.push('requirejs');
