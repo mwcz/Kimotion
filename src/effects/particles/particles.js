@@ -13,7 +13,8 @@ let p = {
     material  : undefined,
     geometry  : undefined,
     positions : undefined,
-    colors    : undefined
+    colors    : undefined,
+    size      : 2,
 };
 
 let myconf = {
@@ -49,6 +50,8 @@ export default class particles {
         gfx.conf.gui.addColor(default_colors, 'mid_color').onChange(set_mid_color);
         gfx.conf.gui.addColor(default_colors, 'far_color').onChange(set_far_color);
 
+        gfx.conf.gui.add(p, 'size', 1, 64).step(1).onChange(set_particle_size);
+
         add_particle_system();
         position_camera();
     }
@@ -63,8 +66,8 @@ function get_uniforms() {
         near_color    : { type : 'c',  value : new THREE.Color( 0x4C2A3B ) },
         mid_color     : { type : 'c',  value : new THREE.Color( 0x36C6A2 ) },
         far_color     : { type : 'c',  value : new THREE.Color( 0xEFE2BF ) },
-        particle_size : { type : 'f',  value : 2.0 },
-        texture       : { type : 't',  value : THREE.ImageUtils.loadTexture('images/glow.png') },
+        particle_size : { type : 'f',  value : p.size },
+        texture       : { type : 't',  value : THREE.ImageUtils.loadTexture('images/circle.png') },
         // mouse     : { type : 'v2', value : new THREE.Vector2() },
     };
 }
@@ -89,9 +92,9 @@ function add_particle_system() {
         attributes     : get_attributes(),
         vertexShader   : vert,
         fragmentShader : frag,
-        blending       : THREE.NoBlending,
+        blending       : THREE.NormalBlending,
         depthTest      : false,
-        transparent    : false,
+        transparent    : true,
     });
     add_particle_system_attributes( p.geometry, 640*480 );
     p.system = new THREE.PointCloud( p.geometry, p.material );
