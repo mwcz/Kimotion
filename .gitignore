@@ -32,3 +32,6 @@ dist/
 
 # don't track individuals' fakenect params
 server/fakenect_params.sh
+
+# no pyc
+!.pyc
