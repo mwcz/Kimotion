@@ -25,7 +25,8 @@
     "requirejs-text": "~2.0.14",
     "lodash-amd": "~3.5.0",
     "tweenjs": "*",
-    "dat-gui": "~0.5.1"
+    "dat-gui": "~0.5.1",
+    "tinycolor": "git@github.com:mwcz/TinyColor.git#master"
   },
   "devDependencies": {
     "r.js": "~2.1.20",

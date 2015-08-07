@@ -15,6 +15,9 @@ let p = {
     positions : undefined,
     colors    : undefined,
     size      : 2,
+    set_near_color,
+    set_far_color,
+    set_mid_color
 };
 
 let myconf = {
@@ -161,23 +164,27 @@ function NaNPositionError(message) {
 }
 NaNPositionError.prototype = Error.prototype;
 
-function set_color(prop, c) {
-    p.material.uniforms[prop].value = new THREE.Color(c);
+function set_color(prop, ...c) {
+    let new_color = new THREE.Color(...c);
+    p.material.uniforms[prop].value = new_color;
+    default_colors[prop] = new_color.getHexString();
+
+    if (prop === 'far_color') {
+        // update the canvas background to match the far color
+        gfx.gl.renderer.setClearColor(new_color);
+    }
 }
 
-function set_near_color(c) {
-    set_color('near_color', c);
+function set_near_color(...c) {
+    set_color('near_color', ...c);
 }
 
-function set_mid_color(c) {
-    set_color('mid_color', c);
+function set_mid_color(...c) {
+    set_color('mid_color', ...c);
 }
 
-function set_far_color(c) {
-    set_color('far_color', c);
-
-    // update the canvas background to match the far color
-    gfx.gl.renderer.setClearColor( default_colors.far_color );
+function set_far_color(...c) {
+    set_color('far_color', ...c);
 }
 
 function set_camera(axis, v) {

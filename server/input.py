@@ -1,7 +1,13 @@
 import freenect
 from threading import Thread
+import sys
+import json
+import numpy as np
+import scipy.ndimage as ndimage
+import scipy.ndimage.filters as filters
 
 last_tilt = 0
+max_depth = 1200
 
 class KinectLoop(Thread):
 
@@ -31,12 +37,22 @@ def createdepthhandler(server):
     def handledepth(dev, depth, timestamp):
         """Flatten the 2D depth array into a 1D array, convert it into a
         bytearray, and send it to the client."""
+
+        # truncate at max_depth
+        depth[np.where(depth > max_depth)] = max_depth
+
+        # # gaussian blur the depth values
+        # depth = filters.gaussian_filter(
+        #     depth,
+        #     sigma=3,
+        #     mode='nearest'
+        # )
+
         array1d = depth.flatten()
         barray = bytearray(array1d)
         server.sendMessage(barray)
 
     return handledepth
-
 
 def startloop(server):
     freenect.runloop(

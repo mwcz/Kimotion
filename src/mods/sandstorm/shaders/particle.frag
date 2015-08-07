@@ -24,16 +24,18 @@ float lerp(float n, float low, float high) {
 void main() {
 
     float alpha = 1.0;
-    float ns = lerp(z, NEAR_Z, MID_Z);
-    float fs = lerp(z, MID_Z, FAR_Z);
 
-    if ( z <= MID_Z )
+    if ( z <= MID_Z ) {
+        float ns = lerp(z, NEAR_Z, MID_Z);
         color = ( 1.0-ns ) * near_color + ns * mid_color;
-    else
+    }
+    else { // z must be between MID_Z and FAR_Z
+        float fs = lerp(z, MID_Z, FAR_Z);
         color = ( 1.0-fs ) * mid_color + fs * far_color;
+    }
 
     if ( z > MAX_Z )
-        alpha = 0.0;
+        alpha = 1.0;
 
     gl_FragColor = vec4(color, alpha) * texture2D( texture, gl_PointCoord );
 

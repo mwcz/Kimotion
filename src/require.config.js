@@ -13,7 +13,8 @@ requirejs.config({
         'lodash-amd': 'lib/lodash-amd/compat/main',
         tweenjs: 'lib/tweenjs/gulpfile',
         tween: 'lib/tweenjs/src/Tween',
-        'dat-gui': 'lib/dat-gui/build/dat.gui'
+        'dat-gui': 'lib/dat-gui/build/dat.gui',
+        tinycolor: 'lib/tinycolor/tinycolor'
     },
     shim: {
         threejs: {
