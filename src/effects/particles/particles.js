@@ -49,9 +49,9 @@ export default class particles {
         gfx.gl.particles = p;
 
         // add config values
-        gfx.conf.gui.addColor(default_colors, 'near_color').onChange(set_near_color);
-        gfx.conf.gui.addColor(default_colors, 'mid_color').onChange(set_mid_color);
-        gfx.conf.gui.addColor(default_colors, 'far_color').onChange(set_far_color);
+        gfx.conf.gui.addColor(default_colors, 'near_color').listen().onChange(set_near_color);
+        gfx.conf.gui.addColor(default_colors, 'mid_color').listen().onChange(set_mid_color);
+        gfx.conf.gui.addColor(default_colors, 'far_color').listen().onChange(set_far_color);
 
         gfx.conf.gui.add(p, 'size', 1, 64).step(1).onChange(set_particle_size);
 
@@ -66,9 +66,9 @@ export default class particles {
 
 function get_uniforms() {
     return {
-        near_color    : { type : 'c',  value : new THREE.Color( 0x4C2A3B ) },
-        mid_color     : { type : 'c',  value : new THREE.Color( 0x36C6A2 ) },
-        far_color     : { type : 'c',  value : new THREE.Color( 0xEFE2BF ) },
+        near_color    : { type : 'c',  value : new THREE.Color( default_colors.near_color ) },
+        mid_color     : { type : 'c',  value : new THREE.Color( default_colors.mid_color ) },
+        far_color     : { type : 'c',  value : new THREE.Color( default_colors.far_color ) },
         particle_size : { type : 'f',  value : p.size },
         texture       : { type : 't',  value : THREE.ImageUtils.loadTexture('images/circle.png') },
         // mouse     : { type : 'v2', value : new THREE.Vector2() },
@@ -167,7 +167,7 @@ NaNPositionError.prototype = Error.prototype;
 function set_color(prop, ...c) {
     let new_color = new THREE.Color(...c);
     p.material.uniforms[prop].value = new_color;
-    default_colors[prop] = new_color.getHexString();
+    default_colors[prop] = '#' + new_color.getHexString();
 
     if (prop === 'far_color') {
         // update the canvas background to match the far color

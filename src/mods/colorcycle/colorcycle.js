@@ -27,9 +27,9 @@ export default class sandstorm extends mod {
         let far_color = color.fromRatio(gfx.gl.particles.material.uniforms.far_color.value);
 
         // spin hues
-        near_color = near_color.spin(0.8);
+        near_color = near_color.spin(0.6);
         mid_color  = mid_color.spin(0.6);
-        far_color  = far_color.spin(0.4);
+        far_color  = far_color.spin(0.6);
 
         // set new colors
         gfx.gl.particles.set_near_color(
