@@ -4,21 +4,19 @@ import * as vert from 'text!./shaders/vertex.vert';
 
 var params = {storminess:0.5};
 
-export default class sandstorm extends mod {
+export default class storm extends mod {
     constructor(gfx) {
         super(gfx);
 
         gfx.conf.gui.add(params, 'storminess', 0, 0.99)
             .step(0.01)
-            .name('storminess')
-            .onChange(function(value) { console.log(`changed x to ${value}`); });
+            .name('storminess');
 
         this.author = 'Michael Clayton';
-        this.title = 'Sandstorm';
+        this.title = 'Storm';
         this.add_effect('particles');
         gfx.gl.particles.material.vertexShader = vert;
         gfx.gl.particles.material.fragmentShader = frag;
-        // this.prev_depth = gfx.depth; // or... this.prev_depth = new Uint16Array(gfx.conf.kinect.res.width * gfx.conf.kinect.res.height);
         this.prev_depth = gfx.depth;
     }
     update(gfx) {

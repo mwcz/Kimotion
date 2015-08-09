@@ -25,19 +25,43 @@ void main() {
 
     float alpha = 1.0;
 
-    if ( pos.z <= MID_Z ) {
-        float ns = lerp(pos.z, NEAR_Z, MID_Z);
+    if ( z <= MID_Z ) {
+        float ns = lerp(z, NEAR_Z, MID_Z);
         color = ( 1.0-ns ) * near_color + ns * mid_color;
     }
     else { // z must be between MID_Z and FAR_Z
-        float fs = lerp(pos.z, MID_Z, FAR_Z);
+        float fs = lerp(z, MID_Z, FAR_Z);
         color = ( 1.0-fs ) * mid_color + fs * far_color;
     }
 
-    if ( pos.z > MAX_Z )
+    if ( z > MAX_Z )
         alpha = 1.0;
 
-    gl_FragColor = vec4(color, alpha);
+    gl_FragColor = vec4(color, alpha) * texture2D( texture, gl_PointCoord );
+
+    /* Interpolate from near color to far color. */
+
+    /* float near_factor  = min((pos.z - MIN_Z) / (MAX_Z - MIN_Z) - DEPTH_COLOR_OFFSET, 1.0); */
+    /* float far_factor = 1.0 - near_factor; */
+
+    /* cycler = vec4(near_factor * near_color + far_factor * far_color, 1.0); */
+
+    /* cycler.a = pos.z; */
+
+    /* if (pos.z > MAX_Z) { */
+    /*     cycler = vec4(1.0, 1.0, 1.0, 0.0); */
+    /* } */
+
+    /* Cycle through colors. */
+
+    /* v = vColor * PI2; */
+    /* cycler = vec3(v*1.0/3.0, v*2.0/3.0, v); */
+    /* cycler = cos(cycler); */
+    /* cycler += 1.0; */
+    /* cycler /= 2.0; */
+
+    /* gl_FragColor = cycler * texture2D( texture, gl_PointCoord ); */
+    /* gl_FragColor = cycler; //cycler * texture2D( texture, gl_PointCoord ); */
 
 }
 
