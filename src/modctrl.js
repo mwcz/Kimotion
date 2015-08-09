@@ -4,7 +4,7 @@ import * as mods from 'mods';
 // choose a random mod to be the starting one
 let modnames = names();
 let modcount = size(modnames);
-let i        = sample(range(modcount));
+let i        = 0;
 let curmod;
 let gfx;
 
@@ -18,7 +18,7 @@ function set(modname) {
     i = indexOf(modnames, modname);
     curmod.destroy(gfx);
     gfx.reset();
-    console.log(`trying to set mod to ${modname}`);
+    console.log(`Activating mod: ${modname}`);
     create(gfx);
 }
 
