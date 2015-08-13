@@ -1,3 +1,4 @@
+export { default as aaaa } from './mods/aaaa/aaaa';
 export { default as colorcycle } from './mods/colorcycle/colorcycle';
 export { default as cube } from './mods/cube/cube';
 export { default as particles } from './mods/particles/particles';
