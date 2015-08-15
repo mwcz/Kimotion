@@ -1,5 +1,7 @@
 import mod from 'mod';
 
+const MAX_DEPTH_SUM = 337920000;
+
 export default class particles extends mod {
     constructor(gfx) {
         super(gfx);
@@ -13,29 +15,39 @@ export default class particles extends mod {
             gfx.gl.cube.geometry.faces[ i + 1 ].color.setHex( hex );
         }
 
-        this.last_depth = gfx.depth;
-        this.scale = 1;
+        this.spin = 0;
+
     }
     update(gfx) {
 
-        let scale = 0.1; // new depth gets this much weight
-        let dsum = 0;
+        /**
+         * positive rotation.x is down
+         * negative rotation.x is up
+         * positive rotation.y is right
+         * negative rotation.y is left
+         */
 
-        for (let i = 0; i < gfx.depth.length; i += 1) {
-            dsum += Math.abs(this.last_depth[i] - gfx.depth[i]);
+        let left_depth = 0;
+        let right_depth = 0;
+
+        for (let i = 0; i < gfx.depth.length; i += gfx.conf.kinect.res.width) {
+            // add up the left half of the depth values
+            for (let j = 0; j < gfx.conf.kinect.res.width / 2; ++j) {
+                left_depth += gfx.depth[j];
+            }
+            // add up the right half of the depth values
+            for (let j = gfx.conf.kinect.res.width / 2; j < gfx.conf.kinect.res.width; ++j) {
+                right_depth += gfx.depth[j];
+            }
         }
 
-        this.scale = (1-scale) * this.scale + scale * Math.log(Math.log(dsum+1)+1);
+        // scale down the depths to usable levels
+        left_depth /= MAX_DEPTH_SUM*2;
+        right_depth /= MAX_DEPTH_SUM*2;
 
-        gfx.gl.cube.rotation.x += 0.001;
-        gfx.gl.cube.rotation.y += 0.01;
-        gfx.gl.cube.rotation.z += 0.0001;
+        this.spin = 0.99 * this.spin + 0.01 * (right_depth - left_depth);
 
-        gfx.gl.cube.scale.setX(this.scale);
-        gfx.gl.cube.scale.setY(this.scale);
-        gfx.gl.cube.scale.setZ(this.scale);
-
-        this.last_depth = gfx.depth;
+        gfx.gl.cube.rotation.y += this.spin;
 
         super.update(gfx);
 
