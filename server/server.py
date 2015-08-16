@@ -2,10 +2,11 @@
 # encoding: utf-8
 
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
-import input
+from input import KinectFactory
 import logging
 import signal
 import sys
+import uuid
 
 from SimpleWebSocketServer import WebSocket, SimpleWebSocketServer
 
@@ -20,6 +21,7 @@ def get_args():
 
 def serve():
 
+    '''
     class InputServer(WebSocket):
         tilt = 0
         def __init__(self, *args, **kwargs):
@@ -37,10 +39,34 @@ def serve():
 
         def handleMessage(self):
             self.tilt = int(float(self.data))
+    '''
+    class InputServer(WebSocket):
 
+        def __init__(self, *args, **kwargs):
+            super(InputServer, self).__init__(*args, **kwargs)
+            self.kinect = None
+            self.oid = None
+
+        def handleConnected(self):
+            print self.address, 'connected'
+            self.kinect = KinectFactory.create_kinect()
+            self.oid = uuid.uuid1()
+            self.kinect.add_observer(self.oid, self.send_depth)
+
+        def handleClose(self):
+            self.kinect.remove_observer(self.oid)
+            print self.address, 'closed'
+
+        def handleMessage(self):
+            degs = int(float(self.data))
+            self.kinect.set_tilt(degs)
+
+        def send_depth(self, depth):
+            self.sendMessage(depth)
 
     def close_sig_handler(signum, frame):
         server.close()
+        KinectFactory.kill()
         sys.exit()
 
     signal.signal(signal.SIGINT, close_sig_handler)
@@ -49,7 +75,7 @@ def serve():
 
 
 def main():
-    print('starting server')
+    print 'starting server'
     args = get_args()
     loglevel = logging.DEBUG if args.debug else logging.WARNING
     logging.basicConfig(level=loglevel, format='%(levelname)s|%(asctime)s|%(module)s|%(funcName)s:  %(message)s')
