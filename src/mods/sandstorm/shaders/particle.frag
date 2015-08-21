@@ -34,8 +34,7 @@ void main() {
         color = ( 1.0-fs ) * mid_color + fs * far_color;
     }
 
-    if ( z > MAX_Z )
-        alpha = 1.0;
+    alpha = 1.0 - lerp(z, MIN_Z, MAX_Z);
 
     gl_FragColor = vec4(color, alpha) * texture2D( texture, gl_PointCoord );
 

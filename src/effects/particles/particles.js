@@ -17,7 +17,8 @@ let p = {
     size      : 2,
     set_near_color,
     set_far_color,
-    set_mid_color
+    set_mid_color,
+    set_particle_size
 };
 
 let myconf = {

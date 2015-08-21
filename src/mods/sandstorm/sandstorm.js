@@ -1,8 +1,9 @@
+import THREE from 'threejs';
 import mod from 'mod';
 import * as frag from 'text!./shaders/particle.frag';
 import * as vert from 'text!./shaders/vertex.vert';
 
-var params = {storminess:0.5};
+var params = {storminess:0.90};
 
 export default class sandstorm extends mod {
     constructor(gfx) {
@@ -17,6 +18,13 @@ export default class sandstorm extends mod {
         this.add_effect('particles');
         gfx.gl.particles.material.vertexShader = vert;
         gfx.gl.particles.material.fragmentShader = frag;
+        gfx.gl.particles.material.blending = THREE.AdditiveBlending;
+
+        // set custom colors
+        gfx.gl.particles.set_near_color('#e56b00');
+        gfx.gl.particles.set_mid_color('#280072');
+        gfx.gl.particles.set_far_color('#02020c');
+
         this.prev_depth = gfx.depth;
     }
     update(gfx) {
