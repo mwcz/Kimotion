@@ -4,14 +4,19 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width">
         <title>Kimotion client</title>
-        <style type="text/css" media="screen">
-            body { background: black; color: white; font-family: monospace; padding: 0; margin: 0; overflow: hidden; }
-            #output { position: absolute; top: 10px; left: 10px; right: 10px; bottom: 10px; overflow-y: auto; }
-            #output::selection { background-color: #999; color: white; }
-        </style>
+        <link rel="stylesheet" href="css/styles.css" type="text/css" media="screen" charset="utf-8">
     </head>
     <body>
-        <pre id="output"></pre>
+        <header>
+            <h1>Kimotion.xyz</h1>
+        </header>
+
+        <section id="nowplaying">
+            Now playing: <span id="title"></span>
+            <br />
+            By: <span id="author"></span>
+        </section>
+
         <script src="lib/requirejs/require.js" data-main="require.config.js"></script>
     </body>
 </html>

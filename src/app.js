@@ -12,7 +12,4 @@ function update() {
     gfx.update();
 }
 
-function teardown() {
-}
-
 create();

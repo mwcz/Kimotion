@@ -5,7 +5,7 @@ export default class aaa extends mod {
     constructor(gfx) {
         super(gfx);
         this.author = 'Your Name';
-        this.title = 'aaa';
+        this.title = 'example';
 
         // create a 3d shape, a box!
         let geometry = new THREE.BoxGeometry( 1, 1, 1 );

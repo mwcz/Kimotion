@@ -14,7 +14,8 @@ requirejs.config({
         tweenjs: 'lib/tweenjs/gulpfile',
         tween: 'lib/tweenjs/src/Tween',
         'dat-gui': 'lib/dat-gui/build/dat.gui',
-        tinycolor: 'lib/tinycolor/tinycolor'
+        tinycolor: 'lib/tinycolor/tinycolor',
+        zepto: 'lib/zepto/zepto'
     },
     shim: {
         threejs: {
@@ -22,6 +23,9 @@ requirejs.config({
         },
         'dat-gui': {
             exports: 'dat'
+        },
+        zepto: {
+            exports: '$'
         }
     },
     packages: [

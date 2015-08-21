@@ -9,7 +9,7 @@ export default class aaaa extends mod {
     constructor(gfx) {
         super(gfx);
         this.author = 'Michael Clayton';
-        this.title = 'aaaa';
+        this.title = 'handtrack';
         this.add_effect('particles');
 
         let geometry = new THREE.SphereGeometry( 5, 32, 32 );

@@ -1,3 +1,4 @@
+import $ from 'zepto';
 import { indexOf, without, keys, sample, range, size } from 'lodash';
 import * as mods from 'mods';
 
@@ -7,6 +8,9 @@ let modcount = size(modnames);
 let i        = 0;
 let curmod;
 let gfx;
+
+let display_title = $('#nowplaying #title');
+let display_author = $('#nowplaying #author');
 
 function next() {
     i += 1;
@@ -19,7 +23,12 @@ function set(modname) {
     curmod.destroy(gfx);
     gfx.reset();
     console.log(`Activating mod: ${modname}`);
+
     create(gfx);
+
+    // display the title and author
+    display_title.text(curmod.title);
+    display_author.text(curmod.author);
 }
 
 function names() {
