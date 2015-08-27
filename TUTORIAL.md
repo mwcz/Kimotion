@@ -6,7 +6,7 @@ Welcome to Kimotion Hackathon!  Here you'll learn everything you need to get sta
 
 See requirements/installation here: https://github.com/mwcz/Kimotion/README.md
 
-**If you feel comfortable browsing the code and learning that way, see the example mod at src/mods/example/example.js.**
+**If you feel comfortable browsing the code and learning that way, see the [example mod](/src/mods/example/example.js)**
 
 Module structure
 ----------------
