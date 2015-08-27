@@ -1,7 +1,7 @@
 import THREE from 'threejs';
 import mod from 'mod';
 
-export default class aaa extends mod {
+export default class example extends mod {
     constructor(gfx) {
         super(gfx);
         this.author = 'Your Name';
