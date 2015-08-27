@@ -2,7 +2,7 @@
 # encoding: utf-8
 
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
-from input import KinectFactory
+from input import KinectFactory, KinectFile
 import logging
 import signal
 import sys
@@ -11,10 +11,35 @@ import uuid
 from SimpleWebSocketServer import WebSocket, SimpleWebSocketServer
 
 
+class Recorder(object):
+    def __init__(self, frames, filename, **kwargs):
+        super(Recorder, self).__init__(**kwargs)
+        self.frames = frames
+        self.recorded = 0
+        self.writer = open(filename, 'wb')
+        self.oid = uuid.uuid1()
+        self.kinect = KinectFactory.create_kinect()
+
+    def record(self, depth):
+        if self.recorded < self.frames:
+            self.writer.write(depth)
+            self.recorded += 1
+        else:
+            self.writer.close()
+            self.kinect.remove_observer(self.oid)
+            print 'Done Recording'
+
+    def listen(self):
+        self.kinect.add_observer(self.oid, self.record)
+
+
 def get_args():
     parser = ArgumentParser(formatter_class=ArgumentDefaultsHelpFormatter)
 
     parser.add_argument('-d', '--debug', action='store_true', help='Turn on debug mode')
+    parser.add_argument('-r', '--record', type=int, help='Record given number of frames')
+    parser.add_argument('-o', '--recout', default='recording.bin', help='If recording, the file to write to')
+    parser.add_argument('-f', '--kinectfile', help='Read from given file instead of from kinect')
 
     return parser.parse_args()
 
@@ -79,6 +104,11 @@ def main():
     args = get_args()
     loglevel = logging.DEBUG if args.debug else logging.WARNING
     logging.basicConfig(level=loglevel, format='%(levelname)s|%(asctime)s|%(module)s|%(funcName)s:  %(message)s')
+    if args.record:
+        recorder = Recorder(args.record, args.recout)
+        recorder.listen()
+    if args.kinectfile:
+        KinectFactory.KINECTSUBJECT = KinectFile(args.kinectfile)
     serve()
 
 if __name__ == "__main__":

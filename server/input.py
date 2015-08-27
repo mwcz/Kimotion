@@ -2,8 +2,11 @@ import freenect
 import logging
 import numpy as np
 from threading import Thread
+import time
+
 
 MAXDEPTH = 1200
+FRAMEBYTES = 640*480*2
 
 
 class KinectLoop(Thread):
@@ -30,19 +33,30 @@ class KinectLoop(Thread):
         freenect.runloop(body=self.body, depth=createdepthhandler(self.server))
 
 
-class KinectSubject(Thread):
+class Subject(Thread):
+    def __init__(self, observers=None, **kwargs):
+        super(Subject, self).__init__(**kwargs)
+        self.observers = observers if observers is not None else {}
+
+    def add_observer(self, oid, observer):
+        self.observers[oid] = observer
+
+    def remove_observer(self, oid):
+        try:
+            del self.observers[oid]
+        except KeyError:
+            logging.warn("Could not find observer id {0}".format(oid))
+
+
+class KinectSubject(Subject):
 
     def __init__(self, max_depth=1200, observers=None, **kwargs):
-        super(KinectSubject, self).__init__(**kwargs)
+        super(KinectSubject, self).__init__(observers, **kwargs)
         self.max_depth = max_depth
-        self.observers = observers if observers is not None else {}
         self.killfreenect = False
         self.last_tilt = 0
         self.tilt = 0
         self.depth = None
-
-    def add_observer(self, oid, observer):
-        self.observers[oid] = observer
 
     def body(self, dev, ctx):
         if self.killfreenect:
@@ -60,12 +74,6 @@ class KinectSubject(Thread):
     def kill(self):
         self.killfreenect = True
 
-    def remove_observer(self, oid):
-        try:
-            del self.observers[oid]
-        except KeyError:
-            logging.warn("Could not find observer id {0}".format(oid))
-
     def run(self):
         freenect.runloop(body=self.body, depth=self.depth_handler)
 
@@ -78,9 +86,10 @@ class KinectFactory(object):
     KINECTSUBJECT = None
 
     @staticmethod
-    def create_kinect(**kwargs):
+    def create_kinect():
         if KinectFactory.KINECTSUBJECT is None:
-            KinectFactory.KINECTSUBJECT = KinectSubject(**kwargs)
+            KinectFactory.KINECTSUBJECT = KinectSubject()
+        if not KinectFactory.KINECTSUBJECT.isAlive():
             KinectFactory.KINECTSUBJECT.start()
         return KinectFactory.KINECTSUBJECT
 
@@ -88,6 +97,34 @@ class KinectFactory(object):
     def kill():
         if KinectFactory.KINECTSUBJECT is not None:
             KinectFactory.KINECTSUBJECT.kill()
+
+
+class KinectFile(Subject):
+    def __init__(self, filename, observers=None, **kwargs):
+        super(KinectFile, self).__init__(observers, **kwargs)
+        self.filename = filename
+        self.reader = open(self.filename, 'rb')
+        self.killkinectfile = False
+
+    def get_depth(self):
+        depth = self.reader.read(FRAMEBYTES)
+        if not depth:
+            self.reader.seek(0)
+            depth = self.reader.read(FRAMEBYTES)
+        return depth
+
+    def kill(self):
+        self.killkinectfile = True
+
+    def run(self):
+        while True:
+            if self.killkinectfile:
+                self.reader.close()
+                break
+            depth = self.get_depth()
+            for observer in self.observers.values():
+                observer(bytearray(depth))
+            time.sleep(1.0/30)
 
 
 def createdepthhandler(server):
