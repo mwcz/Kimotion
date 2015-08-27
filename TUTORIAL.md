@@ -4,9 +4,40 @@ Walkthrough
 
 Welcome to Kimotion Hackathon!  Here you'll learn everything you need to get started with hacking on the Kimotion project.
 
-See requirements/installation here: https://github.com/mwcz/Kimotion/README.md
+Step 1: Download and Setup
+--------------------------
 
-**If you feel comfortable browsing the code and learning that way, see the [example mod](/src/mods/example/example.js)**
+Here's how to set up Kimotion!
+
+First, you'll need to **install NodeJS**.  Once that's done, in a terminal you can install both grunt and bower, like so:
+
+    npm install -g grunt-cli bower
+
+*Note: if this command complains about permission (`EACCESS_DENIED` or some such), follow [these instructions](https://github.com/sindresorhus/guides/blob/master/npm-global-without-sudo.md] instead of resorting to `sudo`*
+
+Great!  Now it's time to **download Kimotion**.
+
+ 1. Log in to [GitHub](https://github.com) (create an account if you need to)
+ 2. Go to the [Kimotion page](https://github.com/mwcz/Kimotion)
+ 3. Click Fork in the top right to create your own copy of Kimotion
+ 4. Copy the 'clone URL' from the sidebar on the right
+
+Finally, run these commands to download your fork of Kimotion, install npm and bower dependencies, and perform a build.
+
+    git clone git@github.com:YOUR_USERNAME_HERE/Kimotion.git
+    cd Kimotion
+    npm install && bower install
+    grunt build:dev
+
+ADD SERVER SETUP HERE
+
+Step 2: Create your own mod
+---------------------------
+
+ADD GRUNT MOD CREATION TASK HERE
+
+**If you feel comfortable browsing the code and learning that way, see the [example mod](/src/mods/example/example.js) and the other [mods](/src/mods)**
+
 
 Module structure
 ----------------
