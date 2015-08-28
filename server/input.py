@@ -1,4 +1,7 @@
-import freenect
+try:
+    import freenect
+except:
+    print "No freenect support"
 import logging
 import numpy as np
 from threading import Thread
