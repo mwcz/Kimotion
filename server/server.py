@@ -40,6 +40,8 @@ def get_args():
     parser.add_argument('-r', '--record', type=int, help='Record given number of frames')
     parser.add_argument('-o', '--recout', default='recording.bin', help='If recording, the file to write to')
     parser.add_argument('-f', '--kinectfile', help='Read from given file instead of from kinect')
+    parser.add_argument(
+        '-m', '--filemem', action='store_true', default=False, help='Read entire recording file to memory')
 
     return parser.parse_args()
 
@@ -108,7 +110,7 @@ def main():
         recorder = Recorder(args.record, args.recout)
         recorder.listen()
     if args.kinectfile:
-        KinectFactory.KINECTSUBJECT = KinectFile(args.kinectfile)
+        KinectFactory.KINECTSUBJECT = KinectFile(args.kinectfile, filemem=args.filemem)
     serve()
 
 if __name__ == "__main__":

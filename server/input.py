@@ -100,18 +100,27 @@ class KinectFactory(object):
 
 
 class KinectFile(Subject):
-    def __init__(self, filename, observers=None, **kwargs):
+    def __init__(self, filename, filemem=False, observers=None, **kwargs):
         super(KinectFile, self).__init__(observers, **kwargs)
         self.filename = filename
-        self.reader = open(self.filename, 'rb')
+        self.curbyte = 0
+        self.filemem = filemem
+        self.reader = open(self.filename, 'rb').read() if self.filemem else open(self.filename, 'rb')
         self.killkinectfile = False
 
     def get_depth(self):
-        depth = self.reader.read(FRAMEBYTES)
-        if not depth:
-            self.reader.seek(0)
+        if self.filemem:
+            depth = self.reader[self.curbyte:self.curbyte+FRAMEBYTES]
+            if not depth:
+                self.curbyte = 0
+                depth = self.reader[self.curbyte:self.curbyte+FRAMEBYTES]
+            self.curbyte += FRAMEBYTES
+        else:
             depth = self.reader.read(FRAMEBYTES)
-        return depth
+            if not depth:
+                self.reader.seek(0)
+                depth = self.reader.read(FRAMEBYTES)
+        return bytearray(depth)
 
     def kill(self):
         self.killkinectfile = True
@@ -119,11 +128,14 @@ class KinectFile(Subject):
     def run(self):
         while True:
             if self.killkinectfile:
-                self.reader.close()
+                try:
+                    self.reader.close()
+                except AttributeError:
+                    pass
                 break
             depth = self.get_depth()
             for observer in self.observers.values():
-                observer(bytearray(depth))
+                observer(depth)
             time.sleep(1.0/30)
 
 
