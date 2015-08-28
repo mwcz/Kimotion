@@ -62,7 +62,9 @@ Now, open [localhost:9000](http://localhost:9000) in your favorite browser (so l
 Step 3: Create your own mod!
 ----------------------------
 
-ADD GRUNT MOD CREATION TASK HERE
+Create your own mod with the newmod command!
+
+    grunt newmod:your_name_here
 
 **If you feel comfortable browsing the code and learning that way, see the [example mod](/src/mods/example/example.js) and the other [mods](/src/mods)**
 
