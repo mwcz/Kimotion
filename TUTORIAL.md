@@ -7,42 +7,67 @@ Welcome to Kimotion Hackathon!  Here you'll learn everything you need to get sta
 Step 1: Download and Setup
 --------------------------
 
-Here's how to set up Kimotion!
+Here's how to set up Kimotion dev environment.
 
-First, you'll need to **install NodeJS**.  Once that's done, in a terminal you can install both grunt and bower, like so:
+First, you'll need to [install NodeJS](https://nodejs.org/).  Once that's done, in a terminal you can install both grunt and bower, like so:
 
     npm install -g grunt-cli bower
 
-*Note: if this command complains about permission (`EACCESS_DENIED` or some such), follow [these instructions](https://github.com/sindresorhus/guides/blob/master/npm-global-without-sudo.md] instead of resorting to `sudo`*
+**Note:** if this command complains about permission (`EACCESS_DENIED` or some such), follow [these instructions](https://github.com/sindresorhus/guides/blob/master/npm-global-without-sudo.md) instead of resorting to `sudo`.
 
-Great!  Now it's time to **download Kimotion**.
+Great!  Now it's time to install Kimotion.
 
  1. Log in to [GitHub](https://github.com) (create an account if you need to)
  2. Go to the [Kimotion page](https://github.com/mwcz/Kimotion)
- 3. Click Fork in the top right to create your own copy of Kimotion
+ 3. Click **Fork** in the top right to create your own copy of Kimotion
  4. Copy the 'clone URL' from the sidebar on the right
 
-Finally, run these commands to download your fork of Kimotion, install npm and bower dependencies, and perform a build.
+Finally, run these commands to download your fork of Kimotion, install some dependencies, and perform a build.
 
     git clone git@github.com:YOUR_USERNAME_HERE/Kimotion.git
     cd Kimotion
     npm install && bower install
     grunt build:dev
 
-ADD SERVER SETUP HERE
+Now all of the Kimotion front-end is installed!
 
-Step 2: Create your own mod
----------------------------
+Now, download one or all of the following recordings:
+
+ - ADD
+ - SOME
+ - RECORDINGS
+ - HERE
+
+If you're happy using recordings, the server won't require any setup.  On the other hand, if you'd like to hook up an actual Kinect via USB, you'll need to install [libfreenect](http://openkinect.org/wiki/Getting_Started).
+
+Step 2: Launch Kimotion
+-----------------------
+
+You'll need two terminals open for this.
+
+Launch the Python WebSocket server which delivers Kinect data at `ws://localhost:1337`:
+
+    python server/server.py -f PATH_TO_RECORDING
+
+
+Launch an HTTP server which serves up the Web client at `http://localhost:9000`:
+
+    grunt connect
+
+Now, open [localhost:9000](http://localhost:9000) in your favorite browser (so long as it's Firefox or Chrome).
+
+Step 3: Create your own mod!
+----------------------------
 
 ADD GRUNT MOD CREATION TASK HERE
 
 **If you feel comfortable browsing the code and learning that way, see the [example mod](/src/mods/example/example.js) and the other [mods](/src/mods)**
 
 
-Module structure
-----------------
+Mod structure
+-------------
 
-You should notice that your mod file already has some code added to it:
+Your mod has some example code already:
 
   - constructor() - here you can add any setup for your mod.  A title and author field should be set for every mod so your work can be attributed correctly.  The constructor gets the gfx object passed in to interact with the ThreeJS renderer
     - add your name and a title to a mod by setting the author and title attributes
