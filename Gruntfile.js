@@ -50,6 +50,13 @@ module.exports = function(grunt) {
             }
         },
 
+        'string-replace': {
+            newmod: {
+                files: {},
+                options: {}
+            }
+        },
+
         watch: {
             app: {
                 files: [
@@ -135,6 +142,10 @@ module.exports = function(grunt) {
                     src: '**/*'
                 }]
             },
+            'newmod': {
+                src: 'src/mods/example/',
+                dest: 'src/mods/',
+            },
         },
 
         sync: {
@@ -162,6 +173,19 @@ module.exports = function(grunt) {
     // Default task(s).
     grunt.registerTask('default', []);
     grunt.registerTask('lint', ['jshint:all']);
+
+    grunt.registerTask('newmod', function (target) {
+        if (target) {
+            var modname = target.replace(/[^A-Za-z0-9_]/g, '');
+            grunt.file.copy(
+                'src/mods/example/example.js',
+                'src/mods/'+modname+'/'+modname+'.js'
+            );
+        }
+        else {
+            grunt.log.error('Please provide a name for your mod.  For example, grunt newmod:dinosaurs');
+        }
+    });
 
     grunt.registerTask('expall', function (target) {
         expall('src/effects');
