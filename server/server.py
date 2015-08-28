@@ -6,17 +6,20 @@ from input import KinectFactory, KinectFile
 import logging
 import signal
 import sys
+import time
+from threading import Thread
 import uuid
 
 from SimpleWebSocketServer import WebSocket, SimpleWebSocketServer
 
 
-class Recorder(object):
-    def __init__(self, frames, filename, **kwargs):
+class Recorder(Thread):
+    def __init__(self, frames, filename, delay=0, **kwargs):
         super(Recorder, self).__init__(**kwargs)
         self.frames = frames
         self.recorded = 0
         self.writer = open(filename, 'wb')
+        self.delay = delay
         self.oid = uuid.uuid1()
         self.kinect = KinectFactory.create_kinect()
 
@@ -29,8 +32,10 @@ class Recorder(object):
             self.kinect.remove_observer(self.oid)
             print 'Done Recording'
 
-    def listen(self):
+    def run(self):
+        time.sleep(self.delay)
         self.kinect.add_observer(self.oid, self.record)
+        print 'Starting recording'
 
 
 def get_args():
@@ -42,6 +47,7 @@ def get_args():
     parser.add_argument('-f', '--kinectfile', help='Read from given file instead of from kinect')
     parser.add_argument(
         '-m', '--filemem', action='store_true', default=False, help='Read entire recording file to memory')
+    parser.add_argument('-a', '--recdelay', default=0, type=int, help='Delay before recording begins')
 
     return parser.parse_args()
 
@@ -107,8 +113,8 @@ def main():
     loglevel = logging.DEBUG if args.debug else logging.WARNING
     logging.basicConfig(level=loglevel, format='%(levelname)s|%(asctime)s|%(module)s|%(funcName)s:  %(message)s')
     if args.record:
-        recorder = Recorder(args.record, args.recout)
-        recorder.listen()
+        recorder = Recorder(args.record, args.recout, delay=args.recdelay)
+        recorder.start()
     if args.kinectfile:
         KinectFactory.KINECTSUBJECT = KinectFile(args.kinectfile, filemem=args.filemem)
     serve()
