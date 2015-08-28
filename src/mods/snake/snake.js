@@ -8,7 +8,7 @@ const THRESHOLD_MAX = 700;
 export default class snake extends mod {
     constructor(gfx) {
         super(gfx);
-        this.author = 'Michael Clayton';
+        this.author = 'Ben Pritchett';
         this.title = 'snake';
         this.add_effect('particles');
 
@@ -20,6 +20,7 @@ export default class snake extends mod {
         for (var i = 20 - 1; i >= 0; i--) {
             geometry = new THREE.SphereGeometry( 5, 32, 32 );
             color = 0xffff00;
+            console.log(color);
             material = new THREE.MeshBasicMaterial( {color: color} );
             this.spheres['sphere' + i] = new THREE.Mesh( geometry, material );
             gfx.gl.scene.add(this.spheres['sphere' + i]);
