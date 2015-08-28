@@ -176,11 +176,32 @@ module.exports = function(grunt) {
 
     grunt.registerTask('newmod', function (target) {
         if (target) {
+            var fs = require('fs');
             var modname = target.replace(/[^A-Za-z0-9_]/g, '');
-            grunt.file.copy(
-                'src/mods/example/example.js',
-                'src/mods/'+modname+'/'+modname+'.js'
-            );
+
+            // if the destination already exists, complain
+            if(fs.existsSync('src/mods/'+modname)) {
+                grunt.log.error('A mod named ' + modname + ' already exists.  Please try another name.  Apologies!');
+            }
+            else {
+                // destination is free and clear, create a mod!
+                var examplepath = 'src/mods/example/example.js';
+                var newpath = 'src/mods/'+modname+'/'+modname+'.js';
+
+                grunt.file.copy( examplepath, newpath );
+
+                var replace_files_obj = {};
+                replace_files_obj[newpath] = newpath;
+                grunt.config.set('string-replace.newmod.files', replace_files_obj);
+
+                var replacements = [{
+                    pattern: /example/g,
+                    replacement: modname
+                }];
+                grunt.config.set('string-replace.newmod.options.replacements', replacements);
+
+                grunt.task.run('string-replace:newmod');
+            }
         }
         else {
             grunt.log.error('Please provide a name for your mod.  For example, grunt newmod:dinosaurs');
