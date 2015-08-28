@@ -49,8 +49,11 @@ Launch the Python WebSocket server which delivers Kinect data at `ws://localhost
 
     python server/server.py -f PATH_TO_RECORDING
 
+Or if you chose to use libfreenect and a USB Kinect...
 
-Launch an HTTP server which serves up the Web client at `http://localhost:9000`:
+    python server/server.py
+
+Also, launch an HTTP server which serves up the Web client at `http://localhost:9000`:
 
     grunt connect
 
