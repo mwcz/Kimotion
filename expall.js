@@ -6,9 +6,17 @@
     var _ = require('lodash');
     var path = require('path');
 
+    function notHidden(filename) {
+        if (filename.indexOf('.') == 0) {
+            return false;
+        }
+        return true;
+    }
+
     function expall(fulldir) {
         var dir = fulldir.replace(/^src\//, '');
         var mods = fs.readdirSync(fulldir);
+        mods = mods.filter(notHidden);
         var out = [];
         _.each(mods, function (mod) {
             out.push("export { default as " + mod + " } from './" + dir + "/" + mod + "/" + mod + "';");
