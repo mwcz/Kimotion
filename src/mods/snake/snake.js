@@ -19,8 +19,7 @@ export default class snake extends mod {
 
         for (var i = 20 - 1; i >= 0; i--) {
             geometry = new THREE.SphereGeometry( 5, 32, 32 );
-            color = 0xffff00;
-            console.log(color);
+            color = Math.random() * (16777215 - 1) + 1;
             material = new THREE.MeshBasicMaterial( {color: color} );
             this.spheres['sphere' + i] = new THREE.Mesh( geometry, material );
             gfx.gl.scene.add(this.spheres['sphere' + i]);
