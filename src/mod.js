@@ -7,6 +7,7 @@ export default class mod {
         this.title   = '';
         this.effects = [];
         this.gfx     = gfx;
+        // gfx.set(this, '2d'); // default to 2d
     }
     update(gfx) {
         // update each effect in this.effects

@@ -4,6 +4,7 @@ import mod from 'mod';
 export default class example extends mod {
     constructor(gfx) {
         super(gfx);
+        gfx.set(this, '3d');
         this.author = 'Your Name';
         this.title = 'example';
 

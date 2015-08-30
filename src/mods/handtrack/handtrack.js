@@ -1,3 +1,4 @@
+import THREE from 'threejs';
 import mod from 'mod';
 import * as frag from 'text!./shaders/particle.frag';
 import * as vert from 'text!./shaders/vertex.vert';
@@ -5,16 +6,18 @@ import * as vert from 'text!./shaders/vertex.vert';
 const THRESHOLD_MIN = 600;
 const THRESHOLD_MAX = 700;
 
-export default class aaaa extends mod {
+export default class handtrack extends mod {
     constructor(gfx) {
         super(gfx);
+        gfx.set(this, '3d');
         this.author = 'Michael Clayton';
         this.title = 'handtrack';
         this.add_effect('particles');
 
-        let geometry = new THREE.SphereGeometry( 5, 32, 32 );
-        let material = new THREE.MeshBasicMaterial( {color: 0xffff00} );
+        let geometry = new THREE.SphereGeometry( 20, 32, 32 );
+        let material = new THREE.MeshBasicMaterial( {color: 0xff0000} );
         this.sphere = new THREE.Mesh( geometry, material );
+        this.sphere.position.z = 450;
         gfx.gl.scene.add( this.sphere );
 
         gfx.gl.particles.material.vertexShader = vert;

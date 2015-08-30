@@ -29,6 +29,7 @@
     "tinycolor": "https://github.com/mwcz/TinyColor.git#master"
   },
   "devDependencies": {
+    "p5.js": "p5js#~0.4.8",
     "r.js": "~2.1.20",
     "requirejs": "~2.1.20",
     "zepto": "~1.1.6"

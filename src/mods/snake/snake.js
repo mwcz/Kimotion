@@ -9,6 +9,7 @@ export default class snake extends mod {
     constructor(gfx) {
         super(gfx);
         this.author = 'Ben Pritchett';
+        gfx.set(this, '3d');
         this.title = 'snake';
         this.add_effect('particles');
 

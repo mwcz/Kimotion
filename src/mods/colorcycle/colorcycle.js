@@ -4,9 +4,10 @@ import mod from 'mod';
 import * as frag from 'text!./shaders/particle.frag';
 import * as vert from 'text!./shaders/vertex.vert';
 
-export default class sandstorm extends mod {
+export default class colorcycle extends mod {
     constructor(gfx) {
         super(gfx);
+        gfx.set(this, '3d');
         this.author = 'Michael Clayton';
         this.title = 'Color Cycle';
         this.add_effect('particles');

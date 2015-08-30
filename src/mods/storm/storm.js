@@ -7,6 +7,7 @@ var params = {storminess:0.5};
 export default class storm extends mod {
     constructor(gfx) {
         super(gfx);
+        gfx.set(this, '3d');
 
         gfx.conf.gui.add(params, 'storminess', 0, 0.99)
             .step(0.01)

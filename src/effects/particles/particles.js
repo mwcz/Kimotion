@@ -102,7 +102,7 @@ function add_particle_system() {
     });
     add_particle_system_attributes( p.geometry, 640*480 );
     p.system = new THREE.PointCloud( p.geometry, p.material );
-    p.system.sortParticles = false;
+    p.system.sortParticles = true;
     scene.add( p.system );
 }
 

@@ -2,9 +2,10 @@ import mod from 'mod';
 
 const MAX_DEPTH_SUM = 337920000;
 
-export default class particles extends mod {
+export default class cube extends mod {
     constructor(gfx) {
         super(gfx);
+        gfx.set(this, '3d');
         this.author = 'Michael Clayton';
         this.title = 'Cube';
         this.add_effect('cube');

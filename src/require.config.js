@@ -15,7 +15,9 @@ requirejs.config({
         tween: 'lib/tweenjs/src/Tween',
         'dat-gui': 'lib/dat-gui/build/dat.gui',
         tinycolor: 'lib/tinycolor/tinycolor',
-        zepto: 'lib/zepto/zepto'
+        zepto: 'lib/zepto/zepto',
+        p5: 'lib/p5.js/lib/p5.min',
+        p5js: 'lib/p5.js/docs/js/p5'
     },
     shim: {
         threejs: {

@@ -1,6 +1,8 @@
 export { default as colorcycle } from './mods/colorcycle/colorcycle';
 export { default as cube } from './mods/cube/cube';
 export { default as example } from './mods/example/example';
+export { default as example2d } from './mods/example2d/example2d';
+export { default as handcube } from './mods/handcube/handcube';
 export { default as handtrack } from './mods/handtrack/handtrack';
 export { default as particles } from './mods/particles/particles';
 export { default as sandstorm } from './mods/sandstorm/sandstorm';
