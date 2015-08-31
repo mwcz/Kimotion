@@ -6,6 +6,7 @@ import { keys, without } from 'lodash';
 
 let conf = {
     mods : without(keys(mods), '__esModule'),
+    server : localStorage.ws_url || 'localhost:1337',
     kinect_tilt : 10,
     kinect: {
         res: { width: 640, height: 480 }
@@ -15,6 +16,10 @@ let conf = {
 let gui = new dat.GUI();
 
 let folder = gui.addFolder('Kimotion global settings');
+
+folder.add(conf, 'server')
+    .name('Server')
+    .onChange(function(server_host) { localStorage.ws_url = server_host; });
 
 folder.add(conf, 'mods', conf.mods)
     .name('Mods')

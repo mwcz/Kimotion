@@ -11,9 +11,14 @@ var depth = new Uint16Array(conf.kinect.res.width * conf.kinect.res.height);
 var ws;
 
 function ask_for_ws_server() {
-    let ws_url = prompt('Where is the input server?', localStorage.ws_url || 'localhost:1337');
-    localStorage.ws_url = ws_url;
-    return ws_url;
+    if (localStorage.ws_url) {
+        return localStorage.ws_url;
+    }
+    else {
+        let ws_url = prompt('Where is the input server?', localStorage.ws_url || 'localhost:1337');
+        localStorage.ws_url = ws_url;
+        return ws_url;
+    }
 }
 
 function create_ws_connection(ws_url) {
