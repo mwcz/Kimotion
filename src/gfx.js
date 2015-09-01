@@ -4,7 +4,7 @@ import THREE from 'threejs';
 import p5 from 'p5js';
 import input from 'input';
 import conf from 'conf';
-import { bindAll, assign, noop, without, keys, contains, invoke } from 'lodash';
+import { forIn, bindAll, assign, noop, without, keys, contains, invoke } from 'lodash';
 
 const VALID_TYPES = ['2d', '3d'];
 
@@ -49,7 +49,11 @@ function set(mod, newtype) {
             // them to window.  this greatly simplifies the invokation of p5
             // drawing functions syntactically.
             // ie, rect() instead of gfx.p5.rect();
-            assign(window, bindAll(this.p5));
+            // assign(window, bindAll(this.p5));
+
+            forIn(bindAll(this.p5), function (v, k, o) {
+                window[k] = v;
+            });
 
         }
         else if (type === '3d') {
