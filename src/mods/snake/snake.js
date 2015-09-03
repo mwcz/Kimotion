@@ -4,6 +4,8 @@ import * as vert from 'text!./shaders/vertex.vert';
 
 const THRESHOLD_MIN = 600;
 const THRESHOLD_MAX = 700;
+const NUM_BUBBLES = 4;
+const WAIT = 10;
 
 export default class snake extends mod {
     constructor(gfx) {
@@ -18,7 +20,7 @@ export default class snake extends mod {
         let color;
         this.spheres = {};
 
-        for (var i = 20 - 1; i >= 0; i--) {
+        for (var i = 0; i <= NUM_BUBBLES - 1; i++) {
             geometry = new THREE.SphereGeometry( 5, 32, 32 );
             color = Math.random() * (16777215 - 1) + 1;
             material = new THREE.MeshBasicMaterial( {color: color} );
@@ -26,31 +28,24 @@ export default class snake extends mod {
             gfx.gl.scene.add(this.spheres['sphere' + i]);
         }
 
-        /*let geometry = new THREE.SphereGeometry( 5, 32, 32 );
-        let material = new THREE.MeshBasicMaterial( {color: 0xffff00} );
-        this.sphere = new THREE.Mesh( geometry, material );
-        gfx.gl.scene.add( this.sphere );
-
+        this.num_spheres = NUM_BUBBLES;
         geometry = new THREE.SphereGeometry( 5, 32, 32 );
-        material = new THREE.MeshBasicMaterial( {color: 0x0050a0} );
-        this.newSphere = new THREE.Mesh ( geometry, material );
-        gfx.gl.scene.add( this.newSphere );
+        color = Math.random() * (16777215 - 1) + 1;
+        material = new THREE.MeshBasicMaterial( {color: color} );
+        this.objective = new THREE.Mesh( geometry, material );
+        this.objective.position.x = 200;
+        this.objective.position.y = 200;
+        gfx.gl.scene.add(this.objective);
 
-        geometry = new THREE.SphereGeometry( 5, 32, 32 );
-        material = new THREE.MeshBasicMaterial( {color: 0xe57000} );
-        this.newSphere2 = new THREE.Mesh ( geometry, material );
-        gfx.gl.scene.add( this.newSphere2 );
-
-        geometry = new THREE.SphereGeometry( 5, 32, 32 );
-        material = new THREE.MeshBasicMaterial( {color: 0xd232b4} );
-        this.newSphere3 = new THREE.Mesh ( geometry, material );
-        gfx.gl.scene.add( this.newSphere3 );*/
-        console.log(this.spheres);
         gfx.gl.particles.material.vertexShader = vert;
         gfx.gl.particles.material.fragmentShader = frag;
+        this.waittimer = WAIT;
     }
     update(gfx) {
-
+        this.waittimer--;
+        if (this.waittimer < 0) {
+            this.waittimer = 0;
+        }
         let sumx  = 0;
         let sumy  = 0;
         let count = 0;
@@ -68,18 +63,48 @@ export default class snake extends mod {
 
         let avgx = sumx / count;
         let avgy = sumy / count;
+        let firstball = 0;
 
-        this.spheres.sphere19.position.x = avgx;
-        this.spheres.sphere19.position.y = avgy;
+        this.spheres['sphere'+firstball].position.x = avgx;
+        this.spheres['sphere'+firstball].position.y = avgy;
+        
+        let distance;
+        let geometry;
+        let material;
+        let color;
+        
+        if (this.objective !== false) {
+            distance = this.spheres['sphere'+firstball].position.distanceTo(this.objective.position);
+        }
+        if ( distance <= 5 && this.waittimer == 0) {
+            this.spheres['sphere'+this.num_spheres] = this.objective;
+            gfx.gl.scene.remove(this.objective);
+            gfx.gl.scene.add(this.spheres['sphere'+this.num_spheres]);
+            this.num_spheres++;
+            this.objective = false;
+            this.waittimer = WAIT;
+        }
+
+        if (this.objective === false && this.waittimer == 0) {
+            geometry = new THREE.SphereGeometry( 5, 32, 32 );
+            color = Math.random() * (16777215 - 1) + 1;
+            material = new THREE.MeshBasicMaterial( {color: color} );
+            this.objective = new THREE.Mesh( geometry, material );
+            this.objective.position.x = Math.random() * 200 + 100;
+            this.objective.position.y = Math.random() * 200 + 100;
+            gfx.gl.scene.add(this.objective);
+        }
+
+
 
         let xdiff;
         let ydiff;
-        let imore;
-        for (var i = 19 - 1; i >= 0; i--) {
-            imore = i + 1;
-            xdiff = (this.spheres['sphere'+i].position.x - this.spheres['sphere'+imore].position.x) * -0.1;
+        let iless;
+        for (var i = 1; i <= this.num_spheres - 1; i++) {
+            iless = i - 1;
+            xdiff = (this.spheres['sphere'+i].position.x - this.spheres['sphere'+iless].position.x) * -0.1;
             this.spheres['sphere'+i].position.x = this.spheres['sphere'+i].position.x + xdiff;
-            ydiff = (this.spheres['sphere'+i].position.y - this.spheres['sphere'+imore].position.y) * -0.1;
+            ydiff = (this.spheres['sphere'+i].position.y - this.spheres['sphere'+iless].position.y) * -0.1;
             this.spheres['sphere'+i].position.y = this.spheres['sphere'+i].position.y + ydiff;
             if (this.spheres['sphere'+i].position.x > 500 || isNaN(this.spheres['sphere'+i].position.x)) {
                 this.spheres['sphere'+i].position.x = 500;
@@ -97,69 +122,6 @@ export default class snake extends mod {
                 this.spheres['sphere'+i].position.y = 0;
             }
         }
-
-/*        let xdiff = (this.newSphere.position.x - this.sphere.position.x) * -0.1
-        this.newSphere.position.x = this.newSphere.position.x + xdiff;
-        let ydiff = (this.newSphere.position.y - this.sphere.position.y) * -0.1
-        this.newSphere.position.y = this.newSphere.position.y + ydiff;
-
-        xdiff = (this.newSphere2.position.x - this.newSphere.position.x) * -0.1
-        this.newSphere2.position.x = this.newSphere2.position.x + xdiff;
-        ydiff = (this.newSphere2.position.y - this.newSphere.position.y) * -0.1
-        this.newSphere2.position.y = this.newSphere2.position.y + ydiff;
-
-        xdiff = (this.newSphere3.position.x - this.newSphere2.position.x) * -0.1
-        this.newSphere3.position.x = this.newSphere3.position.x + xdiff;
-        ydiff = (this.newSphere3.position.y - this.newSphere2.position.y) * -0.1
-        this.newSphere3.position.y = this.newSphere3.position.y + ydiff;
-
-        if (this.newSphere.position.x > 500 || isNaN(this.newSphere.position.x)) {
-            this.newSphere.position.x = 500;
-        }
-
-        if (this.newSphere.position.x < 0) {
-            this.newSphere.position.x = 0;
-        }
-
-        if (this.newSphere.position.y > 500 || isNaN(this.newSphere.position.y)) {
-            this.newSphere.position.y = 500;
-        }
-
-        if (this.newSphere.position.y < 0) {
-            this.newSphere.position.y = 0;
-        }
-
-        if (this.newSphere2.position.x > 500 || isNaN(this.newSphere2.position.x)) {
-            this.newSphere2.position.x = 500;
-        }
-
-        if (this.newSphere2.position.x < 0) {
-            this.newSphere2.position.x = 0;
-        }
-
-        if (this.newSphere2.position.y > 500 || isNaN(this.newSphere2.position.y)) {
-            this.newSphere2.position.y = 500;
-        }
-
-        if (this.newSphere2.position.y < 0) {
-            this.newSphere2.position.y = 0;
-        }
-
-        if (this.newSphere3.position.x > 500 || isNaN(this.newSphere3.position.x)) {
-            this.newSphere3.position.x = 500;
-        }
-
-        if (this.newSphere3.position.x < 0) {
-            this.newSphere3.position.x = 0;
-        }
-
-        if (this.newSphere3.position.y > 500 || isNaN(this.newSphere3.position.y)) {
-            this.newSphere3.position.y = 500;
-        }
-
-        if (this.newSphere3.position.y < 0) {
-            this.newSphere3.position.y = 0;
-        }*/
 
         super.update(gfx);
     }
