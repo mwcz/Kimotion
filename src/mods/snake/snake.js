@@ -108,19 +108,19 @@ export default class snake extends mod {
             ydiff = (this.spheres['sphere'+i].position.y - this.spheres['sphere'+iless].position.y) * -0.2;
             this.spheres['sphere'+i].position.y = this.spheres['sphere'+i].position.y + ydiff;
             if (this.spheres['sphere'+i].position.x > 500 || isNaN(this.spheres['sphere'+i].position.x)) {
-                this.spheres['sphere'+i].position.x = 500;
+                this.spheres['sphere'+i].position.x = 350;
             }
 
             if (this.spheres['sphere'+i].position.x < 0) {
-                this.spheres['sphere'+i].position.x = 0;
+                this.spheres['sphere'+i].position.x = 350;
             }
 
             if (this.spheres['sphere'+i].position.y > 500 || isNaN(this.spheres['sphere'+i].position.y)) {
-                this.spheres['sphere'+i].position.y = 500;
+                this.spheres['sphere'+i].position.y = 200;
             }
 
             if (this.spheres['sphere'+i].position.y < 0) {
-                this.spheres['sphere'+i].position.y = 0;
+                this.spheres['sphere'+i].position.y = 200;
             }
         }
 
