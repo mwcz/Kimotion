@@ -13,7 +13,7 @@ export default class torus_effect {
         gfx = _gfx;
         scene    = gfx.gl.scene;
 
-        geometry = new THREE.TorusKnotGeometry( 10, 3, 100, 16 );
+        geometry = new THREE.TorusKnotGeometry( 150, 30, 100, 16 );
 
         material = new THREE.MeshBasicMaterial( { vertexColors: THREE.FaceColors, overdraw: 0.5 } );
         torus = new THREE.Mesh( geometry, material );

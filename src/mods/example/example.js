@@ -9,16 +9,13 @@ export default class example extends mod {
         this.title = 'example';
 
         // create a 3d shape, a box!
-        let geometry = new THREE.BoxGeometry( 1, 1, 1 );
+        let geometry = new THREE.BoxGeometry( 150, 150, 150 );
 
         // create some clothing for the cube
         let material = new THREE.MeshBasicMaterial( { wireframe: true } );
 
         // create a cube by putting the clothing on the box
         this.cube = new THREE.Mesh( geometry, material );
-
-        // move it away from the camera
-        this.cube.position.z = -2;
 
         // add it to the scene
         gfx.gl.scene.add( this.cube );

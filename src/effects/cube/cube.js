@@ -12,7 +12,7 @@ export default class cube_effect {
         gfx = _gfx;
         scene    = gfx.gl.scene;
 
-        geometry = new THREE.BoxGeometry( 1, 1, 1 );
+        geometry = new THREE.BoxGeometry( 150, 150, 150 );
 
         for ( let i = 0; i < geometry.faces.length; i += 2 ) {
             let hex = Math.random() * 0xffffff;
@@ -24,7 +24,6 @@ export default class cube_effect {
         cube = new THREE.Mesh( geometry, material );
         scene.add( cube );
         gfx.gl.camera.lookAt(cube.position);
-        gfx.gl.camera.position.z = 2;
 
         gfx.gl.cube = cube;
 
