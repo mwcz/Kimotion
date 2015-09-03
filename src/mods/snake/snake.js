@@ -76,7 +76,7 @@ export default class snake extends mod {
         if (this.objective !== false) {
             distance = this.spheres['sphere'+firstball].position.distanceTo(this.objective.position);
         }
-        if ( distance <= 5 && this.waittimer == 0) {
+        if ( distance <= 20 && this.waittimer == 0) {
             this.spheres['sphere'+this.num_spheres] = this.objective;
             gfx.gl.scene.remove(this.objective);
             gfx.gl.scene.add(this.spheres['sphere'+this.num_spheres]);
@@ -90,8 +90,9 @@ export default class snake extends mod {
             color = Math.random() * (16777215 - 1) + 1;
             material = new THREE.MeshBasicMaterial( {color: color} );
             this.objective = new THREE.Mesh( geometry, material );
-            this.objective.position.x = Math.random() * 200 + 100;
+            this.objective.position.x = Math.random() * 500 + 50;
             this.objective.position.y = Math.random() * 200 + 100;
+            console.log(this.objective.position);
             gfx.gl.scene.add(this.objective);
         }
 
@@ -102,9 +103,9 @@ export default class snake extends mod {
         let iless;
         for (var i = 1; i <= this.num_spheres - 1; i++) {
             iless = i - 1;
-            xdiff = (this.spheres['sphere'+i].position.x - this.spheres['sphere'+iless].position.x) * -0.1;
+            xdiff = (this.spheres['sphere'+i].position.x - this.spheres['sphere'+iless].position.x) * -0.2;
             this.spheres['sphere'+i].position.x = this.spheres['sphere'+i].position.x + xdiff;
-            ydiff = (this.spheres['sphere'+i].position.y - this.spheres['sphere'+iless].position.y) * -0.1;
+            ydiff = (this.spheres['sphere'+i].position.y - this.spheres['sphere'+iless].position.y) * -0.2;
             this.spheres['sphere'+i].position.y = this.spheres['sphere'+i].position.y + ydiff;
             if (this.spheres['sphere'+i].position.x > 500 || isNaN(this.spheres['sphere'+i].position.x)) {
                 this.spheres['sphere'+i].position.x = 500;
