@@ -11,6 +11,9 @@ export default class handtracking {
         this.prevhand = { x: 0, y: 0 };
         this.avgx = 0;
         this.avgy = 0;
+
+        gfx.conf.gui.add(this, 'avgx').name('Hand x').listen();
+        gfx.conf.gui.add(this, 'avgy').name('Hand y').listen();
     }
     update(gfx) {
 
@@ -42,8 +45,6 @@ export default class handtracking {
 
             this.prevhand.x = gfx.hand.x;
             this.prevhand.y = gfx.hand.y;
-
-            document.querySelector('#coords').innerHTML = gfx.hand.x.toFixed() + ', ' + gfx.hand.y.toFixed();
         }
 
     }
