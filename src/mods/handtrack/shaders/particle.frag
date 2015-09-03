@@ -4,7 +4,6 @@ uniform vec3 far_color;
 uniform sampler2D texture;
 
 varying vec3 pos;
-varying float z;
 
 float v;
 
@@ -18,7 +17,7 @@ void main() {
 
     vec3 color = vec3(1.0, 1.0, 1.0);
 
-    if ( z < 600.0 || z > 700.0 )
+    if ( pos.z == -1.0)
         alpha = 0.0;
 
     gl_FragColor = vec4(color, alpha) * texture2D( texture, gl_PointCoord );

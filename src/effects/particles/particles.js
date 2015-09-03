@@ -7,6 +7,7 @@ let scene;
 let camera;
 let renderer;
 let gfx;
+let conf;
 
 let p = {
     system    : undefined,
@@ -23,10 +24,10 @@ let p = {
 
 let myconf = {
     camera: {
-        origin: { x: 320, y: 240, z: 128 },
-        x: 320,
-        y: 240,
-        z: -175
+        origin: { x: 0, y: 0, z: 0 },
+        x: 0,
+        y: 0,
+        z: 1100
     }
 };
 
@@ -41,6 +42,7 @@ export default class particles {
         gfx = _gfx;
         scene    = gfx.gl.scene;
         camera   = gfx.gl.camera;
+        conf     = gfx.conf;
 
         // set the background color
         gfx.gl.renderer.setClearColor( new THREE.Color(default_colors.far_color) );
@@ -103,6 +105,11 @@ function add_particle_system() {
     add_particle_system_attributes( p.geometry, 640*480 );
     p.system = new THREE.PointCloud( p.geometry, p.material );
     p.system.sortParticles = true;
+
+    // flip the particle system so lower depth values will become closer to the
+    // camera (just as the actual objects are closer to the kinect)
+    p.system.rotateY(Math.PI); 
+
     scene.add( p.system );
 }
 
@@ -115,16 +122,20 @@ function add_particle_system_attributes(geo, count) {
 function get_initial_particle_positions(count) {
     p.positions  = new Float32Array( count * 3 );
     let x, y, j;
+    let w = conf.kinect.res.width;
+    let h = conf.kinect.res.height;
+    let halfw = w / 2;
+    let halfh = h / 2;
     for (let i = 0; i < p.positions.length; i += 3) {
 
         j = Math.floor(i / 3);
 
-        x = (j % 640);
+        x = (j % conf.kinect.res.width);
         // y must be flipped since kinect's coordinate system has +y going down and threejs has +y going up.
-        y = 480 - (Math.floor(j / 640));
+        y = conf.kinect.res.height - (Math.floor(j / conf.kinect.res.width));
 
-        p.positions[i  ] = x;
-        p.positions[i+1] = y;
+        p.positions[i  ] = x - halfw; // subtract half to center the particles on origin
+        p.positions[i+1] = y - halfh; // subtract half to center the particles on origin
         p.positions[i+2] = 0;
     }
     return p.positions;
@@ -134,7 +145,7 @@ function position_camera() {
     camera.position.x = myconf.camera.x;
     camera.position.y = myconf.camera.y;
     camera.position.z = myconf.camera.z;
-    camera.lookAt(myconf.camera.origin);
+    camera.lookAt(p.system.position);
 }
 
 

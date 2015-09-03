@@ -14,7 +14,7 @@ export default class flow_field extends mod {
         gfx.set(this, '2d');
 
         // enable hand/object tracking
-        this.add_effect('handtracking');
+        this.add_effect('handtracking2d');
 
         // set your name and title for your mod so we can display it on the
         // screen!

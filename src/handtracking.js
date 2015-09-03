@@ -1,16 +1,16 @@
 /* global width, height */
 
-import effect from 'effect';
-
 const THRESHOLD_MIN = 600;
 const THRESHOLD_MAX = 700;
 const NEW_WEIGHT = 0.4;
 
-export default class cube_effect {
+export default class handtracking {
     constructor(gfx) {
         gfx.hand = {};
 
         this.prevhand = { x: 0, y: 0 };
+        this.avgx = 0;
+        this.avgy = 0;
     }
     update(gfx) {
 
@@ -30,19 +30,26 @@ export default class cube_effect {
         }
 
         if (count > 0) {
-            let avgx = gfx.conf.kinect.res.width  - sumx / count;
-            let avgy = gfx.conf.kinect.res.height - sumy / count;
+            this.avgx = gfx.conf.kinect.res.width - sumx / count;
+            this.avgy = sumy / count;
 
-            avgx *= width  / gfx.conf.kinect.res.width;
-            avgy *= height / gfx.conf.kinect.res.height;
+            // allow subclasses to perform scaling, flippig, etc, based on the
+            // needs of their coordinate systems
+            this.rescale(gfx);
 
-            gfx.hand.x = this.prevhand.x * (1-NEW_WEIGHT) + avgx * NEW_WEIGHT;
-            gfx.hand.y = this.prevhand.y * (1-NEW_WEIGHT) + avgy * NEW_WEIGHT;
+            gfx.hand.x = this.prevhand.x * (1-NEW_WEIGHT) + this.avgx * NEW_WEIGHT;
+            gfx.hand.y = this.prevhand.y * (1-NEW_WEIGHT) + this.avgy * NEW_WEIGHT;
 
             this.prevhand.x = gfx.hand.x;
             this.prevhand.y = gfx.hand.y;
+
+            document.querySelector('#coords').innerHTML = gfx.hand.x.toFixed() + ', ' + gfx.hand.y.toFixed();
         }
 
     }
-    destroy() {}
+    rescale(gfx) {
+    }
+    destroy(gfx) {
+        delete gfx.hand;
+    }
 }

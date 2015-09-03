@@ -20,7 +20,8 @@ export default class torus_effect {
         scene.add( torus );
 
         gfx.gl.camera.lookAt(torus.position);
-        gfx.gl.camera.position.z = 30;
+
+        console.log(torus.position);
 
         gfx.gl.material = material;
         gfx.gl.geometry = geometry;

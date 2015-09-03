@@ -4,12 +4,15 @@
 uniform float particle_size;
 
 varying vec3 pos;
-varying float z;
 
 void main() {
 
     pos = position;
-    z = pos.z;
+
+    if ( pos.z < 600.0 || pos.z > 700.0 )
+        pos.z = -1.0; // frag shader knows not to display these
+    else
+        pos.z = 0.0; // frag shader knows TO display these
 
     gl_Position  = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
     gl_PointSize = particle_size;
