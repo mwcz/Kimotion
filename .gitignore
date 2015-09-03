@@ -35,3 +35,6 @@ server/fakenect_params.sh
 
 # no pyc
 *.pyc
+
+# ignore recording files
+server/*.bin
