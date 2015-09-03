@@ -1,3 +1,4 @@
+import THREE from 'threejs';
 import mod from 'mod';
 import * as frag from 'text!./shaders/particle.frag';
 import * as vert from 'text!./shaders/vertex.vert';
@@ -7,6 +8,15 @@ const THRESHOLD_MAX = 700;
 const NUM_BUBBLES = 4;
 const WAIT = 10;
 
+/**
+ * these would be a good range to put the snake bits in
+ * X: -320..+320
+ * Y: -240..+240
+ * Z: whatevs!
+ *
+ * as in, snake_bit.position.x = 120; for example
+ */
+
 export default class snake extends mod {
     constructor(gfx) {
         super(gfx);
@@ -14,6 +24,7 @@ export default class snake extends mod {
         gfx.set(this, '3d');
         this.title = 'snake';
         this.add_effect('particles');
+        this.add_effect('handtracking3d');
 
         let geometry;
         let material;
@@ -46,27 +57,10 @@ export default class snake extends mod {
         if (this.waittimer < 0) {
             this.waittimer = 0;
         }
-        let sumx  = 0;
-        let sumy  = 0;
-        let count = 0;
-
-        for (let i = 0; i < gfx.depth.length; ++i) {
-            let x = i % gfx.conf.kinect.res.width;
-            let y = gfx.conf.kinect.res.height - Math.floor(i / gfx.conf.kinect.res.width);
-
-            if (gfx.depth[i] > THRESHOLD_MIN && gfx.depth[i] < THRESHOLD_MAX) {
-                sumx  += x;
-                sumy  += y;
-                count += 1;
-            }
-        }
-
-        let avgx = sumx / count;
-        let avgy = sumy / count;
         let firstball = 0;
 
-        this.spheres['sphere'+firstball].position.x = avgx;
-        this.spheres['sphere'+firstball].position.y = avgy;
+        this.spheres['sphere'+firstball].position.x = gfx.hand.x;
+        this.spheres['sphere'+firstball].position.y = gfx.hand.y;
         
         let distance;
         let geometry;
@@ -90,13 +84,11 @@ export default class snake extends mod {
             color = Math.random() * (16777215 - 1) + 1;
             material = new THREE.MeshBasicMaterial( {color: color} );
             this.objective = new THREE.Mesh( geometry, material );
-            this.objective.position.x = Math.random() * 500 + 50;
-            this.objective.position.y = Math.random() * 200 + 100;
+            this.objective.position.x = Math.random() * gfx.conf.kinect.res.width - gfx.conf.kinect.res.width/2;
+            this.objective.position.y = Math.random() * gfx.conf.kinect.res.height - gfx.conf.kinect.res.height/2;
             console.log(this.objective.position);
             gfx.gl.scene.add(this.objective);
         }
-
-
 
         let xdiff;
         let ydiff;
