@@ -1,7 +1,6 @@
 Walkthrough
 ===========
 
-
 Welcome to Kimotion Hackathon!  Here you'll learn everything you need to get started with hacking on the Kimotion project.
 
 Step 1: Download and Setup
@@ -47,17 +46,17 @@ You'll need two terminals open for this.
 
 Launch the Python WebSocket server which delivers Kinect data at `ws://localhost:1337`:
 
-    python server/server.py -f PATH_TO_RECORDING
+    python server/server.py -m -f PATH_TO_RECORDING
 
 Or if you chose to use libfreenect and a USB Kinect...
 
     python server/server.py
 
-Also, launch an HTTP server which serves up the Web client at `http://localhost:9000`:
+Also, launch an HTTP server which serves up the Web client at `http://localhost:9001`:
 
     grunt connect
 
-Now, open [localhost:9000](http://localhost:9000) in your favorite browser (so long as it's Firefox or Chrome).
+Now, open [localhost:9001](http://localhost:9001) in your favorite browser (so long as it's Firefox or Chrome).
 
 Step 3: Create your own mod!
 ----------------------------
