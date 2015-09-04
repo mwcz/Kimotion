@@ -2,7 +2,8 @@ Make a Kimotion!
 ================
 
 A spiffy, new, ultra customizable visualization renderer for interactive art
-exhibits.
+exhibits.  A :movie_camera:[video series][videos] exists to demonstrate several
+Kimotion mods!
 
 ![Kimotion sample](src/images/readme_hero.png)
 
@@ -101,3 +102,4 @@ Last years' Exhibit
 [slides]: http://kimotion.xyz/slides/hackathon
 [threejs]: http://threejs.org/
 [p5js]: http://p5js.org/
+[videos]: https://vimeo.com/couchmode/album/3492711
