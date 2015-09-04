@@ -63,17 +63,18 @@ export default class example2d extends mod {
         image(hand_img, gfx.hand.x, gfx.hand.y);
 
         if (this.detectCatch(gfx.hand.x, gfx.hand.y, fish1_x, fish1_y)) {
-		console.log("FISH CAUGHT!");
-                coin_x = fish1_x;
-                coin_y = fish1_y;
+	    console.log("FISH CAUGHT!");
+            coin_x = fish1_x;
+            coin_y = fish1_y;
 
-                image(coin_img, coin_x, coin_y);
-                fish1_x = 3000;
-                fish1_y = random(10, height - fish1_img_height)
+            image(coin_img, coin_x, coin_y);
+            fish1_x = 3000;
+            fish1_y = random(10, height - fish1_img_height);
 	}
 
         if (fish1_x <= -400) {
-		fish1_x = 2400;
+	    fish1_x = 2400;
+            fish1_y = random(10, height - fish1_img_height);
         }
 
         super.update(gfx);
