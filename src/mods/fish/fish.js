@@ -11,9 +11,9 @@ var coin_x;
 var coin_y;
 
 /**
- * Fish class defines a fish
+ * Sprite class defines a simple sprite
  */
-function Fish (img_path, img_height) {
+function Sprite (img_path, img_height) {
     this.img_path = img_path;
     this.img_height = img_height;
     this.x = 0;
@@ -24,7 +24,7 @@ function Fish (img_path, img_height) {
     };
 }
 
-var fish1 = new Fish('mods/fish/assets/fish1.png', 200);
+var fish1 = new Sprite('mods/fish/assets/fish1.png', 200);
 
 export default class fishMod extends mod {
     constructor(gfx) {
