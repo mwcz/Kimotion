@@ -6,23 +6,27 @@ import mod from 'mod';
 var water_img;
 var hand_img;
 
-//fish images
-var fish1_img;
-var fish2_img;
-var fish3_img;
-
 var coin_img;
-
-var fish1_x;
-var fish1_y;
-var fish1_img_height = 200;
-
 var coin_x;
 var coin_y;
 
-export default class example2d extends mod {
-    //public mybg;
+/**
+ * Fish class defines a fish
+ */
+function Fish (img_path, img_height) {
+    this.img_path = img_path;
+    this.img_height = img_height;
+    this.x = 0;
+    this.y = 0;
+    this.img;
+    this.getInfo = function() {
+        return this.img_path + ' ' + this.img_height + ' ' + this.x + ' ' + this.y;
+    };
+}
 
+var fish1 = new Fish('mods/fish/assets/fish1.png', 200);
+
+export default class fishMod extends mod {
     constructor(gfx) {
         super(gfx);
 
@@ -38,8 +42,8 @@ export default class example2d extends mod {
         this.title = 'Fish';
 
         water_img = loadImage("mods/fish/assets/underwater1.jpg");
+        fish1.img = loadImage(fish1.img_path);
         hand_img = loadImage("mods/fish/assets/hand.png");
-        fish1_img = loadImage("mods/fish/assets/fish1.png");
         coin_img = loadImage("mods/fish/assets/coin.png");
 
 	console.log("hello fish");
@@ -47,34 +51,36 @@ export default class example2d extends mod {
 
         background(water_img); 
 
-        fish1_x = 2400;
-        fish1_y = random(10, height - fish1_img_height);
+        fish1.x = 2400;
+        fish1.y = random(10, height - fish1.img_height);
+
+        console.log(fish1.getInfo());
     }
 
     update(gfx) {
-	clear();
+        clear();
         background(water_img);
 
         if (coin_y > -300) {
            image(coin_img, coin_x, coin_y -= 20);
         }
 
-        image(fish1_img, fish1_x -= 10, fish1_y);
+        image(fish1.img, fish1.x -= 10, fish1.y);
         image(hand_img, gfx.hand.x, gfx.hand.y);
 
-        if (this.detectCatch(gfx.hand.x, gfx.hand.y, fish1_x, fish1_y)) {
+        if (this.detectCatch(gfx.hand.x, gfx.hand.y, fish1.x, fish1.y)) {
 	    console.log("FISH CAUGHT!");
-            coin_x = fish1_x;
-            coin_y = fish1_y;
+            coin_x = fish1.x;
+            coin_y = fish1.y;
 
             image(coin_img, coin_x, coin_y);
-            fish1_x = 3000;
-            fish1_y = random(10, height - fish1_img_height);
+            fish1.x = 3000;
+            fish1.y = random(10, height - fish1.img_height);
 	}
 
-        if (fish1_x <= -400) {
-	    fish1_x = 2400;
-            fish1_y = random(10, height - fish1_img_height);
+        if (fish1.x <= -400) {
+	    fish1.x = 2400;
+            fish1.y = random(10, height - fish1.img_height);
         }
 
         super.update(gfx);
