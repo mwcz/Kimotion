@@ -7,8 +7,6 @@ var water_img;
 var hand_img;
 
 var coin_img;
-var coin_x;
-var coin_y;
 
 /**
  * Sprite class defines a simple sprite
@@ -25,6 +23,7 @@ function Sprite (img_path, img_height) {
 }
 
 var fish1 = new Sprite('mods/fish/assets/fish1.png', 200);
+var coin = new Sprite('mods/fish/assets/coin.png', 200);
 
 export default class fishMod extends mod {
     constructor(gfx) {
@@ -61,8 +60,8 @@ export default class fishMod extends mod {
         clear();
         background(water_img);
 
-        if (coin_y > -300) {
-           image(coin_img, coin_x, coin_y -= 20);
+        if (coin.y > -300) {
+           image(coin_img, coin.x, coin.y -= 20);
         }
 
         image(fish1.img, fish1.x -= 10, fish1.y);
@@ -70,10 +69,10 @@ export default class fishMod extends mod {
 
         if (this.detectCatch(gfx.hand.x, gfx.hand.y, fish1.x, fish1.y)) {
 	    console.log("FISH CAUGHT!");
-            coin_x = fish1.x;
-            coin_y = fish1.y;
+            coin.x = fish1.x;
+            coin.y = fish1.y;
 
-            image(coin_img, coin_x, coin_y);
+            image(coin_img, coin.x, coin.y);
             fish1.x = 3000;
             fish1.y = random(10, height - fish1.img_height);
 	}
