@@ -52,6 +52,12 @@ function Sprite (img_height, img_width) {
         // random y position taking into account screen height
         this.y = random(10, height - this.img_height);
     }
+    this.centerX = function() {
+        return this.x + (this.img_width / 2);
+    }
+    this.centerY = function() {
+        return this.y + (this.img_height / 2);
+    }
 }
 
 var fishes = [];
@@ -60,6 +66,9 @@ fishes.push(new Sprite(222, 299));
 fishes.push(new Sprite(222, 299));
 fishes.push(new Sprite(222, 299));
 var fishes_len = fishes.length;
+
+var hand = new Sprite(299, 282);
+hand.img_path = 'mods/fish/assets/hand.png';
 
 var coins = [];
 
@@ -84,7 +93,7 @@ export default class fishMod extends mod {
 
         // load images
         water_img = loadImage("mods/fish/assets/underwater1.jpg");
-        hand_img = loadImage("mods/fish/assets/hand.png");
+        hand.img = loadImage(hand.img_path);
         coin_img = loadImage("mods/fish/assets/coin.png");
 
         // display starting score
@@ -111,12 +120,14 @@ export default class fishMod extends mod {
         // updateh all fish positions
         this.updateFish();
 
-        image(hand_img, gfx.hand.x, gfx.hand.y);
+        hand.x = gfx.hand.x;
+        hand.y = gfx.hand.y;
+        image(hand.img, hand.x, hand.y);
 
         for (var i = 0; i < fishes_len; ++i) {
             var fish = fishes[i];
 
-            if (this.detectCatch(gfx.hand.x, gfx.hand.y, fish.x, fish.y)) {
+            if (this.detectCatch(fish)) {
 	        console.log("FISH CAUGHT!");
 
                 // create a new coin sprite
@@ -143,8 +154,8 @@ export default class fishMod extends mod {
         super.update(gfx);
     }
 
-    detectCatch(hand_x, hand_y, fish_x, fish_y) {
-        if (Math.abs(hand_x - fish_x) <= 100 && Math.abs(hand_y - fish_y) <= 100 ) {
+    detectCatch(fish) {
+        if (Math.abs(hand.centerX() - fish.centerX()) <= 100 && Math.abs(hand.centerY() - fish.centerY()) <= 100 ) {
             return true;
         }
         return false;
