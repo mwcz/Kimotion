@@ -5,7 +5,6 @@ import mod from 'mod';
 
 var water_img;
 var hand_img;
-
 var coin_img;
 
 /**
@@ -58,11 +57,16 @@ export default class fishMod extends mod {
         // initialize all the fishes inital positions, direction, speed
         this.initFish();
 
+        // load images
         water_img = loadImage("mods/fish/assets/underwater1.jpg");
         hand_img = loadImage("mods/fish/assets/hand.png");
         coin_img = loadImage("mods/fish/assets/coin.png");
 
-	console.log("hello fish");
+        // display starting score
+        this.drawScore();
+
+        // start up log
+	console.log("Catch Some Fish!");
         console.log("height: " + height);
         console.log("width: " + width);
 
@@ -73,10 +77,13 @@ export default class fishMod extends mod {
         clear(); // clear the screen to draw the new frame
         background(water_img);
 
+        // draw the score on the top
+        this.drawScore();
+
         // update all coin positions
         this.updateCoins();
 
-        // update all fish positions
+        // updateh all fish positions
         this.updateFish();
 
         image(hand_img, gfx.hand.x, gfx.hand.y);
@@ -127,6 +134,7 @@ export default class fishMod extends mod {
                 score += coin.value;
                 coins.splice(i, 1);  //remove from array
                 console.log("Score: " + score);
+                this.drawScore();
             }
         }
     }
@@ -149,5 +157,12 @@ export default class fishMod extends mod {
                 fish.resetOffScreen();
             }
         }
+    }
+
+    drawScore() {
+        var size = 45
+        textSize(size);
+        fill(255); // text color white
+        text("Score: " + score, (width / 2) - 100, size + 5);
     }
 }
