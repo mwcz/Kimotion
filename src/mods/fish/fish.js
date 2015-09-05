@@ -34,6 +34,7 @@ fishes.push(new Sprite('mods/fish/assets/fish1.png', 222, 299));
 fishes.push(new Sprite('mods/fish/assets/fish1.png', 222, 299));
 fishes.push(new Sprite('mods/fish/assets/fish1.png', 222, 299));
 fishes.push(new Sprite('mods/fish/assets/fish1.png', 222, 299));
+var fishes_len = fishes.length;
 
 var coins = [];
 
@@ -88,7 +89,9 @@ export default class fishMod extends mod {
 
         image(hand_img, gfx.hand.x, gfx.hand.y);
 
-        for (let fish of fishes) {
+        for (var i = 0; i < fishes_len; ++i) {
+            var fish = fishes[i];
+
             if (this.detectCatch(gfx.hand.x, gfx.hand.y, fish.x, fish.y)) {
 	        console.log("FISH CAUGHT!");
 
@@ -124,7 +127,7 @@ export default class fishMod extends mod {
     }
 
     updateCoins() {
-        for (var i = 0; i < coins.length; ++i) {
+        for (var i = 0, l = coins.length; i < l; ++i) {
             var coin = coins[i];
             if (coin.y > 0 - coin.img_height) {
                 // coin is still on screen so move it up
@@ -140,7 +143,9 @@ export default class fishMod extends mod {
     }
 
     initFish() {
-        for (let fish of fishes) {
+        for (var i = 0; i < fishes_len; ++i) {
+            var fish = fishes[i];
+
             // Load their image
             fish.img = loadImage(fish.img_path);
             fish.resetOffScreen();
@@ -148,7 +153,9 @@ export default class fishMod extends mod {
     }
 
     updateFish() {
-        for (let fish of fishes) {
+        for (var i = 0; i < fishes_len; ++i) {
+            var fish = fishes[i];
+
             // draw and move the fish
             image(fish.img, fish.x -= fish.speed, fish.y);
 
