@@ -11,24 +11,27 @@ var coin_img;
 /**
  * Sprite class defines a simple sprite
  */
-function Sprite (img_path, img_height) {
+function Sprite (img_path, img_height, img_width) {
     this.img_path = img_path;
     this.img_height = img_height;
+    this.img_width = img_width;
     this.x = 0;
     this.y = 0;
     this.img;
+    this.speed;
     this.getInfo = function() {
         return this.img_path + ' ' + this.img_height + ' ' + this.x + ' ' + this.y;
     };
     this.resetOffScreen = function() {
-        this.x = 2400;
+        this.x = random(width + this.img_width + 100, width + 2000);
         this.y = random(10, height - this.img_height);
+        this.speed = random(2, 20);
     }
 }
 
 var fishes = [];
-fishes.push(new Sprite('mods/fish/assets/fish1.png', 200));
-fishes.push(new Sprite('mods/fish/assets/fish1.png', 200));
+fishes.push(new Sprite('mods/fish/assets/fish1.png', 222, 299));
+fishes.push(new Sprite('mods/fish/assets/fish1.png', 222, 299));
 
 var coins = [];
 
@@ -56,6 +59,7 @@ export default class fishMod extends mod {
 
 	console.log("hello fish");
         console.log("height: " + height);
+        console.log("width: " + width);
 
         background(water_img); 
     }
@@ -77,7 +81,7 @@ export default class fishMod extends mod {
 	    console.log("FISH CAUGHT!");
 
             // create a new coin sprite
-            var newCoin = new Sprite('mods/fish/assets/coin.png', 200);
+            var newCoin = new Sprite('mods/fish/assets/coin.png', 196, 200);
             console.log(newCoin.getInfo());
 
             // set the new coins position to the same as the caught fish
@@ -125,7 +129,7 @@ export default class fishMod extends mod {
     updateFish() {
         for (let fish of fishes) {
             // draw and move the fish
-            image(fish.img, fish.x -= 10, fish.y);
+            image(fish.img, fish.x -= fish.speed, fish.y);
 
             // if offscreen reset
             if (fish.x <= -400) {
