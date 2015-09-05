@@ -160,6 +160,7 @@ export default class fishMod extends mod {
                 // coin is off screen, remove it from active array and add it to score
                 score += coin.value;
                 coins.splice(i, 1);  //remove from array
+                l--;
                 console.log("Score: " + score);
                 this.drawScore();
             }
