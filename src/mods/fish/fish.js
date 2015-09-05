@@ -25,7 +25,7 @@ function Sprite (img_path, img_height, img_width) {
     this.resetOffScreen = function() {
         this.x = random(width + this.img_width + 100, width + 2000);
         this.y = random(10, height - this.img_height);
-        this.speed = random(2, 20);
+        this.speed = random(5, 30);
     }
 }
 
@@ -76,29 +76,29 @@ export default class fishMod extends mod {
 
         image(hand_img, gfx.hand.x, gfx.hand.y);
 
-/*
-        if (this.detectCatch(gfx.hand.x, gfx.hand.y, fish1.x, fish1.y)) {
-	    console.log("FISH CAUGHT!");
+        for (let fish of fishes) {
+            if (this.detectCatch(gfx.hand.x, gfx.hand.y, fish.x, fish.y)) {
+	        console.log("FISH CAUGHT!");
 
-            // create a new coin sprite
-            var newCoin = new Sprite('mods/fish/assets/coin.png', 196, 200);
-            console.log(newCoin.getInfo());
+                // create a new coin sprite
+                var newCoin = new Sprite('mods/fish/assets/coin.png', 196, 200);
+                console.log(newCoin.getInfo());
 
-            // set the new coins position to the same as the caught fish
-            newCoin.x = fish1.x;
-            newCoin.y = fish1.y;
+                // set the new coins position to the same as the caught fish
+                newCoin.x = fish.x;
+                newCoin.y = fish.y;
 
-            // draw the coin
-            image(coin_img, newCoin.x, newCoin.y);
+                // draw the coin
+                image(coin_img, newCoin.x, newCoin.y);
 
-            // reset the fish position off screen
-            fish1.x = 3000;
-            fish1.y = random(10, height - fish1.img_height);
+                // reset the fish position off screen
+                fish.x = 3000;
+                fish.y = random(10, height - fish.img_height);
 
-            // add the coin to the coins array
-            coins.push(newCoin);
-	}
-*/
+                // add the coin to the coins array
+                coins.push(newCoin);
+	    }
+        }
 
         super.update(gfx);
     }
@@ -132,7 +132,7 @@ export default class fishMod extends mod {
             image(fish.img, fish.x -= fish.speed, fish.y);
 
             // if offscreen reset
-            if (fish.x <= -400) {
+            if (fish.x + fish.img_width <= 0) {
                 fish.resetOffScreen();
             }
         }
