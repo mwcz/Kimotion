@@ -19,6 +19,7 @@ function Sprite (img_path, img_height, img_width) {
     this.y = 0;
     this.img;
     this.speed;
+    this.value;
     this.getInfo = function() {
         return this.img_path + ' ' + this.img_height + ' ' + this.x + ' ' + this.y;
     };
@@ -34,6 +35,8 @@ fishes.push(new Sprite('mods/fish/assets/fish1.png', 222, 299));
 fishes.push(new Sprite('mods/fish/assets/fish1.png', 222, 299));
 
 var coins = [];
+
+var score = 0;
 
 export default class fishMod extends mod {
     constructor(gfx) {
@@ -82,18 +85,19 @@ export default class fishMod extends mod {
 
                 // create a new coin sprite
                 var newCoin = new Sprite('mods/fish/assets/coin.png', 196, 200);
-                console.log(newCoin.getInfo());
 
                 // set the new coins position to the same as the caught fish
                 newCoin.x = fish.x;
                 newCoin.y = fish.y;
 
+                //TODO: set the value based on catch
+                newCoin.value = 10;
+
                 // draw the coin
                 image(coin_img, newCoin.x, newCoin.y);
 
                 // reset the fish position off screen
-                fish.x = 3000;
-                fish.y = random(10, height - fish.img_height);
+                fish.resetOffScreen();
 
                 // add the coin to the coins array
                 coins.push(newCoin);
@@ -111,9 +115,16 @@ export default class fishMod extends mod {
     }
 
     updateCoins() {
-        for (let coin of coins) {
-            if (coin.y > -300) {
-                image(coin_img, coin.x, coin.y -= 20);
+        for (var i = 0; i < coins.length; ++i) {
+            var coin = coins[i];
+            if (coin.y > 0 - coin.img_height) {
+                // coin is still on screen so move it up
+                image(coin_img, coin.x, coin.y -= 18);
+            } else {
+                // coin is off screen, remove it from active array and add it to score
+                score += coin.value;
+                coins.splice(i, 1);  //remove from array
+                console.log("Score: " + score);
             }
         }
     }
