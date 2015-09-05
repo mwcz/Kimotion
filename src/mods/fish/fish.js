@@ -23,7 +23,8 @@ function Sprite (img_path, img_height) {
 }
 
 var fish1 = new Sprite('mods/fish/assets/fish1.png', 200);
-var coin = new Sprite('mods/fish/assets/coin.png', 200);
+
+var coins = [];
 
 export default class fishMod extends mod {
     constructor(gfx) {
@@ -57,24 +58,35 @@ export default class fishMod extends mod {
     }
 
     update(gfx) {
-        clear();
+        clear(); // clear the screen to draw the new frame
         background(water_img);
 
-        if (coin.y > -300) {
-           image(coin_img, coin.x, coin.y -= 20);
-        }
+        // update call coin positions
+        this.updateCoins();
 
         image(fish1.img, fish1.x -= 10, fish1.y);
         image(hand_img, gfx.hand.x, gfx.hand.y);
 
         if (this.detectCatch(gfx.hand.x, gfx.hand.y, fish1.x, fish1.y)) {
 	    console.log("FISH CAUGHT!");
-            coin.x = fish1.x;
-            coin.y = fish1.y;
 
-            image(coin_img, coin.x, coin.y);
+            // create a new coin sprite
+            var newCoin = new Sprite('mods/fish/assets/coin.png', 200);
+            console.log(newCoin.getInfo());
+
+            // set the new coins position to the same as the caught fish
+            newCoin.x = fish1.x;
+            newCoin.y = fish1.y;
+
+            // draw the coin
+            image(coin_img, newCoin.x, newCoin.y);
+
+            // reset the fish position off screen
             fish1.x = 3000;
             fish1.y = random(10, height - fish1.img_height);
+
+            // add the coin to the coins array
+            coins.push(newCoin);
 	}
 
         if (fish1.x <= -400) {
@@ -91,5 +103,13 @@ export default class fishMod extends mod {
             return true;
         }
         return false;
+    }
+
+    updateCoins() {
+        for (let coin of coins) {
+            if (coin.y > -300) {
+                image(coin_img, coin.x, coin.y -= 20);
+            }
+        }
     }
 }
