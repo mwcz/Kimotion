@@ -26,11 +26,13 @@ function Sprite (img_path, img_height, img_width) {
     this.resetOffScreen = function() {
         this.x = random(width + this.img_width + 100, width + 2000);
         this.y = random(10, height - this.img_height);
-        this.speed = random(5, 30);
+        this.speed = random(2, 30);
     }
 }
 
 var fishes = [];
+fishes.push(new Sprite('mods/fish/assets/fish1.png', 222, 299));
+fishes.push(new Sprite('mods/fish/assets/fish1.png', 222, 299));
 fishes.push(new Sprite('mods/fish/assets/fish1.png', 222, 299));
 fishes.push(new Sprite('mods/fish/assets/fish1.png', 222, 299));
 
