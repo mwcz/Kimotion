@@ -7,33 +7,58 @@ var water_img;
 var hand_img;
 var coin_img;
 
+var LEFT = 1;
+var RIGHT = 2;
+
 /**
  * Sprite class defines a simple sprite
  */
-function Sprite (img_path, img_height, img_width) {
-    this.img_path = img_path;
+function Sprite (img_height, img_width) {
+    this.img_path;
     this.img_height = img_height;
     this.img_width = img_width;
     this.x = 0;
     this.y = 0;
     this.img;
-    this.speed;
-    this.value;
+    this.speed = 10;
+    this.value = 10;
+    this.direction = LEFT;
     this.getInfo = function() {
-        return this.img_path + ' ' + this.img_height + ' ' + this.x + ' ' + this.y;
+        return this.img_path + ' ' + this.direction + ' ' + this.speed + ' ' + this.x + ' ' + this.y;
     };
     this.resetOffScreen = function() {
-        this.x = random(width + this.img_width + 100, width + 2000);
+        this.direction = Math.floor(random(LEFT, RIGHT + 1));
+
+        if (this.direction == LEFT) {
+            // reset off right side of screen
+            this.x = random(width + this.img_width + 100, width + 2000);
+
+            // set speed modifier to move from right to left
+            this.speed = random(2, 25);
+
+            // use the left facing fish
+            this.img_path = 'mods/fish/assets/fish1_left.png';
+        } else {
+            // reset off left side of screen
+            this.x = random(0 - this.img_width - 100, 0 - 2000);
+
+            // set speed modifire to move from left to right
+            this.speed = random(-25, -2);
+
+            // use the right facing fish
+            this.img_path = 'mods/fish/assets/fish1_right.png';
+        }
+
+        // random y position taking into account screen height
         this.y = random(10, height - this.img_height);
-        this.speed = random(2, 25);
     }
 }
 
 var fishes = [];
-fishes.push(new Sprite('mods/fish/assets/fish1.png', 222, 299));
-fishes.push(new Sprite('mods/fish/assets/fish1.png', 222, 299));
-fishes.push(new Sprite('mods/fish/assets/fish1.png', 222, 299));
-fishes.push(new Sprite('mods/fish/assets/fish1.png', 222, 299));
+fishes.push(new Sprite(222, 299));
+fishes.push(new Sprite(222, 299));
+fishes.push(new Sprite(222, 299));
+fishes.push(new Sprite(222, 299));
 var fishes_len = fishes.length;
 
 var coins = [];
@@ -50,8 +75,7 @@ export default class fishMod extends mod {
         // enable hand/object tracking
         this.add_effect('handtracking2d');
 
-        // set your name and title for your mod so we can display it on the
-        // screen!
+        // set your name and title for your mod so we can display it
         this.author = 'Jared Sprague';
         this.title = 'Fish';
 
@@ -96,7 +120,7 @@ export default class fishMod extends mod {
 	        console.log("FISH CAUGHT!");
 
                 // create a new coin sprite
-                var newCoin = new Sprite('mods/fish/assets/coin.png', 196, 200);
+                var newCoin = new Sprite(196, 200);
 
                 // set the new coins position to the same as the caught fish
                 newCoin.x = fish.x;
@@ -109,7 +133,7 @@ export default class fishMod extends mod {
                 image(coin_img, newCoin.x, newCoin.y);
 
                 // reset the fish position off screen
-                fish.resetOffScreen();
+                this.resetFish(fish);
 
                 // add the coin to the coins array
                 coins.push(newCoin);
@@ -145,10 +169,7 @@ export default class fishMod extends mod {
     initFish() {
         for (var i = 0; i < fishes_len; ++i) {
             var fish = fishes[i];
-
-            // Load their image
-            fish.img = loadImage(fish.img_path);
-            fish.resetOffScreen();
+            this.resetFish(fish);
         }
     }
 
@@ -160,10 +181,17 @@ export default class fishMod extends mod {
             image(fish.img, fish.x -= fish.speed, fish.y);
 
             // if offscreen reset
-            if (fish.x + fish.img_width <= 0) {
-                fish.resetOffScreen();
+            if (fish.direction == LEFT && fish.x + fish.img_width <= 0) {
+                this.resetFish(fish);
+            } else if (fish.direction == RIGHT && fish.x > width + 10) {
+                this.resetFish(fish);
             }
         }
+    }
+
+    resetFish(fish) {
+        fish.resetOffScreen();
+        fish.img = loadImage(fish.img_path);
     }
 
     drawScore() {
