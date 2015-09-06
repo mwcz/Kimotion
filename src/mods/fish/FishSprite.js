@@ -43,8 +43,8 @@ export default class FishSprite extends Sprite {
             this.x = randomIntInclusive(0 - this.max_outer_x, 0 - this.img_width - 100 - this.min_outer_x);
         }
 
-	// set the speed based on direction and type
-	this.setSpeed();
+        // set the speed based on direction and type
+        this.setSpeed();
 
         // set the image path based on new direction
         this.setImagePath();
@@ -83,15 +83,15 @@ export default class FishSprite extends Sprite {
             abs_speed = randomIntInclusive(14, 25);
         }
 
-	if (this.direction == LEFT) {
+        if (this.direction == LEFT) {
             this.speed = abs_speed;
-	} else {
+        } else {
             this.speed = -abs_speed;
-	}
+        }
     }
 
     setValue() {
-        switch(this.type) {
+        switch (this.type) {
             case BLUE:
                 this.value = 10;
                 break;
