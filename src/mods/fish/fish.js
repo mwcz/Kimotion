@@ -37,7 +37,7 @@ export default class fishMod extends mod {
         this.author = 'Jared Sprague';
         this.title = 'Fish';
 
-        // initialize all the fishes inital positions, direction, speed
+        // initialize all the fishes initial positions, direction, speed
         this.initFish();
 
         // load images
@@ -49,11 +49,11 @@ export default class fishMod extends mod {
         this.drawScore();
 
         // start up log
-	console.log("Catch Some Fish!");
+        console.log("Catch Some Fish!");
         console.log("height: " + height);
         console.log("width: " + width);
 
-        background(water_img); 
+        background(water_img);
     }
 
     update(gfx) {
@@ -66,7 +66,7 @@ export default class fishMod extends mod {
         // update all coin positions
         this.updateCoins();
 
-        // updateh all fish positions
+        // update all fish positions
         this.updateFish();
 
         hand.x = gfx.hand.x;
@@ -77,7 +77,7 @@ export default class fishMod extends mod {
             var fish = fishes[i];
 
             if (this.detectCatch(fish)) {
-	        console.log("FISH CAUGHT!");
+                console.log("FISH CAUGHT!");
 
                 if (fish.type == SHARK) {
                     //TODO: handle sharks
@@ -102,17 +102,14 @@ export default class fishMod extends mod {
 
                 // add the coin to the coins array
                 coins.push(newCoin);
-	    }
+            }
         }
 
         super.update(gfx);
     }
 
     detectCatch(fish) {
-        if (Math.abs(hand.centerX() - fish.centerX()) <= 100 && Math.abs(hand.centerY() - fish.centerY()) <= 100 ) {
-            return true;
-        }
-        return false;
+        return (Math.abs(hand.centerX() - fish.centerX()) <= 100 && Math.abs(hand.centerY() - fish.centerY()) <= 100);
     }
 
     updateCoins() {
@@ -161,7 +158,7 @@ export default class fishMod extends mod {
     }
 
     drawScore() {
-        var size = 45
+        var size = 45;
         textSize(size);
         fill(255); // text color white
         text("Score: " + score, (width / 2) - 100, size + 5);
