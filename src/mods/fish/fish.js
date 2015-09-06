@@ -1,74 +1,23 @@
-/* global rect, background, fill, stroke */
-
 import THREE from 'threejs';
 import mod from 'mod';
+import Sprite from 'mods/fish/Sprite';
+import FishSprite from 'mods/fish/FishSprite';
+import CoinSprite from 'mods/fish/CoinSprite';
+import HandSprite from 'mods/fish/HandSprite';
+import { LEFT, RIGHT, BLUE, RED, PURPLE, SHARK } from "mods/fish/consts.js";
 
 var water_img;
 var hand_img;
 var coin_img;
 
-var LEFT = 1;
-var RIGHT = 2;
-
-/**
- * Sprite class defines a simple sprite
- */
-function Sprite (img_height, img_width) {
-    this.img_path;
-    this.img_height = img_height;
-    this.img_width = img_width;
-    this.x = 0;
-    this.y = 0;
-    this.img;
-    this.speed = 10;
-    this.value = 10;
-    this.direction = LEFT;
-    this.getInfo = function() {
-        return this.img_path + ' ' + this.direction + ' ' + this.speed + ' ' + this.x + ' ' + this.y;
-    };
-    this.resetOffScreen = function() {
-        this.direction = Math.floor(random(LEFT, RIGHT + 1));
-
-        if (this.direction == LEFT) {
-            // reset off right side of screen
-            this.x = random(width + this.img_width + 100, width + 2000);
-
-            // set speed modifier to move from right to left
-            this.speed = random(2, 25);
-
-            // use the left facing fish
-            this.img_path = 'mods/fish/assets/fish1_left.png';
-        } else {
-            // reset off left side of screen
-            this.x = random(0 - this.img_width - 100, 0 - 2000);
-
-            // set speed modifire to move from left to right
-            this.speed = random(-25, -2);
-
-            // use the right facing fish
-            this.img_path = 'mods/fish/assets/fish1_right.png';
-        }
-
-        // random y position taking into account screen height
-        this.y = random(10, height - this.img_height);
-    }
-    this.centerX = function() {
-        return this.x + (this.img_width / 2);
-    }
-    this.centerY = function() {
-        return this.y + (this.img_height / 2);
-    }
-}
-
 var fishes = [];
-fishes.push(new Sprite(222, 299));
-fishes.push(new Sprite(222, 299));
-fishes.push(new Sprite(222, 299));
-fishes.push(new Sprite(222, 299));
+fishes.push(new FishSprite(BLUE));
+fishes.push(new FishSprite(RED));
+fishes.push(new FishSprite(PURPLE));
+fishes.push(new FishSprite(SHARK));
 var fishes_len = fishes.length;
 
-var hand = new Sprite(299, 282);
-hand.img_path = 'mods/fish/assets/hand.png';
+var hand = new HandSprite();
 
 var coins = [];
 
@@ -131,7 +80,7 @@ export default class fishMod extends mod {
 	        console.log("FISH CAUGHT!");
 
                 // create a new coin sprite
-                var newCoin = new Sprite(196, 200);
+                var newCoin = new CoinSprite();
 
                 // set the new coins position to the same as the caught fish
                 newCoin.x = fish.x;
@@ -202,7 +151,7 @@ export default class fishMod extends mod {
     }
 
     resetFish(fish) {
-        fish.resetOffScreen();
+        fish.resetOffScreen(width, height);
         fish.img = loadImage(fish.img_path);
     }
 
