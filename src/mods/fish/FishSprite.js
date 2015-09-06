@@ -19,6 +19,9 @@ export default class FishSprite extends Sprite {
         if (this.type == SHARK) {
             this.max_outer_x = 8000;
             this.min_outer_x = 5000;
+        } else if (this.type == BLUE) {
+            this.max_outer_x = 600;
+            this.min_outer_x = 0;
         } else {
             this.max_outer_x = 2000;
             this.min_outer_x = 0;
