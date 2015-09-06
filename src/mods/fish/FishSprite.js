@@ -26,6 +26,7 @@ export default class FishSprite extends Sprite {
 
         this.setImagePath();
         this.setImageDimensions();
+        this.setValue();
     }
 
     resetOffScreen(screenWidth, screenHeight) {
@@ -84,5 +85,21 @@ export default class FishSprite extends Sprite {
 	} else {
             this.speed = -abs_speed;
 	}
+    }
+
+    setValue() {
+        switch(this.type) {
+            case BLUE:
+                this.value = 10;
+                break;
+            case PURPLE:
+                this.value = 50;
+                break;
+            case RED:
+                this.value = 100;
+                break;
+            default:
+                this.value = 10;
+        }
     }
 }

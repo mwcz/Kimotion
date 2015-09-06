@@ -79,15 +79,20 @@ export default class fishMod extends mod {
             if (this.detectCatch(fish)) {
 	        console.log("FISH CAUGHT!");
 
+                if (fish.type == SHARK) {
+                    //TODO: handle sharks
+                    continue;
+                }
+
                 // create a new coin sprite
                 var newCoin = new CoinSprite();
+
+                // Set the value based on speed
+                newCoin.value = fish.value;
 
                 // set the new coins position to the same as the caught fish
                 newCoin.x = fish.x;
                 newCoin.y = fish.y;
-
-                //TODO: set the value based on catch
-                newCoin.value = 10;
 
                 // draw the coin
                 image(coin_img, newCoin.x, newCoin.y);
