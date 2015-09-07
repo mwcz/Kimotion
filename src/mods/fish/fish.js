@@ -5,6 +5,7 @@ import FishSprite from 'mods/fish/FishSprite';
 import BlueFishSprite from 'mods/fish/BlueFishSprite';
 import RedFishSprite from 'mods/fish/RedFishSprite';
 import PurpleFishSprite from 'mods/fish/PurpleFishSprite';
+import SharkFishSprite from 'mods/fish/SharkFishSprite';
 import CoinSprite from 'mods/fish/CoinSprite';
 import HandSprite from 'mods/fish/HandSprite';
 import { LEFT, RIGHT, BLUE, RED, PURPLE, SHARK } from "mods/fish/consts.js";
@@ -17,7 +18,7 @@ var fishes = [];
 fishes.push(new BlueFishSprite());
 fishes.push(new RedFishSprite());
 fishes.push(new PurpleFishSprite());
-fishes.push(new FishSprite(SHARK));
+fishes.push(new SharkFishSprite());
 var fishes_len = fishes.length;
 
 var hand = new HandSprite();
