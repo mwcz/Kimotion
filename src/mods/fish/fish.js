@@ -2,6 +2,7 @@ import THREE from 'threejs';
 import mod from 'mod';
 import Sprite from 'mods/fish/Sprite';
 import FishSprite from 'mods/fish/FishSprite';
+import BlueFishSprite from 'mods/fish/BlueFishSprite';
 import CoinSprite from 'mods/fish/CoinSprite';
 import HandSprite from 'mods/fish/HandSprite';
 import { LEFT, RIGHT, BLUE, RED, PURPLE, SHARK } from "mods/fish/consts.js";
@@ -11,7 +12,7 @@ var hand_img;
 var coin_img;
 
 var fishes = [];
-fishes.push(new FishSprite(BLUE));
+fishes.push(new BlueFishSprite());
 fishes.push(new FishSprite(RED));
 fishes.push(new FishSprite(PURPLE));
 fishes.push(new FishSprite(SHARK));
@@ -155,6 +156,7 @@ export default class fishMod extends mod {
     resetFish(fish) {
         fish.resetOffScreen(width, height);
         fish.img = loadImage(fish.img_path);
+        fish.logInfo();
     }
 
     drawScore() {

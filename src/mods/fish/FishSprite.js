@@ -6,10 +6,11 @@ export default class FishSprite extends Sprite {
     constructor(type) {
         super();
 
-        // setting the type determines what image to use
         this.type = type;
 
         // defaults
+        this.max_speed = 25;
+        this.min_speed = 2;
         this.speed = -10;
         this.direction = RIGHT;
         this.x = -1000;
@@ -19,9 +20,6 @@ export default class FishSprite extends Sprite {
         if (this.type == SHARK) {
             this.max_outer_x = 8000;
             this.min_outer_x = 5000;
-        } else if (this.type == BLUE) {
-            this.max_outer_x = 600;
-            this.min_outer_x = 0;
         } else {
             this.max_outer_x = 2000;
             this.min_outer_x = 0;
@@ -53,8 +51,8 @@ export default class FishSprite extends Sprite {
         this.y = randomIntInclusive(10, screenHeight - this.img_height);
     }
 
-    getInfo() {
-        console.log('FishSprite: ' + this.id + ' ' + this.type + ' ' + this.x + ' ' + this.y);
+    logInfo() {
+        console.log('FishSprite: ' + this.id + ' ' + this.type + ' ' + this.x + ' ' + this.y + ' ' + this.speed);
     }
 
     setImagePath() {
@@ -72,11 +70,10 @@ export default class FishSprite extends Sprite {
     }
 
     setSpeed() {
-        var abs_speed;
+        var abs_speed = randomIntInclusive(this.min_speed, this.max_speed);
+
         if (this.type == SHARK) {
             abs_speed = randomIntInclusive(10, 25);
-        } else if (this.type == BLUE) {
-            abs_speed = randomIntInclusive(2, 7);
         } else if (this.type == PURPLE) {
             abs_speed = randomIntInclusive(7, 14);
         } else if (this.type == RED) {
@@ -92,17 +89,12 @@ export default class FishSprite extends Sprite {
 
     setValue() {
         switch (this.type) {
-            case BLUE:
-                this.value = 10;
-                break;
             case PURPLE:
                 this.value = 50;
                 break;
             case RED:
                 this.value = 100;
                 break;
-            default:
-                this.value = 10;
         }
     }
 }

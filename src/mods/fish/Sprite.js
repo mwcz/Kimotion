@@ -19,7 +19,7 @@ export default class Sprite {
         return this.y + (this.img_height / 2);
     }
 
-    getInfo() {
+    logInfo() {
         console.log('Sprite: ' + this.id + ' ' + this.x + ' ' + this.y);
     }
 }
