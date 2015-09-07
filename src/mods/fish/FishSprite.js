@@ -76,8 +76,6 @@ export default class FishSprite extends Sprite {
             abs_speed = randomIntInclusive(10, 25);
         } else if (this.type == PURPLE) {
             abs_speed = randomIntInclusive(7, 14);
-        } else if (this.type == RED) {
-            abs_speed = randomIntInclusive(14, 25);
         }
 
         if (this.direction == LEFT) {
@@ -91,9 +89,6 @@ export default class FishSprite extends Sprite {
         switch (this.type) {
             case PURPLE:
                 this.value = 50;
-                break;
-            case RED:
-                this.value = 100;
                 break;
         }
     }
