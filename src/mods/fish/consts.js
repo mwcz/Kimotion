@@ -4,3 +4,6 @@ export const BLUE = 'blue';
 export const RED = 'red';
 export const PURPLE = 'purple';
 export const SHARK = 'shark';
+export const FREEZE_THROTTLE = 200;
+export const BITE_FREEZ_FRAMES = 100;
+export const HAND_IMG_SWAP_DELAY = 10;

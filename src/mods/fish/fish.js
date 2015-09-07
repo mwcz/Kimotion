@@ -8,10 +8,9 @@ import PurpleFishSprite from 'mods/fish/PurpleFishSprite';
 import SharkFishSprite from 'mods/fish/SharkFishSprite';
 import CoinSprite from 'mods/fish/CoinSprite';
 import HandSprite from 'mods/fish/HandSprite';
-import { LEFT, RIGHT, BLUE, RED, PURPLE, SHARK } from "mods/fish/consts.js";
+import { LEFT, RIGHT, BLUE, RED, PURPLE, SHARK, FREEZE_THROTTLE, HAND_IMG_SWAP_DELAY, BITE_FREEZ_FRAMES } from "mods/fish/consts.js";
 
 var water_img;
-var hand_img;
 var coin_img;
 
 var fishes = [];
@@ -41,12 +40,17 @@ export default class fishMod extends mod {
         this.author = 'Jared Sprague';
         this.title = 'Fish';
 
+        // init game state
+        this.freezeFrames = 0;  // how many frames to freeze
+        this.freezeDelay = 0;   // how long you must wait before freezing again;
+
         // initialize all the fishes initial positions, direction, speed
         this.initFish();
 
         // load images
         water_img = loadImage("mods/fish/assets/underwater1.jpg");
         hand.img = loadImage(hand.img_path);
+        hand.img_red = loadImage(hand.img_red_path);
         coin_img = loadImage("mods/fish/assets/coin.png");
 
         // display starting score
@@ -61,6 +65,26 @@ export default class fishMod extends mod {
     }
 
     update(gfx) {
+        if (this.freezeFrames > 0) {
+            this.freezeFrames--;
+
+            // flash hand red
+            if (hand.img_swap_count > 0) {
+                hand.img_swap_count--;
+            } else {
+                hand.img_swap_count = HAND_IMG_SWAP_DELAY;
+                hand.toggleRedAnimatedImg();
+            }
+            image(hand.img_red_animated, hand.x, hand.y);
+
+            return; // freeze this frame
+        } else if (this.freezeDelay > 0) {
+            this.freezeDelay--;  // throttle frame freezes
+        } else {
+            hand.recentSharkBite = false;
+            hand.img_swap_count = HAND_IMG_SWAP_DELAY;
+        }
+
         clear(); // clear the screen to draw the new frame
         background(water_img);
 
@@ -80,11 +104,11 @@ export default class fishMod extends mod {
         for (var i = 0; i < fishes_len; ++i) {
             var fish = fishes[i];
 
-            if (this.detectCatch(fish)) {
-                console.log("FISH CAUGHT!");
+            if (this.detectIntersect(fish)) {
+                console.log("HAND INTERSECTED SOMETHING!");
 
                 if (fish.type == SHARK) {
-                    //TODO: handle sharks
+                    this.handleSharkBite(fish);
                     continue;
                 }
 
@@ -112,7 +136,7 @@ export default class fishMod extends mod {
         super.update(gfx);
     }
 
-    detectCatch(fish) {
+    detectIntersect(fish) {
         return (Math.abs(hand.centerX() - fish.centerX()) <= 100 && Math.abs(hand.centerY() - fish.centerY()) <= 100);
     }
 
@@ -167,5 +191,27 @@ export default class fishMod extends mod {
         textSize(size);
         fill(255); // text color white
         text("Score: " + score, (width / 2) - 100, size + 5);
+    }
+
+    handleSharkBite(shark) {
+        if (hand.recentSharkBite) {
+            console.log('shark bite to recent, do nothing.');
+            return; // do nothing if we recently were bitten by shark
+        }
+
+        // freeze frame for a few sec
+        this.freezeFrames = BITE_FREEZ_FRAMES;
+        this.freezeDelay = FREEZE_THROTTLE;
+
+        // reset this shark, remove him from screen
+        this.resetFish(shark);
+
+        // Flash hand red
+        hand.recentSharkBite = true;
+        hand.setRed();
+
+        // deduct life
+
+        // check for Game Over:
     }
 }
