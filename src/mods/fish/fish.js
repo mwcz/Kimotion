@@ -8,7 +8,7 @@ import PurpleFishSprite from 'mods/fish/PurpleFishSprite';
 import SharkFishSprite from 'mods/fish/SharkFishSprite';
 import CoinSprite from 'mods/fish/CoinSprite';
 import HandSprite from 'mods/fish/HandSprite';
-import { LEFT, RIGHT, BLUE, RED, PURPLE, SHARK, FREEZE_THROTTLE, HAND_IMG_SWAP_DELAY, BITE_FREEZ_FRAMES } from "mods/fish/consts.js";
+import { LEFT, RIGHT, SHARK, FREEZE_THROTTLE, HAND_IMG_SWAP_DELAY, BITE_FREEZE_FRAMES } from "mods/fish/consts.js";
 
 var water_img;
 var coin_img;
@@ -200,7 +200,7 @@ export default class fishMod extends mod {
         }
 
         // freeze frame for a few sec
-        this.freezeFrames = BITE_FREEZ_FRAMES;
+        this.freezeFrames = BITE_FREEZE_FRAMES;
         this.freezeDelay = FREEZE_THROTTLE;
 
         // reset this shark, remove him from screen
