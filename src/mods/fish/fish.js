@@ -4,6 +4,7 @@ import Sprite from 'mods/fish/Sprite';
 import FishSprite from 'mods/fish/FishSprite';
 import BlueFishSprite from 'mods/fish/BlueFishSprite';
 import RedFishSprite from 'mods/fish/RedFishSprite';
+import GoldFishSprite from 'mods/fish/GoldFishSprite';
 import PurpleFishSprite from 'mods/fish/PurpleFishSprite';
 import SharkFishSprite from 'mods/fish/SharkFishSprite';
 import CoinSprite from 'mods/fish/CoinSprite';
@@ -16,10 +17,10 @@ var coin_img;
 var fishes = [];
 fishes.push(new BlueFishSprite());
 fishes.push(new BlueFishSprite());
-fishes.push(new BlueFishSprite());
 fishes.push(new PurpleFishSprite());
 fishes.push(new PurpleFishSprite());
 fishes.push(new RedFishSprite());
+fishes.push(new GoldFishSprite());
 fishes.push(new SharkFishSprite());
 var fishes_len = fishes.length;
 
@@ -215,8 +216,6 @@ export default class fishMod extends mod {
         hand.recentSharkBite = true;
         hand.setRed();
 
-        // deduct life
-
-        // check for Game Over:
+        //TODO: do something bad to the player like lose life or points
     }
 }

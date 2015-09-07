@@ -3,6 +3,7 @@ export const RIGHT = 1;
 export const BLUE = 'blue';
 export const RED = 'red';
 export const PURPLE = 'purple';
+export const GOLD = 'gold';
 export const SHARK = 'shark';
 export const FREEZE_THROTTLE = 200;
 export const BITE_FREEZE_FRAMES = 100;
