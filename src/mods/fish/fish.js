@@ -15,8 +15,11 @@ var coin_img;
 
 var fishes = [];
 fishes.push(new BlueFishSprite());
-fishes.push(new RedFishSprite());
+fishes.push(new BlueFishSprite());
+fishes.push(new BlueFishSprite());
 fishes.push(new PurpleFishSprite());
+fishes.push(new PurpleFishSprite());
+fishes.push(new RedFishSprite());
 fishes.push(new SharkFishSprite());
 var fishes_len = fishes.length;
 
@@ -68,14 +71,16 @@ export default class fishMod extends mod {
         if (this.freezeFrames > 0) {
             this.freezeFrames--;
 
-            // flash hand red
-            if (hand.img_swap_count > 0) {
-                hand.img_swap_count--;
-            } else {
-                hand.img_swap_count = HAND_IMG_SWAP_DELAY;
-                hand.toggleRedAnimatedImg();
+            if (hand.recentSharkBite) {
+                // flash hand red
+                if (hand.img_swap_count > 0) {
+                    hand.img_swap_count--;
+                } else {
+                    hand.img_swap_count = HAND_IMG_SWAP_DELAY;
+                    hand.toggleRedAnimatedImg();
+                }
+                image(hand.img_red_animated, hand.x, hand.y);
             }
-            image(hand.img_red_animated, hand.x, hand.y);
 
             return; // freeze this frame
         } else if (this.freezeDelay > 0) {
