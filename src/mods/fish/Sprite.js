@@ -2,7 +2,7 @@ import { randomIntInclusive } from "mods/fish/utils.js";
 
 export default class Sprite {
     constructor() {
-        this.id = 'Sprite-' + randomIntInclusive(1, 1000); // uniquenes not important
+        this.id = 'Sprite-' + randomIntInclusive(1, 1000); // uniqueness not important
         this.img_path;
         this.img_height;
         this.img_width;
