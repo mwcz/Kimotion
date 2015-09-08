@@ -9,6 +9,7 @@ import PurpleFishSprite from 'mods/fish/PurpleFishSprite';
 import SharkFishSprite from 'mods/fish/SharkFishSprite';
 import CoinSprite from 'mods/fish/CoinSprite';
 import HandSprite from 'mods/fish/HandSprite';
+import ChestSprite from 'mods/fish/ChestSprite';
 import { LEFT, RIGHT, SHARK, FREEZE_THROTTLE, HAND_IMG_SWAP_DELAY, BITE_FREEZE_FRAMES } from "mods/fish/consts.js";
 
 var water_img;
@@ -54,16 +55,15 @@ export default class fishMod extends mod {
         hand.img = loadImage(hand.img_path);
         hand.img_red = loadImage(hand.img_red_path);
         coin_img = loadImage("mods/fish/assets/coin.png");
-
-        // display starting score
-        this.drawScore();
+        this.chest = new ChestSprite();
+        this.chest.img = loadImage(this.chest.img_path);
+        this.chest.x = (width / 2) - 150;
+        this.chest.y = 5;
 
         // start up log
         console.log("Catch Some Fish!");
         console.log("height: " + height);
         console.log("width: " + width);
-
-        background(water_img);
     }
 
     update(gfx) {
@@ -91,6 +91,9 @@ export default class fishMod extends mod {
 
         clear(); // clear the screen to draw the new frame
         background(water_img);
+
+        // draw the treasure chest icon at the top
+        image(this.chest.img, this.chest.x, this.chest.y);
 
         // update all fish positions
         this.updateFish();
@@ -166,10 +169,12 @@ export default class fishMod extends mod {
     }
 
     drawScore() {
-        var size = 45;
+        var size = 55;
         textSize(size);
         fill(255); // text color white
-        text("$" + score, (width / 2) - 100, size + 5);
+
+        // Draw to the right of the chest
+        text("$" + score, this.chest.x + this.chest.img_width + 10, size + 5);
     }
 
     handleSharkBite(shark) {
