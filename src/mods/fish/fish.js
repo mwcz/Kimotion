@@ -24,6 +24,8 @@ fishes.push(new GoldFishSprite());
 fishes.push(new SharkFishSprite());
 var fishes_len = fishes.length;
 
+var score = 0;
+
 export default class fishMod extends mod {
     constructor(gfx) {
         super(gfx);
@@ -41,7 +43,6 @@ export default class fishMod extends mod {
         // init game vars
         this.coins = [];
         this.negativeCoins = [];
-        this.score = 0;
         this.hand = new HandSprite();
 
         // initialize all the fishes initial positions, direction, speed
@@ -74,8 +75,13 @@ export default class fishMod extends mod {
         this.updateFish();
 
         // update any particles
-        this.updateCoins();
-        this.updateNegativeCoins();
+        this.updateCoins(this.coins, function (coin) {
+            return coin.y > (0 - coin.img_height)
+        }, this.updateScore);
+        this.updateCoins(this.negativeCoins, function (coin) {
+            return coin.y < height
+        }, function () {
+        });
 
         this.updateHand(gfx);
 
@@ -168,17 +174,21 @@ export default class fishMod extends mod {
         fish.logInfo();
     }
 
+    updateScore(coin) {
+        score += coin.value;
+    }
+
     drawScore() {
         var size = 55;
         textSize(size);
         fill(255); // text color white
 
         // Draw to the right of the chest
-        text(this.score, this.chest.x + this.chest.img_width + 10, size + 5);
+        text(score, this.chest.x + this.chest.img_width + 10, size + 5);
     }
 
     handleSharkBite(shark) {
-        if (this.hand.recentSharkBite || this.score <= 0) {
+        if (this.hand.recentSharkBite || score <= 0) {
             return; // do nothing if we recently were bitten by shark
         }
 
@@ -190,36 +200,24 @@ export default class fishMod extends mod {
         // Remove coins
         for (var i = 0; i < shark.coin_penalty; i++) {
             var coin = this.createCoinParticle(this.chest.x, this.chest.y, 0, 0.1, random(-2, 2), random(-0.1, 11));
-            this.score -= coin.value;
+            score -= coin.value;
             this.negativeCoins.push(coin);
         }
-        if (this.score < 0) {
-            this.score = 0;  // don't let score go negative
+        if (score < 0) {
+            score = 0;  // don't let score go negative
         }
     }
 
-    updateCoins() {
-        for (var i = this.coins.length - 1; i >= 0; i--) {
-            var coin = this.coins[i];
-            if (coin.y > 0 - coin.img_height) {
+    updateCoins(coinArray, isVisibleCallback, offScreenCallback) {
+        for (var i = coinArray.length - 1; i >= 0; i--) {
+            var coin = coinArray[i];
+            if (isVisibleCallback(coin)) {
                 coin.update();
                 image(coin_img, coin.x, coin.y);
             } else {
-                // coin is off screen, remove it from active array and add it to score
-                this.score += coin.value;
-                this.coins.splice(i, 1);  //remove from array
-            }
-        }
-    }
-
-    updateNegativeCoins() {
-        for (var i = this.negativeCoins.length - 1; i >= 0; i--) {
-            var coin = this.negativeCoins[i];
-            if (coin.y < height) {
-                coin.update();
-                image(coin_img, coin.x, coin.y);
-            } else {
-                this.negativeCoins.splice(i, 1);  //remove from array
+                // coin is off screen, remove it from active array and add execute offscreen callback
+                offScreenCallback(coin);
+                coinArray.splice(i, 1);  //remove from array
             }
         }
     }
