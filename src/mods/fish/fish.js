@@ -7,12 +7,11 @@ import RedFishSprite from 'mods/fish/RedFishSprite';
 import GoldFishSprite from 'mods/fish/GoldFishSprite';
 import PurpleFishSprite from 'mods/fish/PurpleFishSprite';
 import SharkFishSprite from 'mods/fish/SharkFishSprite';
-import CoinSprite from 'mods/fish/CoinSprite';
 import HandSprite from 'mods/fish/HandSprite';
+import CoinParticle from 'mods/fish/CoinParticle';
 import ChestSprite from 'mods/fish/ChestSprite';
-import { LEFT, RIGHT, SHARK, FREEZE_THROTTLE, HAND_IMG_SWAP_DELAY, BITE_FREEZE_FRAMES } from "mods/fish/consts.js";
+import { LEFT, RIGHT, SHARK, HAND_IMG_SWAP_DELAY } from "mods/fish/consts.js";
 
-var water_img;
 var coin_img;
 
 var fishes = [];
@@ -24,10 +23,6 @@ fishes.push(new RedFishSprite());
 fishes.push(new GoldFishSprite());
 fishes.push(new SharkFishSprite());
 var fishes_len = fishes.length;
-
-var hand = new HandSprite();
-var coins = [];
-var score = 0;
 
 export default class fishMod extends mod {
     constructor(gfx) {
@@ -44,16 +39,19 @@ export default class fishMod extends mod {
         this.title = 'Fish';
 
         // init game vars
-        this.freezeFrames = 0;  // how many frames to freeze
-        this.freezeDelay = 0;   // how long you must wait before freezing again;
+        this.coins = [];
+        this.negativeCoins = [];
+        this.score = 0;
+        this.hand = new HandSprite();
 
         // initialize all the fishes initial positions, direction, speed
         this.initFish();
 
         // load images
-        water_img = loadImage("mods/fish/assets/underwater1.jpg");
-        hand.img = loadImage(hand.img_path);
-        hand.img_red = loadImage(hand.img_red_path);
+        this.water_img = loadImage("mods/fish/assets/underwater1.jpg");
+        this.hand.img = loadImage(this.hand.img_path);
+        this.hand.img_red = loadImage(this.hand.img_red_path);
+        this.hand.resetState();
         coin_img = loadImage("mods/fish/assets/coin.png");
         this.chest = new ChestSprite();
         this.chest.img = loadImage(this.chest.img_path);
@@ -64,63 +62,34 @@ export default class fishMod extends mod {
         console.log("Catch Some Fish!");
         console.log("height: " + height);
         console.log("width: " + width);
+
+        this.drawStaticElements();
     }
 
     update(gfx) {
-        if (this.freezeFrames > 0) {
-            this.freezeFrames--;
-
-            if (hand.recentSharkBite) {
-                // flash hand red
-                if (hand.img_swap_count > 0) {
-                    hand.img_swap_count--;
-                } else {
-                    hand.img_swap_count = HAND_IMG_SWAP_DELAY;
-                    hand.toggleRedAnimatedImg();
-                }
-                image(hand.img_red_animated, hand.x, hand.y);
-            }
-
-            return; // freeze this frame
-        } else if (this.freezeDelay > 0) {
-            this.freezeDelay--;  // throttle frame freezes
-        } else {
-            hand.recentSharkBite = false;
-            hand.img_swap_count = HAND_IMG_SWAP_DELAY;
-        }
-
         clear(); // clear the screen to draw the new frame
-        background(water_img);
-
-        // draw the treasure chest icon at the top
-        image(this.chest.img, this.chest.x, this.chest.y);
+        this.drawStaticElements();
 
         // update all fish positions
         this.updateFish();
 
         // update any particles
         this.updateCoins();
+        this.updateNegativeCoins();
 
-        hand.x = gfx.hand.x;
-        hand.y = gfx.hand.y;
-        image(hand.img, hand.x, hand.y);
+        this.updateHand(gfx);
 
         for (var i = 0; i < fishes_len; ++i) {
             var fish = fishes[i];
 
             if (this.detectIntersect(fish)) {
-                console.log("HAND INTERSECTED SOMETHING!");
-
                 if (fish.type == SHARK) {
                     this.handleSharkBite(fish);
                 } else {
                     for (var i = 0; i < fish.coin_num; i++) {
                         // create a new coin particle
-                        var position = createVector(fish.x, fish.y);
-                        var acceleration = createVector(0, -0.2);
-                        var velocity = createVector(random(-5, 5), random(-0.5, 3.5));
-                        var newCoin = new CoinSprite(position, acceleration, velocity);
-                        coins.push(newCoin);
+                        var coin = this.createCoinParticle(fish.x, fish.y, 0, -0.2, random(-5, 5), random(-0.5, 3.5));
+                        this.coins.push(coin);
                     }
 
                     // reset the fish position off screen
@@ -135,8 +104,25 @@ export default class fishMod extends mod {
         super.update(gfx);
     }
 
+    updateHand(gfx) {
+        this.hand.x = gfx.hand.x;
+        this.hand.y = gfx.hand.y;
+        if (this.hand.toggle_frames > 0) {
+            if (this.hand.img_swap_count > 0) {
+                this.hand.img_swap_count--;
+            } else {
+                this.hand.img_swap_count = HAND_IMG_SWAP_DELAY;
+                this.hand.toggleRedAnimatedImg();
+            }
+            this.hand.toggle_frames--;
+        } else if (this.hand.recentSharkBite) {
+            this.hand.resetState();
+        }
+        image(this.hand.img_red_animated, this.hand.x, this.hand.y);
+    }
+
     detectIntersect(fish) {
-        return (Math.abs(hand.centerX() - fish.centerX()) <= 100 && Math.abs(hand.centerY() - fish.centerY()) <= 100);
+        return (Math.abs(this.hand.centerX() - fish.centerX()) <= 100 && Math.abs(this.hand.centerY() - fish.centerY()) <= 100);
     }
 
     initFish() {
@@ -144,6 +130,13 @@ export default class fishMod extends mod {
             var fish = fishes[i];
             this.resetFish(fish);
         }
+    }
+
+    drawStaticElements() {
+        background(this.water_img);
+        // draw the treasure chest icon at the top
+        image(this.chest.img, this.chest.x, this.chest.y);
+        this.drawScore();
     }
 
     updateFish() {
@@ -162,6 +155,13 @@ export default class fishMod extends mod {
         }
     }
 
+    createCoinParticle(x, y, accel_x, accel_y, vel_x, vel_y) {
+        var position = createVector(x, y);
+        var acceleration = createVector(accel_x, accel_y);
+        var velocity = createVector(vel_x, vel_y);
+        return new CoinParticle(position, acceleration, velocity);
+    }
+
     resetFish(fish) {
         fish.resetOffScreen(width, height);
         fish.img = loadImage(fish.img_path);
@@ -174,39 +174,52 @@ export default class fishMod extends mod {
         fill(255); // text color white
 
         // Draw to the right of the chest
-        text("$" + score, this.chest.x + this.chest.img_width + 10, size + 5);
+        text(this.score, this.chest.x + this.chest.img_width + 10, size + 5);
     }
 
     handleSharkBite(shark) {
-        if (hand.recentSharkBite) {
-            console.log('shark bite to recent, do nothing.');
+        if (this.hand.recentSharkBite || this.score <= 0) {
             return; // do nothing if we recently were bitten by shark
         }
 
-        // freeze frame for a few sec
-        this.freezeFrames = BITE_FREEZE_FRAMES;
-        this.freezeDelay = FREEZE_THROTTLE;
-
-        // reset this shark, remove him from screen
-        this.resetFish(shark);
-
         // Flash hand red
-        hand.recentSharkBite = true;
-        hand.setRed();
+        this.hand.recentSharkBite = true;
+        this.hand.toggle_frames = 100;
+        this.hand.setRed();
 
-        //TODO: do something bad to the player like lose life or points
+        // Remove coins
+        for (var i = 0; i < shark.coin_penalty; i++) {
+            var coin = this.createCoinParticle(this.chest.x, this.chest.y, 0, 0.1, random(-2, 2), random(-0.1, 11));
+            this.score -= coin.value;
+            this.negativeCoins.push(coin);
+        }
+        if (this.score < 0) {
+            this.score = 0;  // don't let score go negative
+        }
     }
 
     updateCoins() {
-        for (var i = coins.length - 1; i >= 0; i--) {
-            var coin = coins[i];
+        for (var i = this.coins.length - 1; i >= 0; i--) {
+            var coin = this.coins[i];
             if (coin.y > 0 - coin.img_height) {
                 coin.update();
                 image(coin_img, coin.x, coin.y);
             } else {
                 // coin is off screen, remove it from active array and add it to score
-                score += coin.value;
-                coins.splice(i, 1);  //remove from array
+                this.score += coin.value;
+                this.coins.splice(i, 1);  //remove from array
+            }
+        }
+    }
+
+    updateNegativeCoins() {
+        for (var i = this.negativeCoins.length - 1; i >= 0; i--) {
+            var coin = this.negativeCoins[i];
+            if (coin.y < height) {
+                coin.update();
+                image(coin_img, coin.x, coin.y);
+            } else {
+                this.negativeCoins.splice(i, 1);  //remove from array
             }
         }
     }

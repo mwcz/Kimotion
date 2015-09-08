@@ -16,6 +16,8 @@ export default class HandSprite extends Sprite {
         this.img_swap_count = HAND_IMG_SWAP_DELAY;
         this.is_red = false;
         this.img_red_animated = this.img;
+
+        this.toggle_frames = 0;
     }
 
     setRed() {
@@ -23,13 +25,22 @@ export default class HandSprite extends Sprite {
         this.img_red_animated = this.img_red;
     }
 
+    setYellow() {
+        this.is_red = false;
+        this.img_red_animated = this.img;
+    }
+
     toggleRedAnimatedImg() {
         if (!this.is_red) {
-            this.is_red = true;
-            this.img_red_animated = this.img_red;
+            this.setRed();
         } else {
-            this.is_red = false;
-            this.img_red_animated = this.img;
+            this.setYellow();
         }
+    }
+
+    resetState() {
+        this.recentSharkBite = false;
+        this.img_swap_count = HAND_IMG_SWAP_DELAY;
+        this.setYellow();
     }
 }

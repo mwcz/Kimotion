@@ -18,5 +18,7 @@ export default class SharkFishSprite extends FishSprite {
         this.min_speed = 10;
 
         this.value = -100;
+
+        this.coin_penalty = 10;
     }
 }

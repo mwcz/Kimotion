@@ -1,8 +1,8 @@
-import Sprite from "mods/fish/Sprite";
+import Particle from "mods/fish/Particle";
 
-export default class CoinSprite extends Sprite {
+export default class CoinParticle extends Particle {
     constructor(position, acceleration, velocity) {
-        super();
+        super(position, acceleration, velocity);
 
         // default coin values
         this.value = 100;
@@ -10,9 +10,8 @@ export default class CoinSprite extends Sprite {
         this.img_width = 200;
 
         // particle vars
-        this.position = position;
-        this.acceleration = acceleration;
-        this.velocity = velocity;
+        this.x = position.x;
+        this.y = position.y;
     }
 
     /**
