@@ -2,7 +2,8 @@ import * as modctrl from 'modctrl';
 import gfx from 'gfx';
 
 function create() {
-    modctrl.create(gfx);
+    let modname = location.hash.replace(/^#/, '');
+    modctrl.create(gfx, modname);
     update();
 }
 

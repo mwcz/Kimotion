@@ -22,10 +22,12 @@ dependencies.
  - [NumPy][numpy]: Fedora: `yum install numpy`, Ubuntu: `apt-get install
    python-numpy`
 
-You may optionally also install [libfreenect][freenect], which you'll need in
-order to hook up a real Kinect via USB.  If you plan to use Kimotion's replay
-capability, you won't need freenect (there are two recordings you can use in
-the `server` directory).
+You may optionally also install [libfreenect][freenect] (with python
+bindings), which you'll need in order to hook up a real Kinect via USB.
+If you plan to use Kimotion's replay capability, you won't need freenect
+(there are two recordings you can use in the `server` directory).  On
+Fedora, `yum install libfreenect libfreenect-python`, on Ubuntu:
+`apt-get install freenect python-freenect`.
 
 Once all that stuff is installed, clone this repo (or fork it and clone your
 fork), cd into it and...
