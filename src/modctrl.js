@@ -1,5 +1,5 @@
 import $ from 'zepto';
-import { indexOf, without, keys, sample, range, size } from 'lodash';
+import { contains, indexOf, without, keys, sample, range, size } from 'lodash';
 import * as mods from 'mods';
 
 // choose a random mod to be the starting one
@@ -26,6 +26,8 @@ function set(modname) {
 
     create(gfx);
 
+    location.hash = modname;
+
     // display the title and author
     display_title.text(curmod.title);
     display_author.text(curmod.author);
@@ -46,9 +48,14 @@ function update(_gfx) {
     modcount = size(modnames); // probably need this for DIY station mods
 }
 
-function create(_gfx) {
-    gfx = _gfx;
-    curmod = new mods[modnames[i]](gfx);
+function create(_gfx, modname=modnames[i]) {
+    if (contains(modnames, modname)) {
+        gfx = _gfx;
+        curmod = new mods[modname](gfx);
+    }
+    else {
+        console.error(`Attempted to create nonexistant mod ${modname}`);
+    }
 }
 
 export {
