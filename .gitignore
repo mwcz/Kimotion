@@ -38,3 +38,7 @@ server/fakenect_params.sh
 
 # ignore recording files
 server/*.bin
+
+# ignore WebStorm files
+.idea
+*-compiled*
