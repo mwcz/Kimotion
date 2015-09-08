@@ -92,7 +92,7 @@ export default class fishMod extends mod {
                 if (fish.type == SHARK) {
                     this.handleSharkBite(fish);
                 } else {
-                    for (var i = 0; i < fish.coin_num; i++) {
+                    for (var j = 0; j < fish.coin_num; j++) {
                         // create a new coin particle
                         var coin = this.createCoinParticle(fish.x, fish.y, 0, -0.2, random(-5, 5), random(-0.5, 3.5));
                         this.coins.push(coin);
