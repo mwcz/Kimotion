@@ -8,6 +8,7 @@ var params = {spiral_strength:40.0};
 export default class spiral extends mod {
     constructor(gfx) {
         super(gfx);
+        gfx.set(this, '3d');
 
         gfx.conf.gui.add(params, 'spiral_strength', 0, 500.0)
             .step(1)
