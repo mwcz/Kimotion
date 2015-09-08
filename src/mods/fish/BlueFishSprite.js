@@ -17,6 +17,6 @@ export default class BlueFishSprite extends FishSprite {
         this.max_speed = 6;
         this.min_speed = 2;
 
-        this.value = 10;
+        this.coin_num = 1;  // how many coins does the fish release
     }
 }

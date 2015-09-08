@@ -25,9 +25,7 @@ fishes.push(new SharkFishSprite());
 var fishes_len = fishes.length;
 
 var hand = new HandSprite();
-
 var coins = [];
-
 var score = 0;
 
 export default class fishMod extends mod {
@@ -44,7 +42,7 @@ export default class fishMod extends mod {
         this.author = 'Jared Sprague';
         this.title = 'Fish';
 
-        // init game state
+        // init game vars
         this.freezeFrames = 0;  // how many frames to freeze
         this.freezeDelay = 0;   // how long you must wait before freezing again;
 
@@ -94,14 +92,11 @@ export default class fishMod extends mod {
         clear(); // clear the screen to draw the new frame
         background(water_img);
 
-        // draw the score on the top
-        this.drawScore();
-
-        // update all coin positions
-        this.updateCoins();
-
         // update all fish positions
         this.updateFish();
+
+        // update any particles
+        this.updateCoins();
 
         hand.x = gfx.hand.x;
         hand.y = gfx.hand.y;
@@ -115,52 +110,30 @@ export default class fishMod extends mod {
 
                 if (fish.type == SHARK) {
                     this.handleSharkBite(fish);
-                    continue;
+                } else {
+                    for (var i = 0; i < fish.coin_num; i++) {
+                        // create a new coin particle
+                        var position = createVector(fish.x, fish.y);
+                        var acceleration = createVector(0, -0.2);
+                        var velocity = createVector(random(-5, 5), random(-0.5, 3.5));
+                        var newCoin = new CoinSprite(position, acceleration, velocity);
+                        coins.push(newCoin);
+                    }
+
+                    // reset the fish position off screen
+                    this.resetFish(fish);
                 }
-
-                // create a new coin sprite
-                var newCoin = new CoinSprite();
-
-                // Set the value based on speed
-                newCoin.value = fish.value;
-
-                // set the new coins position to the same as the caught fish
-                newCoin.x = fish.x;
-                newCoin.y = fish.y;
-
-                // draw the coin
-                image(coin_img, newCoin.x, newCoin.y);
-
-                // reset the fish position off screen
-                this.resetFish(fish);
-
-                // add the coin to the coins array
-                coins.push(newCoin);
             }
         }
+
+        // Update the players score
+        this.drawScore();
 
         super.update(gfx);
     }
 
     detectIntersect(fish) {
         return (Math.abs(hand.centerX() - fish.centerX()) <= 100 && Math.abs(hand.centerY() - fish.centerY()) <= 100);
-    }
-
-    updateCoins() {
-        for (var i = 0, l = coins.length; i < l; ++i) {
-            var coin = coins[i];
-            if (coin.y > 0 - coin.img_height) {
-                // coin is still on screen so move it up
-                image(coin_img, coin.x, coin.y -= 18);
-            } else {
-                // coin is off screen, remove it from active array and add it to score
-                score += coin.value;
-                coins.splice(i, 1);  //remove from array
-                l--;
-                console.log("Score: " + score);
-                this.drawScore();
-            }
-        }
     }
 
     initFish() {
@@ -177,7 +150,7 @@ export default class fishMod extends mod {
             // draw and move the fish
             image(fish.img, fish.x -= fish.speed, fish.y);
 
-            // if offscreen reset
+            // if off screen reset
             if (fish.direction == LEFT && fish.x + fish.img_width <= 0) {
                 this.resetFish(fish);
             } else if (fish.direction == RIGHT && fish.x > width + 10) {
@@ -196,7 +169,7 @@ export default class fishMod extends mod {
         var size = 45;
         textSize(size);
         fill(255); // text color white
-        text("Score: " + score, (width / 2) - 100, size + 5);
+        text("$" + score, (width / 2) - 100, size + 5);
     }
 
     handleSharkBite(shark) {
@@ -217,5 +190,19 @@ export default class fishMod extends mod {
         hand.setRed();
 
         //TODO: do something bad to the player like lose life or points
+    }
+
+    updateCoins() {
+        for (var i = coins.length - 1; i >= 0; i--) {
+            var coin = coins[i];
+            if (coin.y > 0 - coin.img_height) {
+                coin.update();
+                image(coin_img, coin.x, coin.y);
+            } else {
+                // coin is off screen, remove it from active array and add it to score
+                score += coin.value;
+                coins.splice(i, 1);  //remove from array
+            }
+        }
     }
 }

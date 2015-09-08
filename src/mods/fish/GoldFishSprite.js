@@ -8,14 +8,16 @@ export default class GoldFishSprite extends FishSprite {
 
         this.type = GOLD;
 
-        this.max_outer_x = 10000;
-        this.min_outer_x = 7000;
+        this.max_outer_x = 8000;
+        this.min_outer_x = 5000;
 
         this.img_height = 222;
         this.img_width = 299;
 
-        this.max_speed = 20;
-        this.min_speed = 15;
+        this.max_speed = 16;
+        this.min_speed = 11;
+
+        this.coin_num = 10;  // how many coins does the fish release
 
         this.value = 1000;
     }

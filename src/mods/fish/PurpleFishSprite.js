@@ -17,6 +17,6 @@ export default class PurpleFishSprite extends FishSprite {
         this.max_speed = 14;
         this.min_speed = 7;
 
-        this.value = 50;
+        this.coin_num = 2;  // how many coins does the fish release
     }
 }
