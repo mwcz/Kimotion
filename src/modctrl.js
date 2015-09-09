@@ -54,7 +54,9 @@ function create(_gfx, modname=modnames[i]) {
         curmod = new mods[modname](gfx);
     }
     else {
-        console.error(`Attempted to create nonexistant mod ${modname}`);
+        gfx = _gfx;
+        curmod = new mods[modnames[i]](gfx);
+        location.hash = modnames[i];
     }
 }
 
