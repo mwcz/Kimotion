@@ -10,7 +10,7 @@ import SharkFishSprite from 'mods/fish/SharkFishSprite';
 import HandSprite from 'mods/fish/HandSprite';
 import CoinParticle from 'mods/fish/CoinParticle';
 import ChestSprite from 'mods/fish/ChestSprite';
-import { LEFT, RIGHT, SHARK, HAND_IMG_SWAP_DELAY } from "mods/fish/consts.js";
+import { LEFT, RIGHT, SHARK, GOLD, BLUE, PURPLE, RED, HAND_IMG_SWAP_DELAY } from "mods/fish/consts.js";
 
 var coin_img;
 
@@ -22,7 +22,16 @@ fishes.push(new PurpleFishSprite());
 fishes.push(new RedFishSprite());
 fishes.push(new GoldFishSprite());
 fishes.push(new SharkFishSprite());
-var fishes_len = fishes.length;
+
+var score = 0;
+
+var params = {
+    numSharks: 2,
+    numGolden: 1,
+    numBlue: 3,
+    numPurple: 1,
+    numRed: 1
+};
 
 export default class fishMod extends mod {
     constructor(gfx) {
@@ -30,6 +39,38 @@ export default class fishMod extends mod {
 
         // enable 2D mode (see http://p5js.org/ for tutorials and such!)
         gfx.set(this, '2d');
+
+        // setup config GUI
+        gfx.conf.gui.add(params, 'numSharks', 0, 5)
+            .step(1)
+            .name('Num Sharks')
+            .onChange(function (value) {
+                changeFishes(SHARK, value, SharkFishSprite);
+            });
+        gfx.conf.gui.add(params, 'numGolden', 0, 5)
+            .step(1)
+            .name('Num Golden')
+            .onChange(function (value) {
+                changeFishes(GOLD, value, GoldFishSprite);
+            });
+        gfx.conf.gui.add(params, 'numBlue', 0, 5)
+            .step(1)
+            .name('Num Blue')
+            .onChange(function (value) {
+                changeFishes(BLUE, value, BlueFishSprite);
+            });
+        gfx.conf.gui.add(params, 'numPurple', 0, 5)
+            .step(1)
+            .name('Num Purple')
+            .onChange(function (value) {
+                changeFishes(PURPLE, value, PurpleFishSprite);
+            });
+        gfx.conf.gui.add(params, 'numRed', 0, 5)
+            .step(1)
+            .name('Num Red')
+            .onChange(function (value) {
+                changeFishes(RED, value, RedFishSprite);
+            });
 
         // enable hand/object tracking
         this.add_effect('handtracking2d');
@@ -41,7 +82,6 @@ export default class fishMod extends mod {
         // init game vars
         this.coins = [];
         this.negativeCoins = [];
-        this.score = 0;
         this.hand = new HandSprite();
 
         // initialize all the fishes initial positions, direction, speed
@@ -66,6 +106,7 @@ export default class fishMod extends mod {
         this.drawStaticElements();
     }
 
+
     update(gfx) {
         clear(); // clear the screen to draw the new frame
         this.drawStaticElements();
@@ -74,19 +115,24 @@ export default class fishMod extends mod {
         this.updateFish();
 
         // update any particles
-        this.updateCoins();
-        this.updateNegativeCoins();
+        this.updateCoins(this.coins, function (coin) {
+            return coin.y > (0 - coin.img_height)
+        }, this.updateScore);
+        this.updateCoins(this.negativeCoins, function (coin) {
+            return coin.y < height
+        }, function () {
+        });
 
         this.updateHand(gfx);
 
-        for (var i = 0; i < fishes_len; ++i) {
+        for (var i = 0; i < fishes.length; ++i) {
             var fish = fishes[i];
 
             if (this.detectIntersect(fish)) {
                 if (fish.type == SHARK) {
                     this.handleSharkBite(fish);
                 } else {
-                    for (var i = 0; i < fish.coin_num; i++) {
+                    for (var j = 0; j < fish.coin_num; j++) {
                         // create a new coin particle
                         var coin = this.createCoinParticle(fish.x, fish.y, 0, -0.2, random(-5, 5), random(-0.5, 3.5));
                         this.coins.push(coin);
@@ -126,7 +172,7 @@ export default class fishMod extends mod {
     }
 
     initFish() {
-        for (var i = 0; i < fishes_len; ++i) {
+        for (var i = 0; i < fishes.length; ++i) {
             var fish = fishes[i];
             this.resetFish(fish);
         }
@@ -140,7 +186,7 @@ export default class fishMod extends mod {
     }
 
     updateFish() {
-        for (var i = 0; i < fishes_len; ++i) {
+        for (var i = 0; i < fishes.length; ++i) {
             var fish = fishes[i];
 
             // draw and move the fish
@@ -168,17 +214,21 @@ export default class fishMod extends mod {
         fish.logInfo();
     }
 
+    updateScore(coin) {
+        score += coin.value;
+    }
+
     drawScore() {
         var size = 55;
         textSize(size);
         fill(255); // text color white
 
         // Draw to the right of the chest
-        text(this.score, this.chest.x + this.chest.img_width + 10, size + 5);
+        text(score, this.chest.x + this.chest.img_width + 10, size + 5);
     }
 
     handleSharkBite(shark) {
-        if (this.hand.recentSharkBite || this.score <= 0) {
+        if (this.hand.recentSharkBite || score <= 0) {
             return; // do nothing if we recently were bitten by shark
         }
 
@@ -190,37 +240,49 @@ export default class fishMod extends mod {
         // Remove coins
         for (var i = 0; i < shark.coin_penalty; i++) {
             var coin = this.createCoinParticle(this.chest.x, this.chest.y, 0, 0.1, random(-2, 2), random(-0.1, 11));
-            this.score -= coin.value;
+            score -= coin.value;
             this.negativeCoins.push(coin);
         }
-        if (this.score < 0) {
-            this.score = 0;  // don't let score go negative
+        if (score < 0) {
+            score = 0;  // don't let score go negative
         }
     }
 
-    updateCoins() {
-        for (var i = this.coins.length - 1; i >= 0; i--) {
-            var coin = this.coins[i];
-            if (coin.y > 0 - coin.img_height) {
+    updateCoins(coinArray, isVisibleCallback, offScreenCallback) {
+        for (var i = coinArray.length - 1; i >= 0; i--) {
+            var coin = coinArray[i];
+            if (isVisibleCallback(coin)) {
                 coin.update();
                 image(coin_img, coin.x, coin.y);
             } else {
-                // coin is off screen, remove it from active array and add it to score
-                this.score += coin.value;
-                this.coins.splice(i, 1);  //remove from array
+                // coin is off screen, remove it from active array and add execute offscreen callback
+                offScreenCallback(coin);
+                coinArray.splice(i, 1);  //remove from array
             }
         }
     }
+}
 
-    updateNegativeCoins() {
-        for (var i = this.negativeCoins.length - 1; i >= 0; i--) {
-            var coin = this.negativeCoins[i];
-            if (coin.y < height) {
-                coin.update();
-                image(coin_img, coin.x, coin.y);
-            } else {
-                this.negativeCoins.splice(i, 1);  //remove from array
-            }
+/**
+ * Event handler for gui param slider to change fish counts
+ */
+function changeFishes(type, value, spriteClass) {
+    console.log('changeFishes type: ' + type + ' ' + value);
+    // clear current fish of type
+    for (var i = fishes.length - 1; i >= 0; i--) {
+        let fish = fishes[i];
+        if (fish.type == type) {
+            fishes.splice(i, 1);
         }
+    }
+
+    // add new number of fish
+    for (var i = 0; i < value; i++) {
+        let fishSprite = new spriteClass();
+
+        fishSprite.resetOffScreen(width, height);
+        fishSprite.img = loadImage(fishSprite.img_path);
+        fishSprite.logInfo();
+        fishes.push(fishSprite);
     }
 }
