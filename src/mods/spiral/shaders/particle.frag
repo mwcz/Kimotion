@@ -22,6 +22,8 @@ float lerp(float n, float low, float high) {
 }
 
 void main() {
+    float alpha = 1.0;
+
     if ( z <= MID_Z ) {
         float ns = lerp(z, NEAR_Z, MID_Z);
         color = ( 1.0-ns ) * near_color + ns * mid_color;
@@ -31,5 +33,8 @@ void main() {
         color = ( 1.0-fs ) * mid_color + fs * far_color;
     }
 
-    gl_FragColor = vec4(color, 1.0);
+    if ( z > MAX_Z )
+        alpha = 0.0;
+
+    gl_FragColor = vec4(color, alpha);
 }
