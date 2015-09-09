@@ -13,21 +13,12 @@ import ChestSprite from 'mods/fish/ChestSprite';
 import { LEFT, RIGHT, SHARK, GOLD, BLUE, PURPLE, RED, HAND_IMG_SWAP_DELAY } from "mods/fish/consts.js";
 
 var coin_img;
-
 var fishes = [];
-fishes.push(new BlueFishSprite());
-fishes.push(new BlueFishSprite());
-fishes.push(new PurpleFishSprite());
-fishes.push(new PurpleFishSprite());
-fishes.push(new RedFishSprite());
-fishes.push(new GoldFishSprite());
-fishes.push(new SharkFishSprite());
-
 var score = 0;
 
 var params = {
     numSharks: 2,
-    numGolden: 1,
+    numGolden: 2,
     numBlue: 3,
     numPurple: 1,
     numRed: 1
@@ -41,36 +32,11 @@ export default class fishMod extends mod {
         gfx.set(this, '2d');
 
         // setup config GUI
-        gfx.conf.gui.add(params, 'numSharks', 0, 5)
-            .step(1)
-            .name('Num Sharks')
-            .onChange(function (value) {
-                changeFishes(SHARK, value, SharkFishSprite);
-            });
-        gfx.conf.gui.add(params, 'numGolden', 0, 5)
-            .step(1)
-            .name('Num Golden')
-            .onChange(function (value) {
-                changeFishes(GOLD, value, GoldFishSprite);
-            });
-        gfx.conf.gui.add(params, 'numBlue', 0, 5)
-            .step(1)
-            .name('Num Blue')
-            .onChange(function (value) {
-                changeFishes(BLUE, value, BlueFishSprite);
-            });
-        gfx.conf.gui.add(params, 'numPurple', 0, 5)
-            .step(1)
-            .name('Num Purple')
-            .onChange(function (value) {
-                changeFishes(PURPLE, value, PurpleFishSprite);
-            });
-        gfx.conf.gui.add(params, 'numRed', 0, 5)
-            .step(1)
-            .name('Num Red')
-            .onChange(function (value) {
-                changeFishes(RED, value, RedFishSprite);
-            });
+        this.addFishSliderGUI(gfx, 'numSharks', 'Num Sharks', SHARK, SharkFishSprite);
+        this.addFishSliderGUI(gfx, 'numGolden', 'Num Golden', GOLD, GoldFishSprite);
+        this.addFishSliderGUI(gfx, 'numBlue', 'Num Blue', BLUE, BlueFishSprite);
+        this.addFishSliderGUI(gfx, 'numPurple', 'Num Purple', PURPLE, PurpleFishSprite);
+        this.addFishSliderGUI(gfx, 'numRed', 'Num Red', RED, RedFishSprite);
 
         // enable hand/object tracking
         this.add_effect('handtracking2d');
@@ -83,6 +49,13 @@ export default class fishMod extends mod {
         this.coins = [];
         this.negativeCoins = [];
         this.hand = new HandSprite();
+
+        // populate fish from initial params
+        changeFishes(SHARK, params.numSharks, SharkFishSprite);
+        changeFishes(GOLD, params.numGolden, GoldFishSprite);
+        changeFishes(BLUE, params.numBlue, BlueFishSprite);
+        changeFishes(PURPLE, params.numPurple, PurpleFishSprite);
+        changeFishes(RED, params.numRed, RedFishSprite);
 
         // initialize all the fishes initial positions, direction, speed
         this.initFish();
@@ -105,7 +78,6 @@ export default class fishMod extends mod {
 
         this.drawStaticElements();
     }
-
 
     update(gfx) {
         clear(); // clear the screen to draw the new frame
@@ -260,6 +232,15 @@ export default class fishMod extends mod {
                 coinArray.splice(i, 1);  //remove from array
             }
         }
+    }
+
+    addFishSliderGUI(gfx, paramName, label, fishType, fishSpriteClass) {
+        gfx.conf.gui.add(params, paramName, 0, 5)
+            .step(1)
+            .name(label)
+            .onChange(function (value) {
+                changeFishes(fishType, value, fishSpriteClass);
+            });
     }
 }
 
