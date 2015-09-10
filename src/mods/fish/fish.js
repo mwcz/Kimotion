@@ -17,6 +17,7 @@ var fishes = [];
 var score = 0;
 
 var params = {
+    apiHost: "localhost",
     numSharks: 2,
     numGolden: 2,
     numBlue: 3,
@@ -32,6 +33,7 @@ export default class fishMod extends mod {
         gfx.set(this, '2d');
 
         // setup config GUI
+        gfx.conf.gui.add(params, "apiHost").name('API Host');
         this.addFishSliderGUI(gfx, 'numSharks', 'Num Sharks', SHARK, SharkFishSprite);
         this.addFishSliderGUI(gfx, 'numGolden', 'Num Golden', GOLD, GoldFishSprite);
         this.addFishSliderGUI(gfx, 'numBlue', 'Num Blue', BLUE, BlueFishSprite);
@@ -241,6 +243,10 @@ export default class fishMod extends mod {
             .onChange(function (value) {
                 changeFishes(fishType, value, fishSpriteClass);
             });
+    }
+
+    postScore() {
+        httpPost('http://' + params.apiHost + '/fishapi/highscores/', {"score":score}, "json");
     }
 }
 
