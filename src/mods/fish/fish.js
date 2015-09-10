@@ -17,6 +17,7 @@ var fishes = [];
 var score = 0;
 
 var params = {
+    enableApi:false,
     apiHost: "localhost",
     numSharks: 2,
     numGolden: 2,
@@ -33,6 +34,7 @@ export default class fishMod extends mod {
         gfx.set(this, '2d');
 
         // setup config GUI
+        gfx.conf.gui.add(params, "enableApi").name('Use API');
         gfx.conf.gui.add(params, "apiHost").name('API Host');
         this.addFishSliderGUI(gfx, 'numSharks', 'Num Sharks', SHARK, SharkFishSprite);
         this.addFishSliderGUI(gfx, 'numGolden', 'Num Golden', GOLD, GoldFishSprite);
@@ -81,8 +83,8 @@ export default class fishMod extends mod {
         this.drawStaticElements();
 
         //TODO: move this to an end game event. It's here for testing purposes.
-        this.postScore();
-        this.getHighScores();
+        //this.postScore();
+        //this.getHighScores();
     }
 
     update(gfx) {
