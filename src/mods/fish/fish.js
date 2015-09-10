@@ -79,6 +79,10 @@ export default class fishMod extends mod {
         console.log("width: " + width);
 
         this.drawStaticElements();
+
+        //TODO: move this to an end game event. It's here for testing purposes.
+        this.postScore();
+        this.getHighScores();
     }
 
     update(gfx) {
@@ -247,6 +251,10 @@ export default class fishMod extends mod {
 
     postScore() {
         httpPost('http://' + params.apiHost + '/fishapi/highscores/', {"score":score}, "json");
+    }
+
+    getHighScores() {
+        this.highScores = loadJSON('http://' + params.apiHost + '/fishapi/highscores/');
     }
 }
 
