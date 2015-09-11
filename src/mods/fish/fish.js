@@ -10,7 +10,7 @@ import SharkFishSprite from 'mods/fish/SharkFishSprite';
 import HandSprite from 'mods/fish/HandSprite';
 import CoinParticle from 'mods/fish/CoinParticle';
 import ChestSprite from 'mods/fish/ChestSprite';
-import { LEFT, RIGHT, SHARK, GOLD, BLUE, PURPLE, RED, HAND_IMG_SWAP_DELAY, ACHIVEMENT_FRAMES } from "mods/fish/consts.js";
+import { LEFT, RIGHT, SHARK, GOLD, BLUE, PURPLE, RED, HAND_IMG_SWAP_DELAY, ACHIVEMENT_FRAMES, WAIT_SOUND_LOAD_FRAMES } from "mods/fish/consts.js";
 
 var fishes = [];
 var score = 0;
@@ -26,6 +26,12 @@ var params = {
 };
 
 var sound_underwater;
+var sound_bite;
+var sound_scream;
+var sound_coin;
+var sound_1up;
+var waitForSoundLoad = WAIT_SOUND_LOAD_FRAMES;
+var ambientSoundPlaying = false;
 
 export default class fishMod extends mod {
     constructor(gfx) {
@@ -52,6 +58,8 @@ export default class fishMod extends mod {
 
         // init game vars
         score = 0;
+        ambientSoundPlaying = false;
+        waitForSoundLoad = WAIT_SOUND_LOAD_FRAMES;
         this.coins = [];
         this.negativeCoins = [];
         this.hand = new HandSprite();
@@ -79,9 +87,12 @@ export default class fishMod extends mod {
         this.chest.x = (width / 2) - 150;
         this.chest.y = 5;
 
-        // TODO: fix sounds, load sounds
-        //sound_underwater = loadSound('mods/fish/assets/sounds/underwater.ogg');
-        //sound_underwater.loop();
+        // load sounds
+        sound_underwater = loadSound('mods/fish/assets/sounds/underwater.ogg');
+        sound_bite = loadSound('mods/fish/assets/sounds/bite.ogg');
+        sound_scream = loadSound('mods/fish/assets/sounds/whscream.ogg');
+        sound_coin = loadSound('mods/fish/assets/sounds/coin.ogg');
+        sound_1up = loadSound('mods/fish/assets/sounds/level_up.ogg');
 
         // start up log
         console.log("Catch Some Fish!");
@@ -98,6 +109,16 @@ export default class fishMod extends mod {
     update(gfx) {
         clear(); // clear the screen to draw the new frame
         this.drawStaticElements();
+
+        if (waitForSoundLoad > 0) {
+            waitForSoundLoad--;
+            return;
+        } else {
+            if (!ambientSoundPlaying) {
+                sound_underwater.loop();
+                ambientSoundPlaying = true;
+            }
+        }
 
         // update all fish positions
         this.updateFish();
@@ -120,6 +141,12 @@ export default class fishMod extends mod {
                 if (fish.type == SHARK) {
                     this.handleSharkBite(fish);
                 } else {
+                    if (fish.type == GOLD) {
+                        sound_1up.play();
+                    } else {
+                        sound_coin.play();
+                    }
+
                     for (var j = 0; j < fish.coin_num; j++) {
                         // create a new coin particle
                         var coin = this.createCoinParticle(fish.x, fish.y, 0, -0.2, random(-5, 5), random(-0.5, 3.5));
@@ -249,6 +276,10 @@ export default class fishMod extends mod {
         this.hand.recentSharkBite = true;
         this.hand.toggle_frames = 100;
         this.hand.setRed();
+
+        // play sounds
+        sound_bite.play();
+        sound_scream.play(0.5);
 
         // Remove coins
         for (var i = 0; i < shark.coin_penalty; i++) {
