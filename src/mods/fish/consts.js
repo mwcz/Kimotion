@@ -6,3 +6,5 @@ export const PURPLE = 'purple';
 export const GOLD = 'gold';
 export const SHARK = 'shark';
 export const HAND_IMG_SWAP_DELAY = 10;
+export const ACHIVEMENT_FRAMES = 250;
+

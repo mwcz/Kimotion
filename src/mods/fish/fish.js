@@ -10,14 +10,13 @@ import SharkFishSprite from 'mods/fish/SharkFishSprite';
 import HandSprite from 'mods/fish/HandSprite';
 import CoinParticle from 'mods/fish/CoinParticle';
 import ChestSprite from 'mods/fish/ChestSprite';
-import { LEFT, RIGHT, SHARK, GOLD, BLUE, PURPLE, RED, HAND_IMG_SWAP_DELAY } from "mods/fish/consts.js";
+import { LEFT, RIGHT, SHARK, GOLD, BLUE, PURPLE, RED, HAND_IMG_SWAP_DELAY, ACHIVEMENT_FRAMES } from "mods/fish/consts.js";
 
-var coin_img;
 var fishes = [];
 var score = 0;
 
 var params = {
-    enableApi:false,
+    enableApi: false,
     apiHost: "localhost",
     numSharks: 2,
     numGolden: 2,
@@ -25,6 +24,8 @@ var params = {
     numPurple: 1,
     numRed: 1
 };
+
+var sound_underwater;
 
 export default class fishMod extends mod {
     constructor(gfx) {
@@ -50,9 +51,12 @@ export default class fishMod extends mod {
         this.title = 'Fish';
 
         // init game vars
+        score = 0;
         this.coins = [];
         this.negativeCoins = [];
         this.hand = new HandSprite();
+        this.over9000AchievedState = 'none';
+        this.displayAchievementFrames = 0;
 
         // populate fish from initial params
         changeFishes(SHARK, params.numSharks, SharkFishSprite);
@@ -69,11 +73,15 @@ export default class fishMod extends mod {
         this.hand.img = loadImage(this.hand.img_path);
         this.hand.img_red = loadImage(this.hand.img_red_path);
         this.hand.resetState();
-        coin_img = loadImage("mods/fish/assets/coin.png");
+        this.coin_img = loadImage("mods/fish/assets/coin.png");
         this.chest = new ChestSprite();
         this.chest.img = loadImage(this.chest.img_path);
         this.chest.x = (width / 2) - 150;
         this.chest.y = 5;
+
+        // TODO: fix sounds, load sounds
+        //sound_underwater = loadSound('mods/fish/assets/sounds/underwater.ogg');
+        //sound_underwater.loop();
 
         // start up log
         console.log("Catch Some Fish!");
@@ -126,6 +134,9 @@ export default class fishMod extends mod {
 
         // Update the players score
         this.drawScore();
+
+        // Display any achievements
+        this.displayAchievements();
 
         super.update(gfx);
     }
@@ -198,6 +209,28 @@ export default class fishMod extends mod {
         score += coin.value;
     }
 
+    displayAchievements() {
+        // IT'S OVER 9000!!!
+        if (score > 9000 && this.over9000AchievedState == 'none') {
+            this.over9000AchievedState = 'display';
+        }
+        if (this.over9000AchievedState == 'display') {
+            textSize(70);
+            fill(255); // text color white
+            let text_x = (width / 2) - 300;
+            if (text_x <= 0) {
+                text_x = 10;
+            }
+
+            text("IT'S OVER 9000!!!!", text_x, height / 2);
+            this.displayAchievementFrames++;
+            if (this.displayAchievementFrames >= ACHIVEMENT_FRAMES) {
+                this.over9000AchievedState = 'done';
+                this.displayAchievementFrames = 0;
+            }
+        }
+    }
+
     drawScore() {
         var size = 55;
         textSize(size);
@@ -233,9 +266,9 @@ export default class fishMod extends mod {
             var coin = coinArray[i];
             if (isVisibleCallback(coin)) {
                 coin.update();
-                image(coin_img, coin.x, coin.y);
+                image(this.coin_img, coin.x, coin.y);
             } else {
-                // coin is off screen, remove it from active array and add execute offscreen callback
+                // coin is off screen, remove it from active array and add execute off screen callback
                 offScreenCallback(coin);
                 coinArray.splice(i, 1);  //remove from array
             }
@@ -252,7 +285,7 @@ export default class fishMod extends mod {
     }
 
     postScore() {
-        httpPost('http://' + params.apiHost + '/fishapi/highscores/', {"score":score}, "json");
+        httpPost('http://' + params.apiHost + '/fishapi/highscores/', {"score": score}, "json");
     }
 
     getHighScores() {
@@ -274,7 +307,7 @@ function changeFishes(type, value, spriteClass) {
     }
 
     // add new number of fish
-    for (var i = 0; i < value; i++) {
+    for (i = 0; i < value; i++) {
         let fishSprite = new spriteClass();
 
         fishSprite.resetOffScreen(width, height);

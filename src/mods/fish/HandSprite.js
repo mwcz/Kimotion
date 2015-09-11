@@ -12,7 +12,7 @@ export default class HandSprite extends Sprite {
 
         this.recentSharkBite = false;
         this.img_red_path = 'mods/fish/assets/hand_red.png';
-        this.img_red;
+        this.img_red = null;
         this.img_swap_count = HAND_IMG_SWAP_DELAY;
         this.is_red = false;
         this.img_red_animated = this.img;
