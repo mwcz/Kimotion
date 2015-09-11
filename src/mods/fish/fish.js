@@ -12,7 +12,6 @@ import CoinParticle from 'mods/fish/CoinParticle';
 import ChestSprite from 'mods/fish/ChestSprite';
 import { LEFT, RIGHT, SHARK, GOLD, BLUE, PURPLE, RED, HAND_IMG_SWAP_DELAY } from "mods/fish/consts.js";
 
-var coin_img;
 var fishes = [];
 var score = 0;
 
@@ -50,6 +49,7 @@ export default class fishMod extends mod {
         this.title = 'Fish';
 
         // init game vars
+        score = 0;
         this.coins = [];
         this.negativeCoins = [];
         this.hand = new HandSprite();
@@ -69,7 +69,7 @@ export default class fishMod extends mod {
         this.hand.img = loadImage(this.hand.img_path);
         this.hand.img_red = loadImage(this.hand.img_red_path);
         this.hand.resetState();
-        coin_img = loadImage("mods/fish/assets/coin.png");
+        this.coin_img = loadImage("mods/fish/assets/coin.png");
         this.chest = new ChestSprite();
         this.chest.img = loadImage(this.chest.img_path);
         this.chest.x = (width / 2) - 150;
@@ -233,7 +233,7 @@ export default class fishMod extends mod {
             var coin = coinArray[i];
             if (isVisibleCallback(coin)) {
                 coin.update();
-                image(coin_img, coin.x, coin.y);
+                image(this.coin_img, coin.x, coin.y);
             } else {
                 // coin is off screen, remove it from active array and add execute offscreen callback
                 offScreenCallback(coin);
