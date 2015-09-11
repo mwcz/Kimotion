@@ -10,7 +10,7 @@ import SharkFishSprite from 'mods/fish/SharkFishSprite';
 import HandSprite from 'mods/fish/HandSprite';
 import CoinParticle from 'mods/fish/CoinParticle';
 import ChestSprite from 'mods/fish/ChestSprite';
-import { LEFT, RIGHT, SHARK, GOLD, BLUE, PURPLE, RED, HAND_IMG_SWAP_DELAY } from "mods/fish/consts.js";
+import { LEFT, RIGHT, SHARK, GOLD, BLUE, PURPLE, RED, HAND_IMG_SWAP_DELAY, ACHIVEMENT_FRAMES } from "mods/fish/consts.js";
 
 var fishes = [];
 var score = 0;
@@ -55,6 +55,8 @@ export default class fishMod extends mod {
         this.coins = [];
         this.negativeCoins = [];
         this.hand = new HandSprite();
+        this.over9000AchievedState = 'none';
+        this.displayAchievementFrames = 0;
 
         // populate fish from initial params
         changeFishes(SHARK, params.numSharks, SharkFishSprite);
@@ -133,6 +135,9 @@ export default class fishMod extends mod {
         // Update the players score
         this.drawScore();
 
+        // Display any achievements
+        this.displayAchievements();
+
         super.update(gfx);
     }
 
@@ -202,6 +207,28 @@ export default class fishMod extends mod {
 
     updateScore(coin) {
         score += coin.value;
+    }
+
+    displayAchievements() {
+        // IT'S OVER 9000!!!
+        if (score > 9000 && this.over9000AchievedState == 'none') {
+            this.over9000AchievedState = 'display';
+        }
+        if (this.over9000AchievedState == 'display') {
+            textSize(70);
+            fill(255); // text color white
+            let text_x = (width / 2) - 300;
+            if (text_x <= 0) {
+                text_x = 10;
+            }
+
+            text("IT'S OVER 9000!!!!", text_x, height / 2);
+            this.displayAchievementFrames++;
+            if (this.displayAchievementFrames >= ACHIVEMENT_FRAMES) {
+                this.over9000AchievedState = 'done';
+                this.displayAchievementFrames = 0;
+            }
+        }
     }
 
     drawScore() {
