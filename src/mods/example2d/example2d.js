@@ -24,7 +24,9 @@ export default class example2d extends mod {
     }
     update(gfx) {
 
-        rect( gfx.hand.x, gfx.hand.y, 60, 60 );
+        if (gfx.hand.x && gfx.hand.y) {
+            rect( gfx.hand.x, gfx.hand.y, 60, 60 );
+        }
 
         super.update(gfx);
     }
