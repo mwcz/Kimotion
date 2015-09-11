@@ -25,6 +25,8 @@ var params = {
     numRed: 1
 };
 
+var sound_underwater;
+
 export default class fishMod extends mod {
     constructor(gfx) {
         super(gfx);
@@ -74,6 +76,10 @@ export default class fishMod extends mod {
         this.chest.img = loadImage(this.chest.img_path);
         this.chest.x = (width / 2) - 150;
         this.chest.y = 5;
+
+        // TODO: fix sounds, load sounds
+        //sound_underwater = loadSound('mods/fish/assets/sounds/underwater.ogg');
+        //sound_underwater.loop();
 
         // start up log
         console.log("Catch Some Fish!");
