@@ -22,15 +22,10 @@ function set(modname) {
     i = indexOf(modnames, modname);
     curmod.destroy(gfx);
     gfx.reset();
-    console.log(`Activating mod: ${modname}`);
 
     create(gfx);
 
     location.hash = modname;
-
-    // display the title and author
-    display_title.text(curmod.title);
-    display_author.text(curmod.author);
 }
 
 function names() {
@@ -49,6 +44,9 @@ function update(_gfx) {
 }
 
 function create(_gfx, modname=modnames[i]) {
+
+    console.log(`Activating mod: ${modname}`);
+
     if (contains(modnames, modname)) {
         gfx = _gfx;
         curmod = new mods[modname](gfx);
@@ -58,6 +56,10 @@ function create(_gfx, modname=modnames[i]) {
         curmod = new mods[modnames[i]](gfx);
         location.hash = modnames[i];
     }
+
+    // display the title and author
+    display_title.text(curmod.title);
+    display_author.text(curmod.author);
 }
 
 export {
