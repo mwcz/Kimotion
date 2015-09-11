@@ -10,5 +10,6 @@ export { default as particles } from './mods/particles/particles';
 export { default as sandstorm } from './mods/sandstorm/sandstorm';
 export { default as snake } from './mods/snake/snake';
 export { default as spiral } from './mods/spiral/spiral';
+export { default as spotlights } from './mods/spotlights/spotlights';
 export { default as storm } from './mods/storm/storm';
 export { default as torus } from './mods/torus/torus';
