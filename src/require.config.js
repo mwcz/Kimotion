@@ -16,7 +16,7 @@ requirejs.config({
         'dat-gui': 'lib/dat-gui/build/dat.gui',
         tinycolor: 'lib/tinycolor/tinycolor',
         zepto: 'lib/zepto/zepto',
-        p5: 'lib/p5.js/lib/p5.min',
+        p5: 'lib/p5.js/docs/js/p5',
         p5sound: 'lib/p5.js/lib/addons/p5.sound',
         p5js: 'lib/p5.js/docs/js/p5',
         nprogress: 'lib/nprogress/nprogress',
