@@ -16,7 +16,7 @@ var fishes = [];
 var score = 0;
 
 var params = {
-    enableApi:false,
+    enableApi: false,
     apiHost: "localhost",
     numSharks: 2,
     numGolden: 2,
@@ -268,7 +268,7 @@ export default class fishMod extends mod {
                 coin.update();
                 image(this.coin_img, coin.x, coin.y);
             } else {
-                // coin is off screen, remove it from active array and add execute offscreen callback
+                // coin is off screen, remove it from active array and add execute off screen callback
                 offScreenCallback(coin);
                 coinArray.splice(i, 1);  //remove from array
             }
@@ -285,7 +285,7 @@ export default class fishMod extends mod {
     }
 
     postScore() {
-        httpPost('http://' + params.apiHost + '/fishapi/highscores/', {"score":score}, "json");
+        httpPost('http://' + params.apiHost + '/fishapi/highscores/', {"score": score}, "json");
     }
 
     getHighScores() {
@@ -307,7 +307,7 @@ function changeFishes(type, value, spriteClass) {
     }
 
     // add new number of fish
-    for (var i = 0; i < value; i++) {
+    for (i = 0; i < value; i++) {
         let fishSprite = new spriteClass();
 
         fishSprite.resetOffScreen(width, height);
