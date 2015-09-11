@@ -10,7 +10,7 @@
     "amd",
     "es6"
   ],
-  "license": "GPLv2",
+  "license": "GPL-2.0",
   "private": true,
   "ignore": [
     "**/.*",
