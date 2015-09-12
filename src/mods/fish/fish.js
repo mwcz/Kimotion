@@ -68,7 +68,7 @@ export default class fishMod extends mod {
         this.gameEndingWarning = 'none';
         this.showHighScoreTable = 'none';
         this.displayMessageFrames = 0;
-        this.highScores = '[]';
+        this.highScores = null;
 
         // populate fish from initial params
         changeFishes(SHARK, params.numSharks, SharkFishSprite);
@@ -129,6 +129,7 @@ export default class fishMod extends mod {
         if (remaining <= 0.7 && this.gameEndingWarning == 'none') {
             this.gameEndingWarning = 'display';
         } else if (remaining <= 0.2 && this.showHighScoreTable == 'none' && params.enableApi) {
+            //TODO: play end game cheering sound
             this.postScore();
             this.getHighScores();
             this.showHighScoreTable = 'display';
@@ -276,25 +277,38 @@ export default class fishMod extends mod {
             this.gameEndingWarning = this.updateMessageFrames();
         }
         // Show high scores
-        else if (this.showHighScoreTable == 'display') {
-            let text_y = 100;
-            let text_height = 60;
-            let len = this.highScores.length > 10 ? 10 : this.highScores.length;
-            text("HIGH SCORES", text_x + 100, text_y += text_height);
-            let currentScoreShown = false;
-            for (var i = 0; i < len; i++) {
-                let obj = this.highScores[i];
-                let h_score = obj.score;
-                if (score > h_score && !currentScoreShown) {
-                    // change text color to yellow to highlight users score
-                    fill(255, 204, 0);
-                    text(score, text_x + 100, text_y += text_height);
-                    currentScoreShown = true;
-                    fill(255); // text color white
-                }
-                text(h_score, text_x + 100, text_y += text_height);
-            }
+        else if (this.highScoresReady()) {
+            this.drawHighScores();
         }
+    }
+
+    drawHighScores() {
+        let text_x = (width / 2) - 300;
+        let text_y = 100;
+        let text_height = 60;
+        let len = this.highScores.length > 10 ? 10 : this.highScores.length;
+        text("HIGH SCORES", text_x, text_y += text_height);
+        let currentScoreShown = false;
+        for (var i = 0; i < len; i++) {
+            let obj = this.highScores[i];
+            let h_score = obj.score;
+            //TODO: handle the case when the current score is equal to a high-score
+            if (!currentScoreShown && score >= h_score) {
+                // change text color to yellow to highlight users score
+                fill(255, 204, 0);
+                text(score + '  <-- YOUR SCORE!', text_x, text_y += text_height);
+                currentScoreShown = true;
+                fill(255); // text color white
+                if (score == h_score) {
+                    continue; // don't double show, sometimes the api is really fast and the current score is included
+                }
+            }
+            text(h_score, text_x, text_y += text_height);
+        }
+    }
+
+    highScoresReady() {
+        return this.showHighScoreTable == 'display' && this.highScores && this.highScores.constructor === Array && this.highScores.length > 0;
     }
 
     updateMessageFrames() {
