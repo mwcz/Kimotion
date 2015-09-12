@@ -88,7 +88,7 @@ export default class fishMod extends mod {
         this.chest.y = 5;
 
         // load sounds
-        sound_underwater = loadSound('mods/fish/assets/sounds/underwater.ogg');
+        sound_underwater = loadSound('mods/fish/assets/sounds/underwater_amp.ogg');
         sound_bite = loadSound('mods/fish/assets/sounds/bite.ogg');
         sound_scream = loadSound('mods/fish/assets/sounds/whscream.ogg');
         sound_coin = loadSound('mods/fish/assets/sounds/coin.ogg');
