@@ -322,6 +322,11 @@ export default class fishMod extends mod {
     getHighScores() {
         this.highScores = loadJSON('http://' + params.apiHost + '/fishapi/highscores/');
     }
+
+    destroy(gfx) {
+        super.destroy(gfx);
+        sound_underwater.stop();
+    }
 }
 
 /**
