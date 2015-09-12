@@ -376,10 +376,6 @@ export default class fishMod extends mod {
     destroy(gfx) {
         super.destroy(gfx);
         sound_underwater.stop();
-        this.over9000AchievedState = 'none';
-        this.gameEndingWarning = 'none';
-        this.showHighScoreTable = 'none';
-        this.displayMessageFrames = 0;
     }
 }
 
