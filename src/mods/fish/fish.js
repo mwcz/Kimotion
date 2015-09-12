@@ -129,7 +129,6 @@ export default class fishMod extends mod {
         if (remaining <= 0.7 && this.gameEndingWarning == 'none') {
             this.gameEndingWarning = 'display';
         } else if (remaining <= 0.2 && this.showHighScoreTable == 'none' && params.enableApi) {
-            //TODO: play end game sound
             this.postScore();
             this.getHighScores();
             this.showHighScoreTable = 'display';
