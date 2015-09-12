@@ -25,12 +25,15 @@ var params = {
     numRed: 1
 };
 
+// Sounds stored
 var sound_underwater;
 var sound_bite;
 var sound_scream;
 var sound_coin;
 var sound_1up;
 var sound_over9000;
+var sound_cheer;
+
 var waitForSoundLoad = WAIT_SOUND_LOAD_FRAMES;
 var ambientSoundPlaying = false;
 
@@ -98,6 +101,7 @@ export default class fishMod extends mod {
         sound_coin = loadSound('mods/fish/assets/sounds/coin.ogg');
         sound_1up = loadSound('mods/fish/assets/sounds/level_up.ogg');
         sound_over9000 = loadSound('mods/fish/assets/sounds/over9000.ogg');
+        sound_cheer = loadSound('mods/fish/assets/sounds/cheer.ogg');
 
         // start up log
         console.log("Catch Some Fish!");
@@ -129,7 +133,8 @@ export default class fishMod extends mod {
         if (remaining <= 0.7 && this.gameEndingWarning == 'none') {
             this.gameEndingWarning = 'display';
         } else if (remaining <= 0.2 && this.showHighScoreTable == 'none' && params.enableApi) {
-            //TODO: play end game cheering sound
+            sound_underwater.stop();
+            sound_cheer.play();
             this.postScore();
             this.getHighScores();
             this.showHighScoreTable = 'display';
