@@ -63,7 +63,7 @@ function set(mod, newtype) {
         else if (type === '3d') {
             delete this.p5;
             scene  = new THREE.Scene();
-            camera = new THREE.PerspectiveCamera( 30, window.innerWidth / window.innerHeight, 0.1, 2200 );
+            camera = new THREE.PerspectiveCamera( 30, window.innerWidth / window.innerHeight, 0.1, 8000 );
             camera.position.x = 0;
             camera.position.y = 0;
             camera.position.z = 1100;
