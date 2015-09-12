@@ -10,7 +10,7 @@ import SharkFishSprite from 'mods/fish/SharkFishSprite';
 import HandSprite from 'mods/fish/HandSprite';
 import CoinParticle from 'mods/fish/CoinParticle';
 import ChestSprite from 'mods/fish/ChestSprite';
-import { LEFT, RIGHT, SHARK, GOLD, BLUE, PURPLE, RED, HAND_IMG_SWAP_DELAY, ACHIVEMENT_FRAMES, WAIT_SOUND_LOAD_FRAMES } from "mods/fish/consts.js";
+import { LEFT, RIGHT, SHARK, GOLD, BLUE, PURPLE, RED, HAND_IMG_SWAP_DELAY, MESSAGE_FRAMES, WAIT_SOUND_LOAD_FRAMES } from "mods/fish/consts.js";
 
 var fishes = [];
 var score = 0;
@@ -30,6 +30,7 @@ var sound_bite;
 var sound_scream;
 var sound_coin;
 var sound_1up;
+var sound_over9000;
 var waitForSoundLoad = WAIT_SOUND_LOAD_FRAMES;
 var ambientSoundPlaying = false;
 
@@ -64,7 +65,10 @@ export default class fishMod extends mod {
         this.negativeCoins = [];
         this.hand = new HandSprite();
         this.over9000AchievedState = 'none';
-        this.displayAchievementFrames = 0;
+        this.gameEndingWarning = 'none';
+        this.showHighScoreTable = 'none';
+        this.displayMessageFrames = 0;
+        this.highScores = '[]';
 
         // populate fish from initial params
         changeFishes(SHARK, params.numSharks, SharkFishSprite);
@@ -93,6 +97,7 @@ export default class fishMod extends mod {
         sound_scream = loadSound('mods/fish/assets/sounds/whscream.ogg');
         sound_coin = loadSound('mods/fish/assets/sounds/coin.ogg');
         sound_1up = loadSound('mods/fish/assets/sounds/level_up.ogg');
+        sound_over9000 = loadSound('mods/fish/assets/sounds/over9000.ogg');
 
         // start up log
         console.log("Catch Some Fish!");
@@ -100,16 +105,16 @@ export default class fishMod extends mod {
         console.log("width: " + width);
 
         this.drawStaticElements();
-
-        //TODO: move this to an end game event. It's here for testing purposes.
-        //this.postScore();
-        //this.getHighScores();
     }
 
     update(gfx) {
+        super.update(gfx);
+        let remaining = gfx.conf.timer.remaining;
+
         clear(); // clear the screen to draw the new frame
         this.drawStaticElements();
 
+        // give sounds a chance to load since we have no preload() function
         if (waitForSoundLoad > 0) {
             waitForSoundLoad--;
             return;
@@ -118,6 +123,21 @@ export default class fishMod extends mod {
                 sound_underwater.loop();
                 ambientSoundPlaying = true;
             }
+        }
+
+        // check the time remaining
+        if (remaining <= 0.7 && this.gameEndingWarning == 'none') {
+            this.gameEndingWarning = 'display';
+        } else if (remaining <= 0.2 && this.showHighScoreTable == 'none' && params.enableApi) {
+            //TODO: play end game sound
+            this.postScore();
+            this.getHighScores();
+            this.showHighScoreTable = 'display';
+            this.displayMessages();
+            return;
+        } else if (this.showHighScoreTable == 'display') {
+            this.displayMessages();
+            return; // wait for game to end
         }
 
         // update all fish positions
@@ -162,10 +182,7 @@ export default class fishMod extends mod {
         // Update the players score
         this.drawScore();
 
-        // Display any achievements
-        this.displayAchievements();
-
-        super.update(gfx);
+        this.displayMessages();
     }
 
     updateHand(gfx) {
@@ -236,25 +253,58 @@ export default class fishMod extends mod {
         score += coin.value;
     }
 
-    displayAchievements() {
+    displayMessages() {
+        let text_x = (width / 2) - 300;
+        textSize(70);
+        fill(255); // text color white
+
+        if (text_x <= 0) {
+            text_x = 10;
+        }
+
         // IT'S OVER 9000!!!
         if (score > 9000 && this.over9000AchievedState == 'none') {
             this.over9000AchievedState = 'display';
+            sound_over9000.play();
         }
         if (this.over9000AchievedState == 'display') {
-            textSize(70);
-            fill(255); // text color white
-            let text_x = (width / 2) - 300;
-            if (text_x <= 0) {
-                text_x = 10;
-            }
-
             text("IT'S OVER 9000!!!!", text_x, height / 2);
-            this.displayAchievementFrames++;
-            if (this.displayAchievementFrames >= ACHIVEMENT_FRAMES) {
-                this.over9000AchievedState = 'done';
-                this.displayAchievementFrames = 0;
+            this.over9000AchievedState = this.updateMessageFrames();
+        }
+        // Game ending warning
+        else if (this.gameEndingWarning == 'display') {
+            text("30 SECONDS LEFT!", text_x, height / 2);
+            this.gameEndingWarning = this.updateMessageFrames();
+        }
+        // Show high scores
+        else if (this.showHighScoreTable == 'display') {
+            let text_y = 100;
+            let text_height = 60;
+            let len = this.highScores.length > 10 ? 10 : this.highScores.length;
+            text("HIGH SCORES", text_x + 100, text_y += text_height);
+            let currentScoreShown = false;
+            for (var i = 0; i < len; i++) {
+                let obj = this.highScores[i];
+                let h_score = obj.score;
+                if (score > h_score && !currentScoreShown) {
+                    // change text color to yellow to highlight users score
+                    fill(255, 204, 0);
+                    text(score, text_x + 100, text_y += text_height);
+                    currentScoreShown = true;
+                    fill(255); // text color white
+                }
+                text(h_score, text_x + 100, text_y += text_height);
             }
+        }
+    }
+
+    updateMessageFrames() {
+        this.displayMessageFrames++;
+        if (this.displayMessageFrames >= MESSAGE_FRAMES) {
+            this.displayMessageFrames = 0;
+            return 'done';
+        } else {
+            return 'display';
         }
     }
 
@@ -326,6 +376,10 @@ export default class fishMod extends mod {
     destroy(gfx) {
         super.destroy(gfx);
         sound_underwater.stop();
+        this.over9000AchievedState = 'none';
+        this.gameEndingWarning = 'none';
+        this.showHighScoreTable = 'none';
+        this.displayMessageFrames = 0;
     }
 }
 
