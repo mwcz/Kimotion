@@ -22,7 +22,8 @@ var params = {
     numGolden: 2,
     numBlue: 3,
     numPurple: 1,
-    numRed: 1
+    numRed: 1,
+    fishSpeed: 1
 };
 
 // Sounds stored
@@ -52,6 +53,7 @@ export default class fishMod extends mod {
         this.addFishSliderGUI(gfx, 'numBlue', 'Num Blue', BLUE, BlueFishSprite);
         this.addFishSliderGUI(gfx, 'numPurple', 'Num Purple', PURPLE, PurpleFishSprite);
         this.addFishSliderGUI(gfx, 'numRed', 'Num Red', RED, RedFishSprite);
+        gfx.conf.gui.add(params, 'fishSpeed', 0, 10).step(0.1).name('Fish Speed');
 
         // enable hand/object tracking
         this.add_effect('handtracking2d');
@@ -230,7 +232,7 @@ export default class fishMod extends mod {
             var fish = fishes[i];
 
             // draw and move the fish
-            image(fish.img, fish.x -= fish.speed, fish.y);
+            image(fish.img, fish.x -= fish.speed * params.fishSpeed, fish.y);
 
             // if off screen reset
             if (fish.direction == LEFT && fish.x + fish.img_width <= 0) {
@@ -251,7 +253,6 @@ export default class fishMod extends mod {
     resetFish(fish) {
         fish.resetOffScreen(width, height);
         fish.img = loadImage(fish.img_path);
-        fish.logInfo();
     }
 
     updateScore(coin) {
