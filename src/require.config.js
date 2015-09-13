@@ -8,6 +8,7 @@ requirejs.config({
         lodash: 'lib/lodash-amd/compat/main',
         text: 'lib/requirejs-text/text',
         threejs: 'lib/threejs/build/three',
+        threejs_orbit_controls:  'lib/threejs/examples/js/controls/OrbitControls',
         requirejs: 'lib/requirejs/require',
         'requirejs-text': 'lib/requirejs-text/text',
         'lodash-amd': 'lib/lodash-amd/compat/main',
@@ -25,6 +26,9 @@ requirejs.config({
     shim: {
         threejs: {
             exports: 'THREE'
+        },
+        threejs_orbit_controls: {
+            deps: ['threejs']
         },
         'dat-gui': {
             exports: 'dat'
