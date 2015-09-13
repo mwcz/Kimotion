@@ -7,7 +7,7 @@ import input from 'input';
 import { where, partial, keys, without } from 'lodash';
 
 let conf = {
-    mods : without(keys(mods), '__esModule'),
+    mods : modctrl.names(),
     server : localStorage.ws_url || 'localhost:1337',
     timer : {
         enabled: false,
