@@ -38,6 +38,11 @@ function update_remaining_time() {
     conf.timer.remaining -= conf.timer.tick;
 }
 
+function next_mod() {
+    modctrl.next();
+    conf.timer.remaining = conf.timer.duration; // make sure remaining doesn't go negative
+}
+
 folder.add(conf, 'server')
     .name('Server')
     .onChange(function (server_host) { localStorage.ws_url = server_host; });
@@ -55,7 +60,7 @@ folder.add(conf.timer, 'enabled', conf.timer.enabled)
                 conf.timer.duration,
                 conf.timer.tick,
                 update_remaining_time,
-                modctrl.next
+                next_mod
             );
         }
         else {

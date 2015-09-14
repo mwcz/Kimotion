@@ -10,7 +10,7 @@ import SharkFishSprite from 'mods/fish/SharkFishSprite';
 import HandSprite from 'mods/fish/HandSprite';
 import CoinParticle from 'mods/fish/CoinParticle';
 import ChestSprite from 'mods/fish/ChestSprite';
-import { LEFT, RIGHT, SHARK, GOLD, BLUE, PURPLE, RED, HAND_IMG_SWAP_DELAY, ACHIVEMENT_FRAMES, WAIT_SOUND_LOAD_FRAMES } from "mods/fish/consts.js";
+import { LEFT, RIGHT, SHARK, GOLD, BLUE, PURPLE, RED, HAND_IMG_SWAP_DELAY, MESSAGE_FRAMES, WAIT_SOUND_LOAD_FRAMES } from "mods/fish/consts.js";
 
 var fishes = [];
 var score = 0;
@@ -22,14 +22,19 @@ var params = {
     numGolden: 2,
     numBlue: 3,
     numPurple: 1,
-    numRed: 1
+    numRed: 1,
+    fishSpeed: 1
 };
 
+// Sounds stored
 var sound_underwater;
 var sound_bite;
 var sound_scream;
 var sound_coin;
 var sound_1up;
+var sound_over9000;
+var sound_cheer;
+
 var waitForSoundLoad = WAIT_SOUND_LOAD_FRAMES;
 var ambientSoundPlaying = false;
 
@@ -48,6 +53,7 @@ export default class fishMod extends mod {
         this.addFishSliderGUI(gfx, 'numBlue', 'Num Blue', BLUE, BlueFishSprite);
         this.addFishSliderGUI(gfx, 'numPurple', 'Num Purple', PURPLE, PurpleFishSprite);
         this.addFishSliderGUI(gfx, 'numRed', 'Num Red', RED, RedFishSprite);
+        gfx.conf.gui.add(params, 'fishSpeed', 0, 10).step(0.1).name('Fish Speed');
 
         // enable hand/object tracking
         this.add_effect('handtracking2d');
@@ -64,7 +70,10 @@ export default class fishMod extends mod {
         this.negativeCoins = [];
         this.hand = new HandSprite();
         this.over9000AchievedState = 'none';
-        this.displayAchievementFrames = 0;
+        this.gameEndingWarning = 'none';
+        this.showHighScoreTable = 'none';
+        this.displayMessageFrames = 0;
+        this.highScores = null;
 
         // populate fish from initial params
         changeFishes(SHARK, params.numSharks, SharkFishSprite);
@@ -88,11 +97,13 @@ export default class fishMod extends mod {
         this.chest.y = 5;
 
         // load sounds
-        sound_underwater = loadSound('mods/fish/assets/sounds/underwater.ogg');
+        sound_underwater = loadSound('mods/fish/assets/sounds/underwater_amp.ogg');
         sound_bite = loadSound('mods/fish/assets/sounds/bite.ogg');
         sound_scream = loadSound('mods/fish/assets/sounds/whscream.ogg');
         sound_coin = loadSound('mods/fish/assets/sounds/coin.ogg');
         sound_1up = loadSound('mods/fish/assets/sounds/level_up.ogg');
+        sound_over9000 = loadSound('mods/fish/assets/sounds/over9000.ogg');
+        sound_cheer = loadSound('mods/fish/assets/sounds/cheer.ogg');
 
         // start up log
         console.log("Catch Some Fish!");
@@ -100,16 +111,16 @@ export default class fishMod extends mod {
         console.log("width: " + width);
 
         this.drawStaticElements();
-
-        //TODO: move this to an end game event. It's here for testing purposes.
-        //this.postScore();
-        //this.getHighScores();
     }
 
     update(gfx) {
+        super.update(gfx);
+        let remaining = gfx.conf.timer.remaining;
+
         clear(); // clear the screen to draw the new frame
         this.drawStaticElements();
 
+        // give sounds a chance to load since we have no preload() function
         if (waitForSoundLoad > 0) {
             waitForSoundLoad--;
             return;
@@ -118,6 +129,22 @@ export default class fishMod extends mod {
                 sound_underwater.loop();
                 ambientSoundPlaying = true;
             }
+        }
+
+        // check the time remaining
+        if (remaining <= 0.7 && this.gameEndingWarning == 'none') {
+            this.gameEndingWarning = 'display';
+        } else if (remaining <= 0.2 && this.showHighScoreTable == 'none' && params.enableApi) {
+            sound_underwater.stop();
+            sound_cheer.play();
+            this.postScore();
+            this.getHighScores();
+            this.showHighScoreTable = 'display';
+            this.displayMessages();
+            return;
+        } else if (this.showHighScoreTable == 'display') {
+            this.displayMessages();
+            return; // wait for game to end
         }
 
         // update all fish positions
@@ -134,8 +161,8 @@ export default class fishMod extends mod {
 
         this.updateHand(gfx);
 
-        for (var i = 0; i < fishes.length; ++i) {
-            var fish = fishes[i];
+        for (let i = 0; i < fishes.length; ++i) {
+            let fish = fishes[i];
 
             if (this.detectIntersect(fish)) {
                 if (fish.type == SHARK) {
@@ -147,9 +174,9 @@ export default class fishMod extends mod {
                         sound_coin.play();
                     }
 
-                    for (var j = 0; j < fish.coin_num; j++) {
+                    for (let j = 0; j < fish.coin_num; j++) {
                         // create a new coin particle
-                        var coin = this.createCoinParticle(fish.x, fish.y, 0, -0.2, random(-5, 5), random(-0.5, 3.5));
+                        let coin = this.createCoinParticle(fish.x, fish.y, 0, -0.2, random(-5, 5), random(-0.5, 3.5));
                         this.coins.push(coin);
                     }
 
@@ -162,10 +189,7 @@ export default class fishMod extends mod {
         // Update the players score
         this.drawScore();
 
-        // Display any achievements
-        this.displayAchievements();
-
-        super.update(gfx);
+        this.displayMessages();
     }
 
     updateHand(gfx) {
@@ -190,8 +214,8 @@ export default class fishMod extends mod {
     }
 
     initFish() {
-        for (var i = 0; i < fishes.length; ++i) {
-            var fish = fishes[i];
+        for (let i = 0; i < fishes.length; ++i) {
+            let fish = fishes[i];
             this.resetFish(fish);
         }
     }
@@ -204,11 +228,11 @@ export default class fishMod extends mod {
     }
 
     updateFish() {
-        for (var i = 0; i < fishes.length; ++i) {
-            var fish = fishes[i];
+        for (let i = 0; i < fishes.length; ++i) {
+            let fish = fishes[i];
 
             // draw and move the fish
-            image(fish.img, fish.x -= fish.speed, fish.y);
+            image(fish.img, fish.x -= fish.speed * params.fishSpeed, fish.y);
 
             // if off screen reset
             if (fish.direction == LEFT && fish.x + fish.img_width <= 0) {
@@ -220,46 +244,91 @@ export default class fishMod extends mod {
     }
 
     createCoinParticle(x, y, accel_x, accel_y, vel_x, vel_y) {
-        var position = createVector(x, y);
-        var acceleration = createVector(accel_x, accel_y);
-        var velocity = createVector(vel_x, vel_y);
+        let position = createVector(x, y);
+        let acceleration = createVector(accel_x, accel_y);
+        let velocity = createVector(vel_x, vel_y);
         return new CoinParticle(position, acceleration, velocity);
     }
 
     resetFish(fish) {
         fish.resetOffScreen(width, height);
         fish.img = loadImage(fish.img_path);
-        fish.logInfo();
     }
 
     updateScore(coin) {
         score += coin.value;
     }
 
-    displayAchievements() {
+    displayMessages() {
+        let text_x = (width / 2) - 300;
+        textSize(70);
+        fill(255); // text color white
+
+        if (text_x <= 0) {
+            text_x = 10;
+        }
+
         // IT'S OVER 9000!!!
         if (score > 9000 && this.over9000AchievedState == 'none') {
             this.over9000AchievedState = 'display';
+            sound_over9000.play();
         }
         if (this.over9000AchievedState == 'display') {
-            textSize(70);
-            fill(255); // text color white
-            let text_x = (width / 2) - 300;
-            if (text_x <= 0) {
-                text_x = 10;
-            }
-
             text("IT'S OVER 9000!!!!", text_x, height / 2);
-            this.displayAchievementFrames++;
-            if (this.displayAchievementFrames >= ACHIVEMENT_FRAMES) {
-                this.over9000AchievedState = 'done';
-                this.displayAchievementFrames = 0;
+            this.over9000AchievedState = this.updateMessageFrames();
+        }
+        // Game ending warning
+        else if (this.gameEndingWarning == 'display') {
+            text("30 SECONDS LEFT!", text_x, height / 2);
+            this.gameEndingWarning = this.updateMessageFrames();
+        }
+        // Show high scores
+        else if (this.highScoresReady()) {
+            this.drawHighScores();
+        }
+    }
+
+    drawHighScores() {
+        let text_x = (width / 2) - 300;
+        let text_y = 100;
+        let text_height = 60;
+        let len = this.highScores.length > 10 ? 10 : this.highScores.length;
+        text("HIGH SCORES", text_x, text_y += text_height);
+        let currentScoreShown = false;
+        for (let i = 0; i < len; i++) {
+            let obj = this.highScores[i];
+            let h_score = obj.score;
+            //TODO: handle the case when the current score is equal to a high-score
+            if (!currentScoreShown && score >= h_score) {
+                // change text color to yellow to highlight users score
+                fill(255, 204, 0);
+                text(score + '  <-- YOUR SCORE!', text_x, text_y += text_height);
+                currentScoreShown = true;
+                fill(255); // text color white
+                if (score == h_score) {
+                    continue; // don't double show, sometimes the api is really fast and the current score is included
+                }
             }
+            text(h_score, text_x, text_y += text_height);
+        }
+    }
+
+    highScoresReady() {
+        return this.showHighScoreTable == 'display' && this.highScores && this.highScores.constructor === Array && this.highScores.length > 0;
+    }
+
+    updateMessageFrames() {
+        this.displayMessageFrames++;
+        if (this.displayMessageFrames >= MESSAGE_FRAMES) {
+            this.displayMessageFrames = 0;
+            return 'done';
+        } else {
+            return 'display';
         }
     }
 
     drawScore() {
-        var size = 55;
+        let size = 55;
         textSize(size);
         fill(255); // text color white
 
@@ -282,8 +351,8 @@ export default class fishMod extends mod {
         sound_scream.play(0.5);
 
         // Remove coins
-        for (var i = 0; i < shark.coin_penalty; i++) {
-            var coin = this.createCoinParticle(this.chest.x, this.chest.y, 0, 0.1, random(-2, 2), random(-0.1, 11));
+        for (let i = 0; i < shark.coin_penalty; i++) {
+            let coin = this.createCoinParticle(this.chest.x, this.chest.y, 0, 0.1, random(-2, 2), random(-0.1, 11));
             score -= coin.value;
             this.negativeCoins.push(coin);
         }
@@ -293,8 +362,8 @@ export default class fishMod extends mod {
     }
 
     updateCoins(coinArray, isVisibleCallback, offScreenCallback) {
-        for (var i = coinArray.length - 1; i >= 0; i--) {
-            var coin = coinArray[i];
+        for (let i = coinArray.length - 1; i >= 0; i--) {
+            let coin = coinArray[i];
             if (isVisibleCallback(coin)) {
                 coin.update();
                 image(this.coin_img, coin.x, coin.y);
@@ -322,6 +391,17 @@ export default class fishMod extends mod {
     getHighScores() {
         this.highScores = loadJSON('http://' + params.apiHost + '/fishapi/highscores/');
     }
+
+    destroy(gfx) {
+        super.destroy(gfx);
+        sound_underwater.stop();
+
+        // clear any references left to fish
+        for(let i = 0; i < fishes.length; i++) {
+            fishes[i] = null;
+        }
+        fishes = [];
+    }
 }
 
 /**
@@ -330,7 +410,7 @@ export default class fishMod extends mod {
 function changeFishes(type, value, spriteClass) {
     console.log('changeFishes type: ' + type + ' ' + value);
     // clear current fish of type
-    for (var i = fishes.length - 1; i >= 0; i--) {
+    for (let i = fishes.length - 1; i >= 0; i--) {
         let fish = fishes[i];
         if (fish.type == type) {
             fishes.splice(i, 1);
@@ -338,7 +418,7 @@ function changeFishes(type, value, spriteClass) {
     }
 
     // add new number of fish
-    for (i = 0; i < value; i++) {
+    for (let i = 0; i < value; i++) {
         let fishSprite = new spriteClass();
 
         fishSprite.resetOffScreen(width, height);
