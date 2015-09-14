@@ -1,6 +1,9 @@
 import $ from 'zepto';
 import { contains, indexOf, without, keys, sample, range, size } from 'lodash';
 import * as mods from 'mods';
+import * as blacklist_json from 'text!blacklist.json';
+
+const blacklist = JSON.parse(blacklist_json);
 
 // choose a random mod to be the starting one
 let modnames = names();
@@ -29,7 +32,7 @@ function set(modname) {
 }
 
 function names() {
-    return without(keys(mods), '__esModule');
+    return without(keys(mods), '__esModule', ...blacklist);
 }
 
 function get() {
@@ -39,8 +42,8 @@ function get() {
 function update(_gfx) {
     curmod.update(gfx);
 
-    modnames = without(keys(mods), '__esModule');
-    modcount = size(modnames); // probably need this for DIY station mods
+    //modnames = names();
+    //modcount = size(modnames); // probably need this for DIY station mods
 }
 
 function create(_gfx, modname=modnames[i]) {
