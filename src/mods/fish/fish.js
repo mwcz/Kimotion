@@ -161,8 +161,8 @@ export default class fishMod extends mod {
 
         this.updateHand(gfx);
 
-        for (var i = 0; i < fishes.length; ++i) {
-            var fish = fishes[i];
+        for (let i = 0; i < fishes.length; ++i) {
+            let fish = fishes[i];
 
             if (this.detectIntersect(fish)) {
                 if (fish.type == SHARK) {
@@ -174,9 +174,9 @@ export default class fishMod extends mod {
                         sound_coin.play();
                     }
 
-                    for (var j = 0; j < fish.coin_num; j++) {
+                    for (let j = 0; j < fish.coin_num; j++) {
                         // create a new coin particle
-                        var coin = this.createCoinParticle(fish.x, fish.y, 0, -0.2, random(-5, 5), random(-0.5, 3.5));
+                        let coin = this.createCoinParticle(fish.x, fish.y, 0, -0.2, random(-5, 5), random(-0.5, 3.5));
                         this.coins.push(coin);
                     }
 
@@ -214,8 +214,8 @@ export default class fishMod extends mod {
     }
 
     initFish() {
-        for (var i = 0; i < fishes.length; ++i) {
-            var fish = fishes[i];
+        for (let i = 0; i < fishes.length; ++i) {
+            let fish = fishes[i];
             this.resetFish(fish);
         }
     }
@@ -228,8 +228,8 @@ export default class fishMod extends mod {
     }
 
     updateFish() {
-        for (var i = 0; i < fishes.length; ++i) {
-            var fish = fishes[i];
+        for (let i = 0; i < fishes.length; ++i) {
+            let fish = fishes[i];
 
             // draw and move the fish
             image(fish.img, fish.x -= fish.speed * params.fishSpeed, fish.y);
@@ -244,9 +244,9 @@ export default class fishMod extends mod {
     }
 
     createCoinParticle(x, y, accel_x, accel_y, vel_x, vel_y) {
-        var position = createVector(x, y);
-        var acceleration = createVector(accel_x, accel_y);
-        var velocity = createVector(vel_x, vel_y);
+        let position = createVector(x, y);
+        let acceleration = createVector(accel_x, accel_y);
+        let velocity = createVector(vel_x, vel_y);
         return new CoinParticle(position, acceleration, velocity);
     }
 
@@ -295,7 +295,7 @@ export default class fishMod extends mod {
         let len = this.highScores.length > 10 ? 10 : this.highScores.length;
         text("HIGH SCORES", text_x, text_y += text_height);
         let currentScoreShown = false;
-        for (var i = 0; i < len; i++) {
+        for (let i = 0; i < len; i++) {
             let obj = this.highScores[i];
             let h_score = obj.score;
             //TODO: handle the case when the current score is equal to a high-score
@@ -328,7 +328,7 @@ export default class fishMod extends mod {
     }
 
     drawScore() {
-        var size = 55;
+        let size = 55;
         textSize(size);
         fill(255); // text color white
 
@@ -351,8 +351,8 @@ export default class fishMod extends mod {
         sound_scream.play(0.5);
 
         // Remove coins
-        for (var i = 0; i < shark.coin_penalty; i++) {
-            var coin = this.createCoinParticle(this.chest.x, this.chest.y, 0, 0.1, random(-2, 2), random(-0.1, 11));
+        for (let i = 0; i < shark.coin_penalty; i++) {
+            let coin = this.createCoinParticle(this.chest.x, this.chest.y, 0, 0.1, random(-2, 2), random(-0.1, 11));
             score -= coin.value;
             this.negativeCoins.push(coin);
         }
@@ -362,8 +362,8 @@ export default class fishMod extends mod {
     }
 
     updateCoins(coinArray, isVisibleCallback, offScreenCallback) {
-        for (var i = coinArray.length - 1; i >= 0; i--) {
-            var coin = coinArray[i];
+        for (let i = coinArray.length - 1; i >= 0; i--) {
+            let coin = coinArray[i];
             if (isVisibleCallback(coin)) {
                 coin.update();
                 image(this.coin_img, coin.x, coin.y);
@@ -395,6 +395,12 @@ export default class fishMod extends mod {
     destroy(gfx) {
         super.destroy(gfx);
         sound_underwater.stop();
+
+        // clear any references left to fish
+        for(let i = 0; i < fishes.length; i++) {
+            fishes[i] = null;
+        }
+        fishes = [];
     }
 }
 
@@ -404,7 +410,7 @@ export default class fishMod extends mod {
 function changeFishes(type, value, spriteClass) {
     console.log('changeFishes type: ' + type + ' ' + value);
     // clear current fish of type
-    for (var i = fishes.length - 1; i >= 0; i--) {
+    for (let i = fishes.length - 1; i >= 0; i--) {
         let fish = fishes[i];
         if (fish.type == type) {
             fishes.splice(i, 1);
@@ -412,7 +418,7 @@ function changeFishes(type, value, spriteClass) {
     }
 
     // add new number of fish
-    for (i = 0; i < value; i++) {
+    for (let i = 0; i < value; i++) {
         let fishSprite = new spriteClass();
 
         fishSprite.resetOffScreen(width, height);
