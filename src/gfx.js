@@ -2,7 +2,7 @@
 
 import THREE from 'threejs';
 import orbit_controls from 'threejs_orbit_controls';
-import p5 from 'p5js';
+import p5 from 'p5';
 import p5sound from 'p5sound';
 import input from 'input';
 import conf from 'conf';
