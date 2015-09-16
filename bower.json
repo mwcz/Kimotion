@@ -23,7 +23,7 @@
     "dat-gui": "~0.5.1",
     "lodash-amd": "~3.5.0",
     "nprogress": "git@github.com:rstacruz/nprogress.git#~0.2.0",
-    "p5.js": "p5js#*",
+    "p5.js": "git@github.com:mwcz/p5.js.git#amd-tweak",
     "requirejs": "~2.1.20",
     "requirejs-text": "~2.0.14",
     "threejs": "*",
