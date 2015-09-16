@@ -8,7 +8,7 @@ requirejs.config({
         lodash: 'lib/lodash-amd/compat/main',
         text: 'lib/requirejs-text/text',
         threejs: 'lib/threejs/build/three',
-        threejs_orbit_controls:  'lib/threejs/examples/js/controls/OrbitControls',
+        threejs_orbit_controls: 'lib/threejs/examples/js/controls/OrbitControls',
         requirejs: 'lib/requirejs/require',
         'requirejs-text': 'lib/requirejs-text/text',
         'lodash-amd': 'lib/lodash-amd/compat/main',
@@ -17,7 +17,7 @@ requirejs.config({
         'dat-gui': 'lib/dat-gui/build/dat.gui',
         tinycolor: 'lib/tinycolor/tinycolor',
         zepto: 'lib/zepto/zepto',
-        p5: 'lib/p5.js/docs/js/p5',
+        p5: 'lib/p5.js/lib/p5.min',
         p5sound: 'lib/p5.js/lib/addons/p5.sound',
         p5js: 'lib/p5.js/docs/js/p5',
         nprogress: 'lib/nprogress/nprogress',
@@ -28,7 +28,9 @@ requirejs.config({
             exports: 'THREE'
         },
         threejs_orbit_controls: {
-            deps: ['threejs']
+            deps: [
+                'threejs'
+            ]
         },
         'dat-gui': {
             exports: 'dat'
