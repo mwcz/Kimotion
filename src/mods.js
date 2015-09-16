@@ -14,3 +14,4 @@ export { default as spiral } from './mods/spiral/spiral';
 export { default as spotlights } from './mods/spotlights/spotlights';
 export { default as storm } from './mods/storm/storm';
 export { default as torus } from './mods/torus/torus';
+export { default as wallflower } from './mods/wallflower/wallflower';

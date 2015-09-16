@@ -3,6 +3,7 @@ uniform vec3 mid_color;
 
 uniform float spot_radius;
 uniform float spot_brightness;
+uniform float background_alpha;
 
 uniform float spot_0_x;
 uniform float spot_0_y;
@@ -28,5 +29,5 @@ void main() {
     
     vec3 color = min(1.0 - spot_0_intensity, 1.0 - spot_1_intensity)*overlay_color + spot_0_intensity*spot_brightness*spot_0_color + spot_1_intensity*spot_brightness*spot_1_color;
     
-    gl_FragColor = vec4(intensity*color, 1.0);
+    gl_FragColor = vec4(intensity*color, background_alpha + max(spot_0_intensity, spot_1_intensity));
 }

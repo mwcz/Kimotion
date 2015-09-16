@@ -3,7 +3,7 @@ import mod from 'mod';
 import * as frag from 'text!./shaders/particle.frag';
 import * as vert from 'text!./shaders/vertex.vert';
 
-var params = {spot_0_speed: 1, spot_1_speed: 1.1, spot_radius: 50, spot_brightness: 2};
+var params = {spot_0_speed: 1, spot_1_speed: 1.1, spot_radius: 50, spot_brightness: 2, background_alpha: 0.2};
 
 export default class spotlights extends mod {
     constructor(gfx) {
@@ -17,6 +17,7 @@ export default class spotlights extends mod {
         gfx.conf.gui.add(params, 'spot_1_speed', 0.1, 10).step(0.1).name('Spot 1 Speed');
         gfx.conf.gui.add(params, 'spot_radius', 0, 100).step(1).name('Spot Radius');
         gfx.conf.gui.add(params, 'spot_brightness', 0, 10).step(0.1).name('Spot Bright'); // 'Spot Brightness' glitches in UI
+        gfx.conf.gui.add(params, 'background_alpha', 0, 1).step(0.01).name('Back Alpha');
         
         this.add_effect('particles');
         gfx.gl.particles.material.vertexShader = vert;
@@ -24,6 +25,7 @@ export default class spotlights extends mod {
         
         gfx.gl.particles.material.uniforms.spot_radius = {type: 'f', value: params.spot_radius};
         gfx.gl.particles.material.uniforms.spot_brightness = {type: 'f', value: params.spot_brightness};
+        gfx.gl.particles.material.uniforms.background_alpha = {type: 'f', value: params.background_alpha};
         
         gfx.gl.particles.material.uniforms.spot_0_x = {type: 'f', value: 0};
         gfx.gl.particles.material.uniforms.spot_0_y = {type: 'f', value: 0};
@@ -39,6 +41,7 @@ export default class spotlights extends mod {
     update(gfx) {
       gfx.gl.particles.material.uniforms.spot_radius.value = params.spot_radius;
       gfx.gl.particles.material.uniforms.spot_brightness.value = params.spot_brightness;
+      gfx.gl.particles.material.uniforms.background_alpha.value = params.background_alpha;
       
       // Simple parametric formula to move the spots in circles
       gfx.gl.particles.material.uniforms.spot_0_x.value = 150*Math.sin(Date.now()/1000*params.spot_0_speed) + 100;
