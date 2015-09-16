@@ -132,9 +132,9 @@ export default class snake extends mod {
         let iless;
         
         if (this.objective !== false) {
-            xdiff = (this.objective.position.x) * -0.02;
+            xdiff = (this.objective.position.x) * -0.001;
             this.objective.position.x = this.objective.position.x + xdiff;
-            ydiff = (this.objective.position.y) * -0.02;
+            ydiff = (this.objective.position.y) * -0.001;
             this.objective.position.y = this.objective.position.y + ydiff;
             distance = this.spheres['sphere'+firstball].position.distanceTo(this.objective.position);
         }
