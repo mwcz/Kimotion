@@ -127,11 +127,18 @@ export default class snake extends mod {
         let geometry;
         let material;
         let color;
+        let xdiff;
+        let ydiff;
+        let iless;
         
         if (this.objective !== false) {
+            xdiff = (this.objective.position.x) * -0.02;
+            this.objective.position.x = this.objective.position.x + xdiff;
+            ydiff = (this.objective.position.y) * -0.02;
+            this.objective.position.y = this.objective.position.y + ydiff;
             distance = this.spheres['sphere'+firstball].position.distanceTo(this.objective.position);
         }
-        if ( distance <= 20 && this.waittimer == 0) {
+        if ( distance <= 30 && this.waittimer == 0) {
             this.spheres['sphere'+this.num_spheres] = this.objective;
             gfx.gl.scene.remove(this.objective);
             gfx.gl.scene.add(this.spheres['sphere'+this.num_spheres]);
@@ -159,9 +166,6 @@ export default class snake extends mod {
             };
         }
 
-        let xdiff;
-        let ydiff;
-        let iless;
         for (var i = 1; i <= this.num_spheres - 1; i++) {
             iless = i - 1;
             xdiff = (this.spheres['sphere'+i].position.x - this.spheres['sphere'+iless].position.x) * -0.2;
