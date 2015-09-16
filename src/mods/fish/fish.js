@@ -396,11 +396,22 @@ export default class fishMod extends mod {
         super.destroy(gfx);
         sound_underwater.stop();
 
-        // clear any references left to fish
+        //
+        // clear any references to all objects, probably don't have to do this, just being paranoid
+        //
         for(let i = 0; i < fishes.length; i++) {
             fishes[i] = null;
         }
         fishes = [];
+        for(let i = 0; i < this.coins.length; i++) {
+            this.coins[i] = null;
+        }
+        this.coins = null;
+
+        for(let i = 0; i < this.negativeCoins.length; i++) {
+            this.negativeCoins[i] = null;
+        }
+        this.negativeCoins = null;
     }
 }
 
