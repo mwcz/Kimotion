@@ -11,8 +11,8 @@ let conf = {
     server : localStorage.ws_url || 'localhost:1337',
     timer : {
         enabled: true,
-        duration: 0.1,//1.0,
-        remaining: 0.1,//1.0, // minutes remaining on current mod
+        duration: 1.0,
+        remaining: 1.0, // minutes remaining on current mod
         tick: 1/60, // update time remaining every this many minutes
     },
     kinect_tilt : 10,
