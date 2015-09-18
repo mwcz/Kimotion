@@ -10,9 +10,9 @@ let conf = {
     mods : modctrl.names(),
     server : localStorage.ws_url || 'localhost:1337',
     timer : {
-        enabled: false,
-        duration: 1.5,
-        remaining: 1.5, // minutes remaining on current mod
+        enabled: true,
+        duration: 0.1,//1.0,
+        remaining: 0.1,//1.0, // minutes remaining on current mod
         tick: 1/60, // update time remaining every this many minutes
     },
     kinect_tilt : 10,
@@ -51,23 +51,26 @@ folder.add(conf, 'mods', conf.mods)
     .name('Mods')
     .onChange(modctrl.set);
 
+function timer_ctrl(enabled) {
+    if (enabled) {
+        conf.timer.remaining = conf.timer.duration;
+        timer.start(
+            conf.timer.duration,
+            conf.timer.tick,
+            update_remaining_time,
+            next_mod
+        );
+    }
+    else {
+        timer.stop();
+        conf.timer.remaining = conf.timer.duration;
+    }
+}
+timer_ctrl(conf.timer.enabled);
+
 folder.add(conf.timer, 'enabled', conf.timer.enabled)
     .name('Cycle mods')
-    .onChange(function (enabled) {
-        if (enabled) {
-            conf.timer.remaining = conf.timer.duration;
-            timer.start(
-                conf.timer.duration,
-                conf.timer.tick,
-                update_remaining_time,
-                next_mod
-            );
-        }
-        else {
-            timer.stop();
-            conf.timer.remaining = conf.timer.duration;
-        }
-    });
+    .onChange(timer_ctrl);
 
 folder.add(conf.timer, 'duration', 0.1, 10)
     .name('Mins per mod')
@@ -89,5 +92,10 @@ mod_folder.open();
 
 // expose the mod config folder to mod authors
 conf.gui = mod_folder;
+
+// if the timer is enabled, assume this is sparkcon mode and close the gui
+if (conf.timer.enabled) {
+    gui.close();
+}
 
 export default conf;

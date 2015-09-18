@@ -8,7 +8,7 @@ const blacklist = JSON.parse(blacklist_json);
 // choose a random mod to be the starting one
 let modnames = names();
 let modcount = size(modnames);
-let i        = 0;
+let i        = Math.max(0, modnames.indexOf(location.hash.slice(1)));
 let curmod;
 let gfx;
 
@@ -29,6 +29,7 @@ function set(modname) {
     create(gfx);
 
     location.hash = modname;
+    location.reload();
 }
 
 function names() {
