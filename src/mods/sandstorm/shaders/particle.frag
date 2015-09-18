@@ -36,6 +36,9 @@ void main() {
 
     alpha = 1.0 - lerp(z, MIN_Z, MAX_Z);
 
+    if ( z <= -MIN_Z )
+        alpha = 0.0;
+
     gl_FragColor = vec4(color, alpha) * texture2D( texture, gl_PointCoord );
 
 }

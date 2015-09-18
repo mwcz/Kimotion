@@ -17,6 +17,7 @@ export default class sandstorm extends mod {
         this.author = 'Michael Clayton';
         this.title = 'Sandstorm';
         this.add_effect('particles');
+        this.add_effect('handtracking3d');
         gfx.gl.particles.material.vertexShader = vert;
         gfx.gl.particles.material.fragmentShader = frag;
         gfx.gl.particles.material.blending = THREE.AdditiveBlending;
@@ -26,11 +27,24 @@ export default class sandstorm extends mod {
         gfx.gl.particles.set_mid_color('#280072');
         gfx.gl.particles.set_far_color('#02020c');
 
+        // set particle size
+        gfx.gl.particles.set_particle_size(3);
+
         this.prev_depth = gfx.depth;
+
+        // 
+        this.prevpos = { x: 0, y: 0 };
+        this.avgx = 0;
+        this.avgy = 0;
     }
     update(gfx) {
         // drift particles towards their destinations 10% at a time
         avg(gfx.depth, this.prev_depth, 1 - params.storminess);
+
+        // gfx.gl.camera.position.x += ( 100 * Math.sin(performance.now()/2000) - gfx.gl.camera.position.x ) * 0.5;
+        // gfx.gl.camera.position.y += ( 100 * Math.cos(performance.now()/2000) - gfx.gl.camera.position.y ) * 0.5;
+        // gfx.gl.camera.lookAt(gfx.gl.scene.position);
+
         this.prev_depth = gfx.depth;
         super.update(gfx);
     }

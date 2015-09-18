@@ -12,7 +12,7 @@ void main() {
     z = pos.z;
 
     // move the particles a little closer to the camera
-    pos.z -= MIN_Z;
+    pos.z -= 2.0*MIN_Z;
 
     gl_Position  = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
     gl_PointSize = particle_size;
