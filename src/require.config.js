@@ -9,6 +9,13 @@ requirejs.config({
         text: 'lib/requirejs-text/text',
         threejs: 'lib/threejs/build/three',
         threejs_orbit_controls: 'lib/threejs/examples/js/controls/OrbitControls',
+        threejs_bloom_pass: 'lib/threejs/examples/js/postprocessing/BloomPass',
+        threejs_effect_composer: 'lib/threejs/examples/js/postprocessing/EffectComposer',
+        threejs_copy_shader: 'lib/threejs/examples/js/shaders/CopyShader',
+        threejs_convolution_shader: 'lib/threejs/examples/js/shaders/ConvolutionShader',
+        threejs_shader_pass: 'lib/threejs/examples/js/postprocessing/ShaderPass',
+        threejs_mask_pass: 'lib/threejs/examples/js/postprocessing/MaskPass',
+        threejs_render_pass: 'lib/threejs/examples/js/postprocessing/RenderPass',
         requirejs: 'lib/requirejs/require',
         'requirejs-text': 'lib/requirejs-text/text',
         'lodash-amd': 'lib/lodash-amd/compat/main',
@@ -27,7 +34,32 @@ requirejs.config({
         threejs: {
             exports: 'THREE'
         },
+        threejs_render_pass: {
+            deps: [
+                'threejs'
+            ]
+        },
         threejs_orbit_controls: {
+            deps: [
+                'threejs'
+            ]
+        },
+        threejs_bloom_pass: {
+            deps: [
+                'threejs'
+            ]
+        },
+        threejs_effect_composer: {
+            deps: [
+                'threejs'
+            ]
+        },
+        threejs_copy_shader: {
+            deps: [
+                'threejs'
+            ]
+        },
+        threejs_convolution_shader: {
             deps: [
                 'threejs'
             ]

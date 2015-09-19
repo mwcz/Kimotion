@@ -7,6 +7,7 @@ export { default as flow_field } from './mods/flow_field/flow_field';
 export { default as graph } from './mods/graph/graph';
 export { default as handcube } from './mods/handcube/handcube';
 export { default as handtrack } from './mods/handtrack/handtrack';
+export { default as lorenz_attractor } from './mods/lorenz_attractor/lorenz_attractor';
 export { default as particles } from './mods/particles/particles';
 export { default as sandstorm } from './mods/sandstorm/sandstorm';
 export { default as snake } from './mods/snake/snake';
