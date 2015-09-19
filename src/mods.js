@@ -7,6 +7,7 @@ export { default as flow_field } from './mods/flow_field/flow_field';
 export { default as graph } from './mods/graph/graph';
 export { default as handcube } from './mods/handcube/handcube';
 export { default as handtrack } from './mods/handtrack/handtrack';
+export { default as handviz } from './mods/handviz/handviz';
 export { default as particles } from './mods/particles/particles';
 export { default as portal } from './mods/portal/portal';
 export { default as sandstorm } from './mods/sandstorm/sandstorm';
