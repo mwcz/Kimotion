@@ -46,6 +46,11 @@ export default class sandstorm extends mod {
         // gfx.gl.camera.lookAt(gfx.gl.scene.position);
 
         this.prev_depth = gfx.depth;
+
+        // add handtracking-based camera controls
+        // camera.position.x += ( mouseX - camera.position.x ) * .05;
+        // camera.position.y += ( - mouseY + 200 - camera.position.y ) * .05;
+
         super.update(gfx);
     }
 }
