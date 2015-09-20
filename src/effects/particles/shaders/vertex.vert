@@ -1,5 +1,5 @@
-#define MIN_Z 110.0
-#define MAX_Z 275.0
+#define MIN_Z 440.0
+#define MAX_Z 1100.0
 
 uniform float particle_size;
 
@@ -11,7 +11,7 @@ void main() {
     pos = position;
     z = pos.z;
     if (pos.z <= MAX_Z) {
-        pos.z = MAX_Z - pos.z + MIN_Z;
+        pos.z = 200.0;
     }
 
     gl_Position  = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
