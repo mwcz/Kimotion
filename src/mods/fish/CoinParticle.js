@@ -5,7 +5,7 @@ export default class CoinParticle extends Particle {
         super(position, acceleration, velocity);
 
         // default coin values
-        this.value = 100;
+        this.value = 200;
         this.img_height = 196;
         this.img_width = 200;
 

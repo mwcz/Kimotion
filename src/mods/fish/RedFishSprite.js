@@ -17,6 +17,6 @@ export default class RedFishSprite extends FishSprite {
         this.max_speed = 18;
         this.min_speed = 15;
 
-        this.coin_num = 3;  // how many coins does the fish release
+        this.coin_num = 5;  // how many coins does the fish release
     }
 }
