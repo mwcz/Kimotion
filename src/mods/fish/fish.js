@@ -211,6 +211,7 @@ export default class fishMod extends mod {
 
     resetGameState() {
         this.resetGameVars();
+        sound_underwater.loop();
         this.hand.resetState();
         this.initFish();
     }
