@@ -1,5 +1,5 @@
-#define MIN_Z 110.0
-#define MAX_Z 275.0
+#define MIN_Z 440.0
+#define MAX_Z 1100.0
 
 uniform float particle_size;
 
