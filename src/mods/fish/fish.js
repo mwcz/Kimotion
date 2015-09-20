@@ -10,18 +10,18 @@ import SharkFishSprite from 'mods/fish/SharkFishSprite';
 import HandSprite from 'mods/fish/HandSprite';
 import CoinParticle from 'mods/fish/CoinParticle';
 import ChestSprite from 'mods/fish/ChestSprite';
-import { LEFT, RIGHT, SHARK, GOLD, BLUE, PURPLE, RED, HAND_IMG_SWAP_DELAY, MESSAGE_FRAMES, WAIT_SOUND_LOAD_FRAMES } from "mods/fish/consts.js";
+import { LEFT, RIGHT, SHARK, GOLD, BLUE, PURPLE, RED, HAND_IMG_SWAP_DELAY, MESSAGE_FRAMES, WAIT_SOUND_LOAD_FRAMES, TIME_LIMIT, HIGHSCORE_TIME } from "mods/fish/consts.js";
 
 var fishes = [];
 var score = 0;
 
 var params = {
-    enableApi: false,
+    enableApi: true,
     apiHost: "localhost",
     numSharks: 2,
     numGolden: 2,
     numBlue: 3,
-    numPurple: 1,
+    numPurple: 2,
     numRed: 1,
     fishSpeed: 1
 };
@@ -63,17 +63,13 @@ export default class fishMod extends mod {
         this.title = 'Fish';
 
         // init game vars
-        score = 0;
         ambientSoundPlaying = false;
         waitForSoundLoad = WAIT_SOUND_LOAD_FRAMES;
-        this.coins = [];
-        this.negativeCoins = [];
+        this.resetGameVars();
+
+        // Create objects
         this.hand = new HandSprite();
-        this.over9000AchievedState = 'none';
-        this.gameEndingWarning = 'none';
-        this.showHighScoreTable = 'none';
-        this.displayMessageFrames = 0;
-        this.highScores = null;
+        this.chest = new ChestSprite();
 
         // populate fish from initial params
         changeFishes(SHARK, params.numSharks, SharkFishSprite);
@@ -91,7 +87,6 @@ export default class fishMod extends mod {
         this.hand.img_red = loadImage(this.hand.img_red_path);
         this.hand.resetState();
         this.coin_img = loadImage("mods/fish/assets/coin.png");
-        this.chest = new ChestSprite();
         this.chest.img = loadImage(this.chest.img_path);
         this.chest.x = (width / 2) - 150;
         this.chest.y = 5;
@@ -115,7 +110,9 @@ export default class fishMod extends mod {
 
     update(gfx) {
         super.update(gfx);
-        let remaining = gfx.conf.timer.remaining;
+        this.totalFrames++;
+
+        this.remaining = this.getTimeRemaining(gfx);
 
         clear(); // clear the screen to draw the new frame
         this.drawStaticElements();
@@ -132,9 +129,9 @@ export default class fishMod extends mod {
         }
 
         // check the time remaining
-        if (remaining <= 0.7 && this.gameEndingWarning == 'none') {
+        if (this.remaining - HIGHSCORE_TIME <= 30 && this.gameEndingWarning == 'none') {
             this.gameEndingWarning = 'display';
-        } else if (remaining <= 0.2 && this.showHighScoreTable == 'none' && params.enableApi) {
+        } else if (this.remaining <= HIGHSCORE_TIME && this.showHighScoreTable == 'none' && params.enableApi) {
             sound_underwater.stop();
             sound_cheer.play();
             this.postScore();
@@ -144,6 +141,13 @@ export default class fishMod extends mod {
             return;
         } else if (this.showHighScoreTable == 'display') {
             this.displayMessages();
+
+
+            if (!gfx.conf.timer.enabled && this.remaining <= 0) {
+                // if not cycling mods, reset to start a new game
+                this.resetGameState();
+            }
+
             return; // wait for game to end
         }
 
@@ -192,6 +196,43 @@ export default class fishMod extends mod {
         this.displayMessages();
     }
 
+    resetGameVars() {
+        score = 0;
+        this.coins = [];
+        this.negativeCoins = [];
+        this.over9000AchievedState = 'none';
+        this.gameEndingWarning = 'none';
+        this.showHighScoreTable = 'none';
+        this.displayMessageFrames = 0;
+        this.highScores = null;
+        this.totalFrames = 0;
+        this.remaining = TIME_LIMIT;
+    }
+
+    resetGameState() {
+        this.resetGameVars();
+        sound_underwater.loop();
+        this.hand.resetState();
+        this.initFish();
+    }
+
+    getTimeRemaining(gfx) {
+        let remaining_time;
+        if (gfx.conf.timer.enabled) {
+            // use the mod cycling timer
+            remaining_time = floor(gfx.conf.timer.remaining * 60);
+        } else {
+            // use internal timer
+            remaining_time = floor(((TIME_LIMIT * 60) - this.totalFrames) / 60);
+        }
+
+        if (remaining_time < 0) {
+            remaining_time = 0;
+        }
+
+        return remaining_time;
+    }
+
     updateHand(gfx) {
         this.hand.x = gfx.hand.x;
         this.hand.y = gfx.hand.y;
@@ -225,6 +266,7 @@ export default class fishMod extends mod {
         // draw the treasure chest icon at the top
         image(this.chest.img, this.chest.x, this.chest.y);
         this.drawScore();
+        this.drawTimeRemaining();
     }
 
     updateFish() {
@@ -288,12 +330,22 @@ export default class fishMod extends mod {
         }
     }
 
+    setTextSize(text_size) {
+        this.text_height = text_size;
+        textSize(text_size);
+    }
+
     drawHighScores() {
         let text_x = (width / 2) - 300;
         let text_y = 100;
-        let text_height = 60;
         let len = this.highScores.length > 10 ? 10 : this.highScores.length;
-        text("HIGH SCORES", text_x, text_y += text_height);
+        this.setTextSize(70);
+        text("  WHO'S NEXT?", text_x, text_y += this.text_height);
+        this.setTextSize(20);
+        text(" ", text_x, text_y += this.text_height); // vertical spacer
+        this.setTextSize(60); // make scores smaller
+        text("HIGH SCORES", text_x, text_y += this.text_height);
+        this.setTextSize(55); // make scores smaller
         let currentScoreShown = false;
         for (let i = 0; i < len; i++) {
             let obj = this.highScores[i];
@@ -302,14 +354,14 @@ export default class fishMod extends mod {
             if (!currentScoreShown && score >= h_score) {
                 // change text color to yellow to highlight users score
                 fill(255, 204, 0);
-                text(score + '  <-- YOUR SCORE!', text_x, text_y += text_height);
+                text(score + '  <-- YOUR SCORE!', text_x, text_y += this.text_height);
                 currentScoreShown = true;
                 fill(255); // text color white
                 if (score == h_score) {
                     continue; // don't double show, sometimes the api is really fast and the current score is included
                 }
             }
-            text(h_score, text_x, text_y += text_height);
+            text(h_score, text_x, text_y += this.text_height);
         }
     }
 
@@ -328,12 +380,23 @@ export default class fishMod extends mod {
     }
 
     drawScore() {
-        let size = 55;
-        textSize(size);
+        this.setTextSize(55);
         fill(255); // text color white
 
         // Draw to the right of the chest
-        text(score, this.chest.x + this.chest.img_width + 10, size + 5);
+        text(score, this.chest.x + this.chest.img_width + 10, this.text_height + 5);
+    }
+
+    drawTimeRemaining() {
+        this.setTextSize(55);
+        fill(255); // text color white
+
+        // Draw to the right of the chest
+        var time = (this.remaining - HIGHSCORE_TIME);
+        if (time < 0) {
+            time = 0;
+        }
+        text("TIME: " + time, this.chest.x + 400, this.text_height + 5);
     }
 
     handleSharkBite(shark) {
@@ -399,16 +462,16 @@ export default class fishMod extends mod {
         //
         // clear any references to all objects, probably don't have to do this, just being paranoid
         //
-        for(let i = 0; i < fishes.length; i++) {
+        for (let i = 0; i < fishes.length; i++) {
             fishes[i] = null;
         }
         fishes = [];
-        for(let i = 0; i < this.coins.length; i++) {
+        for (let i = 0; i < this.coins.length; i++) {
             this.coins[i] = null;
         }
         this.coins = null;
 
-        for(let i = 0; i < this.negativeCoins.length; i++) {
+        for (let i = 0; i < this.negativeCoins.length; i++) {
             this.negativeCoins[i] = null;
         }
         this.negativeCoins = null;
