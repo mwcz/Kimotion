@@ -6,6 +6,9 @@
 #define MID_Z ((MAX_Z + NEAR_Z) / 2.0)
 #define FAR_Z 1100.0
 
+#define MIN_HAND_Z 600.0
+#define MAX_HAND_Z 700.0
+
 uniform vec3 near_color;
 uniform vec3 mid_color;
 uniform vec3 far_color;
@@ -32,6 +35,10 @@ void main() {
     else {
         float fs = lerp(z, MID_Z, FAR_Z);
         color = ( 1.0-fs ) * mid_color + fs * far_color;
+    }
+
+    if ( z < MAX_HAND_Z && z > MIN_HAND_Z ) {
+        color = vec3(1.0, 1.0, 0.0);
     }
 
     if ( z > MAX_Z )

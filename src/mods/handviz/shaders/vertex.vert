@@ -12,7 +12,7 @@ void main() {
     z = pos.z;
     if (pos.z <= MAX_Z) {
         /* pos.z = MAX_Z - pos.z + MIN_Z; */
-        pos.z = 0;
+        pos.z = 0.0;
     }
 
 
