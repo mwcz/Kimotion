@@ -10,7 +10,6 @@ export { default as handtrack } from './mods/handtrack/handtrack';
 export { default as handviz } from './mods/handviz/handviz';
 export { default as particles } from './mods/particles/particles';
 export { default as portal } from './mods/portal/portal';
-export { default as rippy } from './mods/rippy/rippy';
 export { default as sandstorm } from './mods/sandstorm/sandstorm';
 export { default as snake } from './mods/snake/snake';
 export { default as spiral } from './mods/spiral/spiral';
