@@ -29,7 +29,9 @@ function set(modname) {
     create(gfx);
 
     location.hash = modname;
-    location.reload();
+
+    //this is only needed for long-running art installations
+    //location.reload();
 }
 
 function names() {
