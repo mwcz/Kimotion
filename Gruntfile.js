@@ -215,6 +215,9 @@ module.exports = function(grunt) {
 
     grunt.registerTask('build', function (target) {
         var t = [];
+        if (target !== 'dev') {
+            t.push('clean'); // only do a full clean for production builds
+        }
         t.push('expall');
         t.push('sync');
         t.push('babel:dist');
