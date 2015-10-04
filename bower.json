@@ -31,7 +31,5 @@
     "tweenjs": "*",
     "zepto": "~1.1.6"
   },
-  "devDependencies": {
-    "requirejs": "~2.1.20"
-  }
+  "devDependencies": {}
 }
