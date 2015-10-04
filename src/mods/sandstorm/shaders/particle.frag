@@ -9,6 +9,7 @@
 uniform vec3 near_color;
 uniform vec3 mid_color;
 uniform vec3 far_color;
+uniform vec3 camera;
 uniform sampler2D texture;
 
 varying vec3 pos;
@@ -34,7 +35,9 @@ void main() {
         color = ( 1.0-fs ) * mid_color + fs * far_color;
     }
 
-    alpha = 1.0 - lerp(z, MIN_Z, MAX_Z);
+    float camdist = distance(pos, camera);
+
+    alpha = lerp(camdist, 2.0*MAX_Z, 0.0);
 
     if ( z <= -MIN_Z )
         alpha = 0.0;

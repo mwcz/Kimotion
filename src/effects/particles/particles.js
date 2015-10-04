@@ -26,11 +26,11 @@ export default class particles {
         this.gfx.gl.particles = this;
 
         // add config values
-        this.gfx.conf.gui.addColor(this.default_colors, 'near_color').listen().onChange(this.set_near_color.bind(this));
-        this.gfx.conf.gui.addColor(this.default_colors, 'mid_color').listen().onChange(this.set_mid_color.bind(this));
-        this.gfx.conf.gui.addColor(this.default_colors, 'far_color').listen().onChange(this.set_far_color.bind(this));
+        // this.gfx.conf.gui.addColor(this.default_colors, 'near_color').listen().onChange(this.set_near_color.bind(this));
+        // this.gfx.conf.gui.addColor(this.default_colors, 'mid_color').listen().onChange(this.set_mid_color.bind(this));
+        // this.gfx.conf.gui.addColor(this.default_colors, 'far_color').listen().onChange(this.set_far_color.bind(this));
 
-        this.gfx.conf.gui.add(this, 'size', 1, 64).step(1).onChange(this.set_particle_size.bind(this));
+        // this.gfx.conf.gui.add(this, 'size', 1, 64).step(1).onChange(this.set_particle_size.bind(this));
 
         this.add_particle_system();
     }
@@ -46,6 +46,7 @@ export default class particles {
             far_color     : { type : 'c',  value : new THREE.Color( this.default_colors.far_color ) },
             particle_size : { type : 'f',  value : this.size },
             texture       : { type : 't',  value : THREE.ImageUtils.loadTexture('images/circle.png') },
+            camera        : { type : 'v3', value : this.camera.position },
             // mouse     : { type : 'v2', value : new THREE.Vector2() },
         };
     }
