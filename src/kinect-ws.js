@@ -4,7 +4,7 @@ import conf from 'conf';
 
 export default function websockets_init() {
 
-    console.log('Using websockets data source');
+    console.log('Using Kinect WebSocket data source');
 
     const _ = partial.placeholder;
 
@@ -26,7 +26,7 @@ export default function websockets_init() {
     }
 
     function create_ws_connection(ws_url) {
-        let ws = new WebSocket('ws://' + ws_url);
+        let ws = new WebSocket('ws://' + ws_url.replace('ws://', ''));
         ws.binaryType = 'arraybuffer';
         ws.onopen = handle_open;
         ws.onmessage = handle_message;

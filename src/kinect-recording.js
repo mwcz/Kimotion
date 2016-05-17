@@ -2,7 +2,7 @@ import conf from 'conf';
 
 export default function recording_init() {
 
-    console.log('Using recording data source');
+    console.log('Using Kinect recording data source');
 
     var i     = 0;
     var step  = conf.kinect.res.width * conf.kinect.res.height;

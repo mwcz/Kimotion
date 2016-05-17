@@ -1,0 +1,9 @@
+{
+    "libs": [ "browser", "ecma5" ],
+    "loadEagerly": [
+        "client/bower_components/three.js/build/three.js"
+    ],
+    "plugins": {
+        "node": {}
+    }
+}
