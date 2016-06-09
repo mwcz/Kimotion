@@ -22,8 +22,8 @@
   "dependencies": {
     "dat-gui": "~0.5.1",
     "lodash-amd": "~3.5.0",
-    "nprogress": "git@github.com:rstacruz/nprogress.git#~0.2.0",
-    "p5.js": "git@github.com:mwcz/p5.js-release.git#master",
+    "nprogress": "https://github.com/rstacruz/nprogress.git#~0.2.0",
+    "p5.js": "https://github.com/mwcz/p5.js-release.git#master",
     "requirejs": "~2.1.20",
     "requirejs-text": "~2.0.14",
     "threejs": "*",
