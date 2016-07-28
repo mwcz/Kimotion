@@ -1,7 +1,6 @@
 /* global createCanvas */
 
 import THREE from 'threejs';
-import orbit_controls from 'threejs_orbit_controls';
 import p5 from 'p5';
 import 'p5.sound';
 import input from 'input';
@@ -15,7 +14,9 @@ let type = '2d'; // assume 2d at beginning, mods can update this
 let scene;
 let camera;
 let renderer;
-let depth = new Uint16Array(conf.kinect.res.width * conf.kinect.res.height);
+let data = {
+    depth: new Uint16Array(conf.kinect.res.width * conf.kinect.res.height),
+};
 
 let render = noop;
 
@@ -93,7 +94,7 @@ function reset() {
 }
 
 function update() {
-    this.depth = input.read();
+    this.data = input.read();
     render();
 }
 
@@ -101,7 +102,7 @@ let gfx = {
     conf,
     set,
     reset,
-    depth,
+    data,
     update
 };
 

@@ -61,7 +61,7 @@ export default function websockets_init() {
     ws = create_ws_connection(ask_for_ws_server());
 
     function read() {
-        return depth;
+        return { depth };
     }
 
     var exports = {

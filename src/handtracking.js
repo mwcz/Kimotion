@@ -1,5 +1,3 @@
-/* global width, height */
-
 const THRESHOLD_MIN = 600;
 const THRESHOLD_MAX = 700;
 const NEW_WEIGHT = 0.4;
