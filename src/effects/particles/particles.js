@@ -1,11 +1,6 @@
-import THREE from 'threejs';
-import effect from 'effect';
-import * as frag from 'text!./shaders/particle.frag';
-import * as vert from 'text!./shaders/vertex.vert';
-
-export default class particles {
+class particles_effect extends effect {
     constructor(gfx) {
-        this.gfx = gfx;
+        super(gfx);
 
         this.scene    = this.gfx.gl.scene;
         this.camera   = this.gfx.gl.camera;
@@ -45,7 +40,7 @@ export default class particles {
             mid_color     : { type : 'c',  value : new THREE.Color( this.default_colors.mid_color ) },
             far_color     : { type : 'c',  value : new THREE.Color( this.default_colors.far_color ) },
             particle_size : { type : 'f',  value : this.size },
-            texture       : { type : 't',  value : THREE.ImageUtils.loadTexture('images/circle.png') },
+            texture       : { type : 't',  value : texture_loader.load('images/circle.png') },
             // mouse     : { type : 'v2', value : new THREE.Vector2() },
         };
     }
@@ -57,18 +52,19 @@ export default class particles {
     }
 
     add_particle_system() {
-        this.geometry = new THREE.BufferGeometry();
+        this.geometry = new THREE.BufferGeometry({
+            attributes     : this.get_attributes(),
+        });
         this.material = new THREE.ShaderMaterial({
             uniforms       : this.get_uniforms(),
-            attributes     : this.get_attributes(),
-            vertexShader   : vert,
-            fragmentShader : frag,
+            vertexShader   : shaders.get_vert('particles'),
+            fragmentShader : shaders.get_frag('particles'),
             blending       : THREE.NormalBlending,
             depthTest      : false,
             transparent    : true,
         });
         this.add_particle_system_attributes( this.geometry, 640*480 );
-        this.system = new THREE.PointCloud( this.geometry, this.material );
+        this.system = new THREE.Points( this.geometry, this.material );
         this.system.sortParticles = true;
 
         // flip the particle system so lower depth values will become closer to the
@@ -145,18 +141,3 @@ export default class particles {
         this.material.uniforms.particle_size.value = c;
     }
 }
-
-// THREE.NoBlending
-// THREE.NormalBlending
-// THREE.AdditiveBlending
-// THREE.SubtractiveBlending
-// THREE.MultiplyBlending
-// THREE.CustomBlending
-
-
-
-function NaNPositionError(message) {
-    this.name = 'NaNPositionError';
-    this.message = message || '';
-}
-NaNPositionError.prototype = Error.prototype;

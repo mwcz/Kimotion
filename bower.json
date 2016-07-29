@@ -20,16 +20,15 @@
     "tests"
   ],
   "dependencies": {
-    "dat-gui": "~0.5.1",
-    "lodash-amd": "~3.5.0",
-    "nprogress": "https://github.com/rstacruz/nprogress.git#~0.2.0",
-    "p5.js": "https://github.com/mwcz/p5.js-release.git#master",
-    "requirejs": "~2.1.20",
-    "requirejs-text": "~2.0.14",
-    "threejs": "*",
-    "tinycolor": "https://github.com/mwcz/TinyColor.git#master",
-    "tweenjs": "*",
-    "zepto": "~1.1.6"
+    "dat-gui": "^0.5.1",
+    "nprogress": "^0.2.0",
+    "three.js": "threejs#*",
+    "tinycolor": "^1.4.1",
+    "tween.js": "tweenjs#^16.3.4",
+    "zepto": "^1.1.6",
+    "lodash": "^4.14.0",
+    "p5.play": "https://github.com/molleindustria/p5.play.git",
+    "p5.js": "p5js#^0.4.5"
   },
   "devDependencies": {}
 }

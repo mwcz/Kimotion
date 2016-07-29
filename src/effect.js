@@ -1,5 +1,7 @@
-export default class effect {
-    constructor() {}
+class effect {
+    constructor(gfx) {
+        this.gfx = gfx;
+    }
     update() {}
     destroy() {}
 }

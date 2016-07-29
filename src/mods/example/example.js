@@ -1,7 +1,4 @@
-import THREE from 'threejs';
-import mod from 'mod';
-
-export default class example extends mod {
+class example extends mod {
     constructor(gfx) {
         super(gfx);
         gfx.set(this, '3d');

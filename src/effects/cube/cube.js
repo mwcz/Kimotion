@@ -1,31 +1,22 @@
-import THREE from 'threejs';
-import effect from 'effect';
-
-let scene;
-let gfx;
-let geometry;
-let cube;
-let material;
-
-export default class cube_effect {
+class cube_effect extends effect {
     constructor(_gfx) {
-        gfx = _gfx;
-        scene    = gfx.gl.scene;
+        super(gfx);
+        this.scene = gfx.gl.scene;
 
-        geometry = new THREE.BoxGeometry( 150, 150, 150 );
+        this.geometry = new THREE.BoxGeometry( 150, 150, 150 );
 
-        for ( let i = 0; i < geometry.faces.length; i += 2 ) {
+        for ( let i = 0; i < this.geometry.faces.length; i += 2 ) {
             let hex = Math.random() * 0xffffff;
-            geometry.faces[ i ].color.setHex( hex );
-            geometry.faces[ i + 1 ].color.setHex( hex );
+            this.geometry.faces[ i ].color.setHex( hex );
+            this.geometry.faces[ i + 1 ].color.setHex( hex );
         }
 
-        material = new THREE.MeshBasicMaterial( { vertexColors: THREE.FaceColors, overdraw: 0.5 } );
-        cube = new THREE.Mesh( geometry, material );
-        scene.add( cube );
-        gfx.gl.camera.lookAt(cube.position);
+        this.material = new THREE.MeshBasicMaterial( { vertexColors: THREE.FaceColors, overdraw: 0.5 } );
+        this.cube = new THREE.Mesh( this.geometry, this.material );
+        this.scene.add( this.cube );
+        gfx.gl.camera.lookAt(this.cube.position);
 
-        gfx.gl.cube = cube;
+        gfx.gl.cube = this.cube;
 
         this.prev_dsum = 0;
     }
@@ -35,7 +26,7 @@ export default class cube_effect {
             dsum += gfx.depth[i];
         }
         let dsum_diff = (dsum - this.prev_dsum) / 5e7;
-        cube.rotation.y += dsum_diff;
+        this.cube.rotation.y += dsum_diff;
         this.prev_dsum = dsum;
     }
     destroy() {}

@@ -1,9 +1,4 @@
-/* global rect, background, fill, stroke */
-
-import THREE from 'threejs';
-import mod from 'mod';
-
-export default class example2d extends mod {
+class example2d extends mod {
     constructor(gfx) {
         super(gfx);
 

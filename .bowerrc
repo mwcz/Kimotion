@@ -1,6 +1,3 @@
 {
-  "directory": "src/lib",
-  "scripts": {
-    "postinstall": "grunt bowerRequirejs"
-  }
+  "directory": "src/lib"
 }

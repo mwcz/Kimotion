@@ -1,15 +1,13 @@
-import mod from 'mod';
-
-const THRESHOLD_MIN = 600;
-const THRESHOLD_MAX = 700;
-
-export default class handcube extends mod {
+class handcube extends mod {
     constructor(gfx) {
         super(gfx);
         gfx.set(this, '3d');
         this.author = 'Michael Clayton';
         this.title = 'Hand Cube';
         this.add_effect('cube');
+
+        this.THRESHOLD_MIN = 600;
+        this.THRESHOLD_MAX = 700;
 
         for ( let i = 0; i < gfx.gl.cube.geometry.faces.length; i += 2 ) {
             let hex = Math.random() * 0xffffff;
@@ -34,7 +32,7 @@ export default class handcube extends mod {
             let x = i % gfx.conf.kinect.res.width;
             let y = gfx.conf.kinect.res.height - Math.floor(i / gfx.conf.kinect.res.width);
 
-            if (gfx.depth[i] > THRESHOLD_MIN && gfx.depth[i] < THRESHOLD_MAX) {
+            if (gfx.depth[i] > this.THRESHOLD_MIN && gfx.depth[i] < this.THRESHOLD_MAX) {
                 sumx  += x;
                 sumy  += y;
                 count += 1;

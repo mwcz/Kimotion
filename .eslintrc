@@ -1,0 +1,16 @@
+{
+  "globals": {
+    // Put things like jQuery, etc
+    "jQuery": true,
+    "$": true
+  },
+  "env": {
+    // I write for browser
+    "browser": true,
+    "es6": true
+  },
+  // To give you an idea how to override rule options:
+  "rules": {
+    // Tons of rules you can use, for example...
+  }
+}

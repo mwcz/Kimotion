@@ -1,12 +1,7 @@
 /* global prompt */
-import { map, partial, noop } from 'lodash';
-import conf from 'conf';
-
-export default function websockets_init() {
+const kinect_ws = () => {
 
     console.log('Using Kinect WebSocket data source');
-
-    const _ = partial.placeholder;
 
     const MAX_DEPTH = 2047;
     const MIN_DEPTH = 0;
@@ -64,11 +59,8 @@ export default function websockets_init() {
         return depth;
     }
 
-    var exports = {
+    return {
         read,
         send_message
     };
-
-    return exports;
-
-}
+};

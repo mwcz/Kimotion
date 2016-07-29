@@ -1,12 +1,12 @@
-/* global width, height */
-
-const THRESHOLD_MIN = 600;
-const THRESHOLD_MAX = 700;
-const NEW_WEIGHT = 0.4;
-
-export default class handtracking {
+class handtracking_effect extends effect {
     constructor(gfx) {
+        super(gfx);
+
         gfx.hand = {};
+
+        this.THRESHOLD_MIN = 600;
+        this.THRESHOLD_MAX = 700;
+        this.NEW_WEIGHT = 0.4;
 
         this.prevhand = { x: 0, y: 0 };
         this.avgx = 0;
@@ -25,7 +25,7 @@ export default class handtracking {
             let x = i % gfx.conf.kinect.res.width;
             let y = gfx.conf.kinect.res.height - Math.floor(i / gfx.conf.kinect.res.width);
 
-            if (gfx.depth[i] > THRESHOLD_MIN && gfx.depth[i] < THRESHOLD_MAX) {
+            if (gfx.depth[i] > this.THRESHOLD_MIN && gfx.depth[i] < this.THRESHOLD_MAX) {
                 sumx  += x;
                 sumy  += y;
                 count += 1;
@@ -40,8 +40,8 @@ export default class handtracking {
             // needs of their coordinate systems
             this.rescale(gfx);
 
-            gfx.hand.x = this.prevhand.x * (1-NEW_WEIGHT) + this.avgx * NEW_WEIGHT;
-            gfx.hand.y = this.prevhand.y * (1-NEW_WEIGHT) + this.avgy * NEW_WEIGHT;
+            gfx.hand.x = this.prevhand.x * (1-this.NEW_WEIGHT) + this.avgx * this.NEW_WEIGHT;
+            gfx.hand.y = this.prevhand.y * (1-this.NEW_WEIGHT) + this.avgy * this.NEW_WEIGHT;
 
             this.prevhand.x = gfx.hand.x;
             this.prevhand.y = gfx.hand.y;

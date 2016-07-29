@@ -1,7 +1,3 @@
-/* global prompt */
-import { map, partial, noop } from 'lodash';
-import conf from 'conf';
-
 // Example JSON message from Leap Motion WebSocket server
 //
 // {
@@ -259,7 +255,7 @@ import conf from 'conf';
 //     "timestamp": 1463449373704006
 // }
 
-export default function websockets_init() {
+const leap_websockets = () => {
 
     console.log('Using Leap motion WebSocket data source');
 
@@ -315,11 +311,8 @@ export default function websockets_init() {
         return data;
     }
 
-    var exports = {
+    return {
         read,
         send_message
     };
-
-    return exports;
-
-}
+};

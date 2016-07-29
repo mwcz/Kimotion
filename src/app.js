@@ -1,10 +1,3 @@
-/* global Modernizr */
-
-import * as modctrl from 'modctrl';
-import gfx from 'gfx';
-import 'modernizr';
-import { every, map, pick, reduce } from 'lodash';
-
 const browser_reqs = [
     'typedarrays',
     'queryselector',
@@ -19,7 +12,7 @@ const browser_reqs = [
 function create() {
     let modname = location.hash.replace(/^#/, '');
 
-    let good_browser = every(map(browser_reqs, n => Modernizr[n]), n => !!n);
+    let good_browser = _.every(_.map(browser_reqs, n => Modernizr[n]), n => !!n);
 
     if (good_browser) {
         modctrl.create(gfx, modname);
@@ -36,4 +29,5 @@ function update() {
     gfx.update();
 }
 
-create();
+// preload shaders then kick off the scene
+shaders.fetch().then(create);

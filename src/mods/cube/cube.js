@@ -1,14 +1,12 @@
-import mod from 'mod';
-
-const MAX_DEPTH_SUM = 337920000;
-
-export default class cube extends mod {
+class cube extends mod {
     constructor(gfx) {
         super(gfx);
         gfx.set(this, '3d');
         this.author = 'Michael Clayton';
         this.title = 'Cube';
         this.add_effect('cube');
+
+        this.MAX_DEPTH_SUM = 337920000;
 
         for ( let i = 0; i < gfx.gl.cube.geometry.faces.length; i += 2 ) {
             let hex = Math.random() * 0xffffff;
@@ -43,8 +41,8 @@ export default class cube extends mod {
         }
 
         // scale down the depths to usable levels
-        left_depth /= MAX_DEPTH_SUM*2;
-        right_depth /= MAX_DEPTH_SUM*2;
+        left_depth /= this.MAX_DEPTH_SUM*2;
+        right_depth /= this.MAX_DEPTH_SUM*2;
 
         this.spin = 0.99 * this.spin + 0.01 * (right_depth - left_depth);
 

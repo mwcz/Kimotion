@@ -1,6 +1,4 @@
-import conf from 'conf';
-
-export default function recording_init() {
+const kinect_recording = () => {
 
     console.log('Using Kinect recording data source');
 
@@ -49,13 +47,10 @@ export default function recording_init() {
         xhr.send();
     }
 
-    fetch_recording('http://scripta.co/kimotion/recordings/short-recording.bin');
+    fetch_recording('/general_movement.bin');
 
-    var exports = {
+    return {
         read,
         send_message
     };
-
-    return exports;
-
-}
+};

@@ -1,6 +1,4 @@
-import mod from 'mod';
-
-export default class torus extends mod {
+class torus extends mod {
     constructor(gfx) {
         super(gfx);
         gfx.set(this, '3d');

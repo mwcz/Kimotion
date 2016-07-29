@@ -1,12 +1,4 @@
-/* global rect, background, fill, stroke */
-
-import THREE from 'threejs';
-import mod from 'mod';
-
-const FREQUENCY = 10;
-const RADIUS = 3;
-
-export default class flow_field extends mod {
+class flow_field extends mod {
     constructor(gfx) {
         super(gfx);
 
@@ -20,6 +12,9 @@ export default class flow_field extends mod {
         // screen!
         this.author = 'Harvey Moon & Michael Clayton';
         this.title = 'Flow Field';
+
+        this.FREQUENCY = 10;
+        this.RADIUS = 3;
 
         this.Particle = function Particle( posN, accN, colorIn){
             this.nowPos=createVector(posN.x,posN.y);
@@ -35,7 +30,7 @@ export default class flow_field extends mod {
 
         this.Particle.prototype.draw = function(){
             fill(this.colorN);
-            ellipse(this.nowPos.x,this.nowPos.y,RADIUS,RADIUS);
+            ellipse(this.nowPos.x,this.nowPos.y,this.RADIUS,this.RADIUS);
         };
 
         this.particles = [];
@@ -61,14 +56,15 @@ export default class flow_field extends mod {
         }
         if(this.particles.length < 500){
             this.MnowPos.set(this.handpos);
-            this.MnowPos.add(random(-FREQUENCY,FREQUENCY), random(-FREQUENCY,FREQUENCY) );
+            this.MnowPos.add(random(-this.FREQUENCY,this.FREQUENCY), random(-this.FREQUENCY,this.FREQUENCY) );
             this.particles[i] = new this.Particle(this.MnowPos,this.Macc,color(gfx.hand.x / width * 360, 100, 100, 0.2));
         }
         for(var j = 0; j < this.particles.length; j++){
-            if(this.particles[j].nowPos.x>=width-FREQUENCY || this.particles[j].nowPos.x <= FREQUENCY || this.particles[j].nowPos.y>=height-FREQUENCY || this.particles[j].nowPos.y <= FREQUENCY  || this.particles[j].lifeCount <= 0){
+            if(this.particles[j].nowPos.x>=width-this.FREQUENCY || this.particles[j].nowPos.x <= this.FREQUENCY || this.particles[j].nowPos.y>=height-this.FREQUENCY || this.particles[j].nowPos.y <= this.FREQUENCY  || this.particles[j].lifeCount <= 0){
                 this.particles.splice(j,1);
             }
         }
+        ellipse(gfx.hand.x, gfx.hand.y, 20, 20);
 
         super.update(gfx);
     }

@@ -1,20 +1,35 @@
 Make a Kimotion!
 ================
 
-A spiffy, new, ultra customizable visualization renderer for interactive art
-exhibits.  A :movie_camera:[video series][videos] exists to demonstrate several
-Kimotion mods!
+A framework for building interactive art exhibits.
+
+A :movie_camera:[video series][videos] exists to demonstrate several Kimotion
+mods!
 
 ![Kimotion sample](src/images/readme_hero.png)
 
 This [very brief slide deck][slides] will give you a quick introduction and
 history of the project.
 
-Installation
-------------
+Quick-start
+------------------------
 
-In order to start hacking on Kimotion, you'll need to install a few
-dependencies.
+You can get started very quickly by skipping some of Kimotion's optional
+features.  Here's the fastest way to get set up:
+
+ 1. Clone or download this repository
+ 2. `./start.sh`
+ 3. Open [http://localhost:8000](http://localhost:8000)
+
+All `start.sh` does is launch a webserver that serves the `src` directory, so
+if you want to use your own webserver, just copy or symlink the src directory's
+contents into your webroot.
+
+Full installation
+-----------------
+
+In order to run Kimotion with live data from a Kinect or a Leap Motion, a few
+more things need to be installed:
 
  - [Node.js][node] and npm: Fedora: `yum install nodejs npm`, Ubuntu: `apt-get
    install nodejs npm`
@@ -32,9 +47,7 @@ Fedora, `yum install libfreenect libfreenect-python`, on Ubuntu:
 Once all that stuff is installed, clone this repo (or fork it and clone your
 fork), cd into it and...
 
-    npm install -g bower grunt-cli
-    npm install && bower install
-    grunt build:dev
+    npm install
 
 Then unzip one of the recordings and launch the websocket server:
 
@@ -91,12 +104,22 @@ To enable 3D mode, place this in your mod's constructor:
 
     gfx.set(this, '3d');
 
-Last years' Exhibit
--------------------
+Exhibits
+--------
 
- - [DiMo 2014][dimo2014]
+ - [Digital Motion 2014][dimo2014]
+ - [Kimotion @ Digital Motion 2015][dimo2015]
 
+FAQ
+---
+
+ - What's up with bower?  Front-end libraries *are* managed in bower, but I
+   take it upon myself to copy the installed versions directly into this repo.
+   It's a tradeoff, but the benefit is that newcomers can contribute to
+   Kimotion without installing anything.
+ 
 [dimo2014]: http://palebluepixel.org/projects/dimo/
+[dimo2015]: http://palebluepixel.org/2015/09/26/make-a-kimotion/
 [server]: /server
 [node]: https://nodejs.org/
 [freenect]: http://openkinect.org/wiki/Getting_Started

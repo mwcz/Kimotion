@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-        <title>Kimotion client</title>
+        <title>Kimotion!</title>
         <link rel="stylesheet" href="css/styles.css" type="text/css" media="screen" charset="utf-8">
         <link rel="stylesheet" href="lib/nprogress/nprogress.css" type="text/css" media="screen" charset="utf-8">
     </head>
@@ -18,14 +18,110 @@
         </section>
 
         <section id="no-worky-message">
-            So sorry, but your web browser is insufficient to play Kimotion.  A
-            modern version of
+            Shucks!  Your web browser lacks some features necessary to play
+            Kimotion.  Not to worry, the latest version of either
             <a href="https://www.mozilla.org/en-US/firefox/new/">Firefox</a> or
-            <a href="https://www.google.com/chrome/browser/index.html">Google Chrome</a>
-            will allow you to play Kimotion and give you an overall better experience
+            <a href="https://www.google.com/chrome/browser/index.html">Chrome</a>
+            support those features and give you an overall better experience
             across the web.
         </section>
 
-        <script src="lib/requirejs/require.js" data-main="require.config.js"></script>
+        <!-- Add custom shaders here, like so -->
+        <script src="effects/particles/shaders/vertex.vert"   id="particles-vert-shader"  type="x-shader/x-vertex"   ></script>
+        <script src="effects/particles/shaders/particle.frag" id="particles-frag-shader"  type="x-shader/x-fragment" ></script>
+        <script src="mods/handviz/shaders/vertex.vert"        id="handviz-vert-shader"    type="x-shader/x-vertex"   ></script>
+        <script src="mods/handviz/shaders/particle.frag"      id="handviz-frag-shader"    type="x-shader/x-fragment" ></script>
+        <script src="mods/sandstorm/shaders/vertex.vert"      id="sandstorm-vert-shader"  type="x-shader/x-vertex"   ></script>
+        <script src="mods/sandstorm/shaders/particle.frag"    id="sandstorm-frag-shader"  type="x-shader/x-fragment" ></script>
+        <script src="mods/snake/shaders/vertex.vert"          id="snake-vert-shader"      type="x-shader/x-vertex"   ></script>
+        <script src="mods/snake/shaders/particle.frag"        id="snake-frag-shader"      type="x-shader/x-fragment" ></script>
+        <script src="mods/portal/shaders/vertex.vert"         id="portal-vert-shader"     type="x-shader/x-vertex"   ></script>
+        <script src="mods/portal/shaders/particle.frag"       id="portal-frag-shader"     type="x-shader/x-fragment" ></script>
+        <script src="mods/storm/shaders/vertex.vert"          id="storm-vert-shader"      type="x-shader/x-vertex"   ></script>
+        <script src="mods/storm/shaders/particle.frag"        id="storm-frag-shader"      type="x-shader/x-fragment" ></script>
+        <script src="mods/spotlights/shaders/vertex.vert"     id="spotlights-vert-shader" type="x-shader/x-vertex"   ></script>
+        <script src="mods/spotlights/shaders/particle.frag"   id="spotlights-frag-shader" type="x-shader/x-fragment" ></script>
+        <script src="mods/colorcycle/shaders/vertex.vert"     id="colorcycle-vert-shader" type="x-shader/x-vertex"   ></script>
+        <script src="mods/colorcycle/shaders/particle.frag"   id="colorcycle-frag-shader" type="x-shader/x-fragment" ></script>
+        <script src="mods/spiral/shaders/vertex.vert"         id="spiral-vert-shader"     type="x-shader/x-vertex"   ></script>
+        <script src="mods/spiral/shaders/particle.frag"       id="spiral-frag-shader"     type="x-shader/x-fragment" ></script>
+        <script src="mods/handtrack/shaders/vertex.vert"      id="handtrack-vert-shader"  type="x-shader/x-vertex"   ></script>
+        <script src="mods/handtrack/shaders/particle.frag"    id="handtrack-frag-shader"  type="x-shader/x-fragment" ></script>
+
+        <!-- third-party libraries -->
+        <script src="lib-static/lodash.js"></script>
+        <script src="lib-static/three.js"></script>
+        <script src="lib-static/OrbitControls.js"></script>
+        <script src="lib-static/Tween.js"></script>
+        <script src="lib-static/dat.gui.js"></script>
+        <script src="lib-static/tinycolor.js"></script>
+        <script src="lib-static/zepto.js"></script>
+        <script src="lib-static/p5.js"></script>
+        <!-- <script src="lib-static/p5.play.js"></script> -->
+        <!-- <script src="lib-static/p5.sound.js"></script> -->
+        <script src="lib-static/nprogress.js"></script>
+        <script src="lib-static/modernizr-custom.min.js"></script>
+
+        <!-- Kimotion scripts -->
+        <script src="shaders.js"></script>
+        <script src="texture-loader.js"></script>
+        <script src="effect.js"></script>
+        <script src="effects/handtracking.js"></script>
+        <script src="effects/cube/cube.js"></script>
+        <script src="effects/handtracking2d/handtracking2d.js"></script>
+        <script src="effects/handtracking3d/handtracking3d.js"></script>
+        <script src="effects/particles/particles.js"></script>
+        <script src="effects/torus/torus.js"></script>
+        <script src="effects.js"></script>
+        <script src="mod.js"></script>
+
+        <!-- Kimotion mods -->
+        <script src="mods/colorcycle/colorcycle.js"></script>
+        <script src="mods/cube/cube.js"></script>
+        <script src="mods/example/example.js"></script>
+        <script src="mods/example2d/example2d.js"></script>
+        <!-- <script src="mods/fish/utils.js"></script> -->
+        <!-- <script src="mods/fish/Sprite.js"></script> -->
+        <!-- <script src="mods/fish/consts.js"></script> -->
+        <!-- <script src="mods/fish/FishSprite.js"></script> -->
+        <!-- <script src="mods/fish/BlueFishSprite.js"></script> -->
+        <!-- <script src="mods/fish/RedFishSprite.js"></script> -->
+        <!-- <script src="mods/fish/GoldFishSprite.js"></script> -->
+        <!-- <script src="mods/fish/PurpleFishSprite.js"></script> -->
+        <!-- <script src="mods/fish/SharkFishSprite.js"></script> -->
+        <!-- <script src="mods/fish/HandSprite.js"></script> -->
+        <!-- <script src="mods/fish/Particle.js"></script> -->
+        <!-- <script src="mods/fish/CoinParticle.js"></script> -->
+        <!-- <script src="mods/fish/ChestSprite.js"></script> -->
+        <!-- <script src="mods/fish/fish.js"></script> -->
+        <script src="mods/flow_field/flow_field.js"></script>
+        <script src="mods/graph/graph.js"></script>
+        <script src="mods/handcube/handcube.js"></script>
+        <script src="mods/handtrack/handtrack.js"></script>
+        <script src="mods/handviz/handviz.js"></script>
+        <script src="mods/particles/particles.js"></script>
+        <script src="mods/portal/portal.js"></script>
+        <script src="mods/sandstorm/sandstorm.js"></script>
+        <script src="mods/snake/snake.js"></script>
+        <script src="mods/spiral/spiral.js"></script>
+        <script src="mods/spotlights/spotlights.js"></script>
+        <script src="mods/storm/storm.js"></script>
+        <script src="mods/torus/torus.js"></script>
+        <script src="mods/wallflower/wallflower.js"></script>
+
+        <!-- Last batch of Kimotion scripts -->
+        <script src="mods.js"></script>
+        <script src="blacklist.js"></script>
+        <script src="modctrl.js"></script>
+        <script src="conf.js"></script>
+        <script src="timer.js"></script>
+        <script src="kinect-ws.js"></script>
+        <script src="kinect-recording.js"></script>
+        <script src="leap-ws.js"></script>
+        <script src="input.js"></script>
+        <script src="conf-gui.js"></script>
+        <script src="gfx.js"></script>
+        <script src="app.js"></script>
+
     </body>
 </html>

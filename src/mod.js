@@ -1,7 +1,4 @@
-import * as effects from 'effects';
-import { invoke, each } from 'lodash';
-
-export default class mod {
+class mod {
     constructor(gfx) {
         this.author  = '';
         this.title   = '';
@@ -11,7 +8,9 @@ export default class mod {
     }
     update(gfx) {
         // update each effect in this.effects
-        invoke(this.effects, 'update', gfx);
+        for( let i = 0, l = this.effects.length; i < l; ++i ) {
+            this.effects[i].update(gfx);
+        }
     }
     destroy(gfx) {
         // remove any datgui controllers that were created for this mod
@@ -20,7 +19,8 @@ export default class mod {
         }
     }
     add_effect(effect_name) {
-        let new_effect = new effects[effect_name](this.gfx);
+        const effect_prop = `${effect_name}_effect`;
+        let new_effect = new effects[effect_prop](this.gfx);
         this.effects.push(new_effect);
     }
 }

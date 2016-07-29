@@ -1,78 +1,72 @@
-import $ from 'zepto';
-import { contains, indexOf, without, keys, sample, range, size } from 'lodash';
-import * as mods from 'mods';
-import * as blacklist_json from 'text!blacklist.json';
-
-const blacklist = JSON.parse(blacklist_json);
-
 // choose a random mod to be the starting one
-let modnames = names();
-let modcount = size(modnames);
-let i        = Math.max(0, modnames.indexOf(location.hash.slice(1)));
-let curmod;
-let gfx;
+const modctrl = (() => {
+    let modnames = names();
+    let modcount = _.size(modnames);
+    let i        = Math.max(0, modnames.indexOf(location.hash.slice(1)));
+    let curmod;
+    let gfx;
 
-let display_title = $('#nowplaying #title');
-let display_author = $('#nowplaying #author');
+    let display_title = $('#nowplaying #title');
+    let display_author = $('#nowplaying #author');
 
-function next() {
-    i += 1;
-    i %= modcount;
-    set(modnames[i]);
-}
-
-function set(modname) {
-    i = indexOf(modnames, modname);
-    curmod.destroy(gfx);
-    gfx.reset();
-
-    create(gfx);
-
-    location.hash = modname;
-
-    //this is only needed for long-running art installations
-    //location.reload();
-}
-
-function names() {
-    return without(keys(mods), '__esModule', ...blacklist);
-}
-
-function get() {
-    return curmod;
-}
-
-function update(_gfx) {
-    curmod.update(gfx);
-
-    //modnames = names();
-    //modcount = size(modnames); // probably need this for DIY station mods
-}
-
-function create(_gfx, modname=modnames[i]) {
-
-    console.log(`Activating mod: ${modname}`);
-
-    if (contains(modnames, modname)) {
-        gfx = _gfx;
-        curmod = new mods[modname](gfx);
-    }
-    else {
-        gfx = _gfx;
-        curmod = new mods[modnames[i]](gfx);
-        location.hash = modnames[i];
+    function next() {
+        i += 1;
+        i %= modcount;
+        set(modnames[i]);
     }
 
-    // display the title and author
-    display_title.text(curmod.title);
-    display_author.text(curmod.author);
-}
+    function set(modname) {
+        i = _.indexOf(modnames, modname);
+        curmod.destroy(gfx);
+        gfx.reset();
 
-export {
-    next,
-    get,
-    set,
-    names,
-    update,
-    create
-};
+        create(gfx);
+
+        location.hash = modname;
+
+        location.reload();
+    }
+
+    function names() {
+        return _.without(_.keys(mods), '__esModule', ...blacklist);
+    }
+
+    function get() {
+        return curmod;
+    }
+
+    function update(_gfx) {
+        curmod.update(gfx);
+
+        //modnames = names();
+        //modcount = _.size(modnames); // probably need this for DIY station mods
+    }
+
+    function create(_gfx, modname=modnames[i]) {
+
+        console.log(`Activating mod: ${modname}`);
+
+        if (_.includes(modnames, modname)) {
+            gfx = _gfx;
+            curmod = new mods[modname](gfx);
+        }
+        else {
+            gfx = _gfx;
+            curmod = new mods[modnames[i]](gfx);
+            location.hash = modnames[i];
+        }
+
+        // display the title and author
+        display_title.text(curmod.title);
+        display_author.text(curmod.author);
+    }
+
+    return {
+        next,
+        get,
+        set,
+        names,
+        update,
+        create
+    };
+})();

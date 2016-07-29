@@ -1,14 +1,3 @@
-import THREE from 'threejs';
-import mod from 'mod';
-import * as frag from 'text!./shaders/particle.frag';
-import * as vert from 'text!./shaders/vertex.vert';
-
-const THRESHOLD_MIN = 600;
-const THRESHOLD_MAX = 700;
-const NUM_BUBBLES = 4;
-const NUM_CHILDREN = 5;
-const WAIT = 10;
-
 /**
  * these would be a good range to put the snake bits in
  * X: -320..+320
@@ -18,7 +7,7 @@ const WAIT = 10;
  * as in, snake_bit.position.x = 120; for example
  */
 
-export default class snake extends mod {
+class snake extends mod {
     constructor(gfx) {
         super(gfx);
         this.author = 'Ben Pritchett';
@@ -26,6 +15,10 @@ export default class snake extends mod {
         this.title = 'snake';
         this.add_effect('particles');
         this.add_effect('handtracking3d');
+
+        this.NUM_BUBBLES = 4;
+        this.NUM_CHILDREN = 5;
+        this.WAIT = 10;
 
         let geometry;
         let material;
@@ -39,24 +32,24 @@ export default class snake extends mod {
 
         for ( var i = 0; i < 10000; i ++ ) {
 
-          var vertex = new THREE.Vector3();
-          vertex.x = THREE.Math.randFloatSpread( 2000 );
-          vertex.y = THREE.Math.randFloatSpread( 2000 );
-          vertex.z = THREE.Math.randFloatSpread( 2000 );
+            var vertex = new THREE.Vector3();
+            vertex.x = THREE.Math.randFloatSpread( 2000 );
+            vertex.y = THREE.Math.randFloatSpread( 2000 );
+            vertex.z = THREE.Math.randFloatSpread( 2000 );
 
-          geometry.vertices.push( vertex );
+            geometry.vertices.push( vertex );
 
         }
 
-        let particles = new THREE.PointCloud( geometry , new THREE.PointCloudMaterial( { color: 0x888888 }));
+        let particles = new THREE.Points( geometry , new THREE.PointsMaterial( { color: 0x888888 }));
         gfx.gl.scene.add( particles );
-        
+
         gfx.gl.renderer.setClearColor( new THREE.Color('#0d0c0b') );
 
         lights[0] = new THREE.PointLight( 0xffffff, 1, 0 );
         lights[1] = new THREE.PointLight( 0xffffff, 1, 0 );
         lights[2] = new THREE.PointLight( 0xffffff, 1, 0 );
-        
+
         lights[0].position.set( 0, 200, 0 );
         lights[1].position.set( 100, 200, 100 );
         lights[2].position.set( -100, -200, -100 );
@@ -65,24 +58,24 @@ export default class snake extends mod {
         gfx.gl.scene.add( lights[1] );
         gfx.gl.scene.add( lights[2] );
 
-        for (var i = 0; i <= NUM_BUBBLES - 1; i++) {
+        for (var i = 0; i <= this.NUM_BUBBLES - 1; i++) {
             geometry = new THREE.SphereGeometry( 10, 32, 32 );
             color = Math.random() * (16777215 - 1) + 1;
             material = new THREE.MeshLambertMaterial( {color: color} );
             this.spheres['sphere' + i] = new THREE.Mesh( geometry, material );
             gfx.gl.scene.add(this.spheres['sphere' + i]);
-            for (var j = NUM_CHILDREN; j > 0; j--) {
-              geometry = new THREE.SphereGeometry( 5, 32, 32 );
-              material = new THREE.MeshLambertMaterial( {color: color} );
-              this.spheres['sphere' + i]['sphere' + j] = new THREE.Mesh( geometry, material );
-              this.spheres['sphere' + i]['sphere' + j].position.x = this.spheres['sphere' + i].position.x + 25 * Math.cos(2*Math.PI/NUM_CHILDREN*j);
-              this.spheres['sphere' + i]['sphere' + j].position.y = this.spheres['sphere' + i].position.y + 25 * Math.sin(2*Math.PI/NUM_CHILDREN*j);
-              gfx.gl.scene.add(this.spheres['sphere' + i]['sphere' + j]);
+            for (var j = this.NUM_CHILDREN; j > 0; j--) {
+                geometry = new THREE.SphereGeometry( 5, 32, 32 );
+                material = new THREE.MeshLambertMaterial( {color: color} );
+                this.spheres['sphere' + i]['sphere' + j] = new THREE.Mesh( geometry, material );
+                this.spheres['sphere' + i]['sphere' + j].position.x = this.spheres['sphere' + i].position.x + 25 * Math.cos(2*Math.PI/this.NUM_CHILDREN*j);
+                this.spheres['sphere' + i]['sphere' + j].position.y = this.spheres['sphere' + i].position.y + 25 * Math.sin(2*Math.PI/this.NUM_CHILDREN*j);
+                gfx.gl.scene.add(this.spheres['sphere' + i]['sphere' + j]);
             };
         }
         //console.log(this.spheres);
         gfx.gl.camera.rotation.order = 'YXZ';
-        this.num_spheres = NUM_BUBBLES;
+        this.num_spheres = this.NUM_BUBBLES;
         geometry = new THREE.SphereGeometry( 10, 32, 32 );
         color = Math.random() * (16777215 - 1) + 1;
         material = new THREE.MeshLambertMaterial( {color: color} );
@@ -90,20 +83,20 @@ export default class snake extends mod {
         this.objective.position.x = 100;
         this.objective.position.y = 100;
         gfx.gl.scene.add(this.objective);
-        for (var j = NUM_CHILDREN; j > 0; j--) {
-          geometry = new THREE.SphereGeometry( 5, 32, 32 );
-          material = new THREE.MeshLambertMaterial( {color: color} );
-          this.objective['sphere' + j] = new THREE.Mesh( geometry, material );
-          this.objective['sphere' + j].position.x = this.objective.position.x + 25 * Math.sin(2*Math.PI/NUM_CHILDREN*j) * Math.cos(2*Math.PI/NUM_CHILDREN*j);
-          this.objective['sphere' + j].position.y = this.objective.position.y + 25 * Math.sin(2*Math.PI/NUM_CHILDREN*j);
-          this.objective['sphere' + j].position.z = this.objective.position.z + 25 * Math.cos(2*Math.PI/NUM_CHILDREN*j);
-          gfx.gl.scene.add(this.objective['sphere' + j]);
+        for (var j = this.NUM_CHILDREN; j > 0; j--) {
+            geometry = new THREE.SphereGeometry( 5, 32, 32 );
+            material = new THREE.MeshLambertMaterial( {color: color} );
+            this.objective['sphere' + j] = new THREE.Mesh( geometry, material );
+            this.objective['sphere' + j].position.x = this.objective.position.x + 25 * Math.sin(2*Math.PI/this.NUM_CHILDREN*j) * Math.cos(2*Math.PI/this.NUM_CHILDREN*j);
+            this.objective['sphere' + j].position.y = this.objective.position.y + 25 * Math.sin(2*Math.PI/this.NUM_CHILDREN*j);
+            this.objective['sphere' + j].position.z = this.objective.position.z + 25 * Math.cos(2*Math.PI/this.NUM_CHILDREN*j);
+            gfx.gl.scene.add(this.objective['sphere' + j]);
         };
         //console.log(this.objective);
 
-        gfx.gl.particles.material.vertexShader = vert;
-        gfx.gl.particles.material.fragmentShader = frag;
-        this.waittimer = WAIT;
+        gfx.gl.particles.material.vertexShader = shaders.get_vert('snake');
+        gfx.gl.particles.material.fragmentShader = shaders.get_frag('snake');
+        this.waittimer = this.WAIT;
         //console.log(gfx.conf);
     }
     update(gfx) {
@@ -117,10 +110,10 @@ export default class snake extends mod {
         this.spheres['sphere'+firstball].position.x = gfx.hand.x;
         this.spheres['sphere'+firstball].position.y = gfx.hand.y;
 
-        for (var j = NUM_CHILDREN; j > 0; j--) {
-          this.spheres['sphere'+firstball]['sphere' + j].position.x = this.spheres['sphere'+firstball].position.x + 25 * Math.sin(2*Math.PI/NUM_CHILDREN*j*seconds) * Math.cos(2*Math.PI/NUM_CHILDREN*j*seconds);
-          this.spheres['sphere'+firstball]['sphere' + j].position.y = this.spheres['sphere'+firstball].position.y + 25 * Math.sin(2*Math.PI/NUM_CHILDREN*j*seconds);
-          this.spheres['sphere'+firstball]['sphere' + j].position.z = this.spheres['sphere'+firstball].position.z + 25 * Math.cos(2*Math.PI/NUM_CHILDREN*j*seconds);
+        for (var j = this.NUM_CHILDREN; j > 0; j--) {
+            this.spheres['sphere'+firstball]['sphere' + j].position.x = this.spheres['sphere'+firstball].position.x + 25 * Math.sin(2*Math.PI/this.NUM_CHILDREN*j*seconds) * Math.cos(2*Math.PI/this.NUM_CHILDREN*j*seconds);
+            this.spheres['sphere'+firstball]['sphere' + j].position.y = this.spheres['sphere'+firstball].position.y + 25 * Math.sin(2*Math.PI/this.NUM_CHILDREN*j*seconds);
+            this.spheres['sphere'+firstball]['sphere' + j].position.z = this.spheres['sphere'+firstball].position.z + 25 * Math.cos(2*Math.PI/this.NUM_CHILDREN*j*seconds);
         };
 
         let distance;
@@ -130,7 +123,7 @@ export default class snake extends mod {
         let xdiff;
         let ydiff;
         let iless;
-        
+
         if (this.objective !== false) {
             xdiff = (this.objective.position.x) * -0.001;
             this.objective.position.x = this.objective.position.x + xdiff;
@@ -144,7 +137,7 @@ export default class snake extends mod {
             gfx.gl.scene.add(this.spheres['sphere'+this.num_spheres]);
             this.num_spheres++;
             this.objective = false;
-            this.waittimer = WAIT;
+            this.waittimer = this.WAIT;
         }
 
         if (this.objective === false && this.waittimer == 0) {
@@ -156,13 +149,13 @@ export default class snake extends mod {
             this.objective.position.y = Math.random() * gfx.conf.kinect.res.height - gfx.conf.kinect.res.height/2;
             //console.log(this.objective.position);
             gfx.gl.scene.add(this.objective);
-            for (var j = NUM_CHILDREN; j > 0; j--) {
-              geometry = new THREE.SphereGeometry( 5, 32, 32 );
-              material = new THREE.MeshLambertMaterial( {color: color} );
-              this.objective['sphere' + j] = new THREE.Mesh( geometry, material );
-              this.objective['sphere' + j].position.x = this.objective.position.x + 25 * Math.cos(2*Math.PI/NUM_CHILDREN*j);
-              this.objective['sphere' + j].position.y = this.objective.position.y + 25 * Math.sin(2*Math.PI/NUM_CHILDREN*j);
-              gfx.gl.scene.add(this.objective['sphere' + j]);
+            for (var j = this.NUM_CHILDREN; j > 0; j--) {
+                geometry = new THREE.SphereGeometry( 5, 32, 32 );
+                material = new THREE.MeshLambertMaterial( {color: color} );
+                this.objective['sphere' + j] = new THREE.Mesh( geometry, material );
+                this.objective['sphere' + j].position.x = this.objective.position.x + 25 * Math.cos(2*Math.PI/this.NUM_CHILDREN*j);
+                this.objective['sphere' + j].position.y = this.objective.position.y + 25 * Math.sin(2*Math.PI/this.NUM_CHILDREN*j);
+                gfx.gl.scene.add(this.objective['sphere' + j]);
             };
         }
 
@@ -188,35 +181,35 @@ export default class snake extends mod {
                 this.spheres['sphere'+i].position.y = -240;
             }
             if (isNaN(this.spheres['sphere'+i].position.x)) {
-              this.spheres['sphere'+i].position.x = 0;
+                this.spheres['sphere'+i].position.x = 0;
             }
             if (isNaN(this.spheres['sphere'+i].position.y)) {
-              this.spheres['sphere'+i].position.y = 0;
+                this.spheres['sphere'+i].position.y = 0;
             }
-            for (var j = NUM_CHILDREN; j > 0; j--) {
-              this.spheres['sphere' + i]['sphere' + j].position.x = this.spheres['sphere' + i].position.x + 25 * Math.sin(2*Math.PI/NUM_CHILDREN*j*seconds) * Math.cos(2*Math.PI/NUM_CHILDREN*j*seconds);
-              this.spheres['sphere' + i]['sphere' + j].position.y = this.spheres['sphere' + i].position.y + 25 * Math.sin(2*Math.PI/NUM_CHILDREN*j*seconds);
-              this.spheres['sphere' + i]['sphere' + j].position.z = this.spheres['sphere' + i].position.z + 25 * Math.cos(2*Math.PI/NUM_CHILDREN*j*seconds);
+            for (var j = this.NUM_CHILDREN; j > 0; j--) {
+                this.spheres['sphere' + i]['sphere' + j].position.x = this.spheres['sphere' + i].position.x + 25 * Math.sin(2*Math.PI/this.NUM_CHILDREN*j*seconds) * Math.cos(2*Math.PI/this.NUM_CHILDREN*j*seconds);
+                this.spheres['sphere' + i]['sphere' + j].position.y = this.spheres['sphere' + i].position.y + 25 * Math.sin(2*Math.PI/this.NUM_CHILDREN*j*seconds);
+                this.spheres['sphere' + i]['sphere' + j].position.z = this.spheres['sphere' + i].position.z + 25 * Math.cos(2*Math.PI/this.NUM_CHILDREN*j*seconds);
             };
         }
-        
-        for (var j = NUM_CHILDREN; j > 0; j--) {
-          this.objective['sphere' + j].position.x = this.objective.position.x + 25 * Math.sin(2*Math.PI/NUM_CHILDREN*j*seconds) * Math.cos(2*Math.PI/NUM_CHILDREN*j*seconds);
-          this.objective['sphere' + j].position.y = this.objective.position.y + 25 * Math.sin(2*Math.PI/NUM_CHILDREN*j*seconds);
-          this.objective['sphere' + j].position.z = this.objective.position.z + 25 * Math.cos(2*Math.PI/NUM_CHILDREN*j*seconds);
+
+        for (var j = this.NUM_CHILDREN; j > 0; j--) {
+            this.objective['sphere' + j].position.x = this.objective.position.x + 25 * Math.sin(2*Math.PI/this.NUM_CHILDREN*j*seconds) * Math.cos(2*Math.PI/this.NUM_CHILDREN*j*seconds);
+            this.objective['sphere' + j].position.y = this.objective.position.y + 25 * Math.sin(2*Math.PI/this.NUM_CHILDREN*j*seconds);
+            this.objective['sphere' + j].position.z = this.objective.position.z + 25 * Math.cos(2*Math.PI/this.NUM_CHILDREN*j*seconds);
         };
-/*        if (gfx.gl.camera.rotation.y >= this.getRads(30)) {
-          this.cameraSwitch = true;
-        }
-        if (gfx.gl.camera.rotation.y <= -1*this.getRads(30)) {
-          this.cameraSwitch = false;
-        }
-        if (this.cameraSwitch == true) {
-          gfx.gl.camera.rotation.y -= this.getRads(0.1);
-        }
-        else {
-          gfx.gl.camera.rotation.y += this.getRads(0.1);
-        }*/
+        /*        if (gfx.gl.camera.rotation.y >= this.getRads(30)) {
+                  this.cameraSwitch = true;
+                  }
+                  if (gfx.gl.camera.rotation.y <= -1*this.getRads(30)) {
+                  this.cameraSwitch = false;
+                  }
+                  if (this.cameraSwitch == true) {
+                  gfx.gl.camera.rotation.y -= this.getRads(0.1);
+                  }
+                  else {
+                  gfx.gl.camera.rotation.y += this.getRads(0.1);
+                  }*/
         //gfx.gl.camera.rotation.y += this.getRads(1);
         //gfx.gl.camera.z = 1100 * Math.sin(seconds);
         /*for (var i = 0; i < this.lights.length; i++) {
@@ -224,7 +217,7 @@ export default class snake extends mod {
           let randy = Math.cos(seconds) * 400 - 200;
           let randz = Math.cos(seconds) * 200;
           this.lights[i].position.set( randx, randy, randz );
-        }*/
+          }*/
         let randx = Math.cos(seconds) * 400 - 200;
         let randy = Math.cos(seconds) * 400 - 200;
         let randz = Math.cos(seconds) * 200;

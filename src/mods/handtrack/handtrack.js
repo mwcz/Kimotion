@@ -1,12 +1,4 @@
-import THREE from 'threejs';
-import mod from 'mod';
-import * as frag from 'text!./shaders/particle.frag';
-import * as vert from 'text!./shaders/vertex.vert';
-
-const THRESHOLD_MIN = 600;
-const THRESHOLD_MAX = 700;
-
-export default class handtrack extends mod {
+class handtrack extends mod {
     constructor(gfx) {
         super(gfx);
         gfx.set(this, '3d');
@@ -21,8 +13,8 @@ export default class handtrack extends mod {
         this.sphere.position.z = 0;
         gfx.gl.scene.add( this.sphere );
 
-        gfx.gl.particles.material.vertexShader = vert;
-        gfx.gl.particles.material.fragmentShader = frag;
+        gfx.gl.particles.material.vertexShader = shaders.get_vert('handtrack');
+        gfx.gl.particles.material.fragmentShader = shaders.get_frag('handtrack');
     }
     update(gfx) {
 

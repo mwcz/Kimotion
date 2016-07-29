@@ -1,10 +1,4 @@
-import THREE from 'threejs';
-import color from 'tinycolor';
-import mod from 'mod';
-import * as frag from 'text!./shaders/particle.frag';
-import * as vert from 'text!./shaders/vertex.vert';
-
-export default class colorcycle extends mod {
+class colorcycle extends mod {
     constructor(gfx) {
         super(gfx);
         gfx.set(this, '3d');
@@ -13,8 +7,8 @@ export default class colorcycle extends mod {
         this.add_effect('particles');
 
         // use custom shaders
-        gfx.gl.particles.material.vertexShader = vert;
-        gfx.gl.particles.material.fragmentShader = frag;
+        gfx.gl.particles.material.vertexShader = shaders.get_vert('colorcycle');
+        gfx.gl.particles.material.fragmentShader = shaders.get_frag('colorcycle');
 
         gfx.gl.particles.set_near_color('#e60073');
         gfx.gl.particles.set_mid_color('#004116');
@@ -23,9 +17,9 @@ export default class colorcycle extends mod {
     }
     update(gfx) {
         // get starting colors
-        let near_color = color.fromRatio(gfx.gl.particles.material.uniforms.near_color.value);
-        let mid_color = color.fromRatio(gfx.gl.particles.material.uniforms.mid_color.value);
-        let far_color = color.fromRatio(gfx.gl.particles.material.uniforms.far_color.value);
+        let near_color = tinycolor.fromRatio(gfx.gl.particles.material.uniforms.near_color.value);
+        let mid_color = tinycolor.fromRatio(gfx.gl.particles.material.uniforms.mid_color.value);
+        let far_color = tinycolor.fromRatio(gfx.gl.particles.material.uniforms.far_color.value);
 
         // spin hues
         near_color = near_color.spin(0.6);
