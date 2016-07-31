@@ -12,6 +12,8 @@ const gfx = (() => {
 
     let controls;
 
+    const clock = new THREE.Clock();
+
     function set(mod, newtype) {
 
         // remove any pre-existing canvases
@@ -84,6 +86,8 @@ const gfx = (() => {
 
     function update() {
         this.depth = input.read();
+        this.frame_time = clock.getDelta();
+        this.run_time = clock.getElapsedTime();
         render();
     }
 
