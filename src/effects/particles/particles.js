@@ -30,7 +30,7 @@ class particles_effect extends effect {
         this.add_particle_system();
     }
     update(gfx) {
-        this.update_positions(gfx.depth);
+        this.update_positions(gfx.data.depth);
     }
     destroy() {}
 

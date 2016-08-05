@@ -46,7 +46,7 @@ class portal extends mod {
         gfx.gl.particles.set_mid_color('#DC9C26');
         gfx.gl.particles.set_far_color('#FFFFFF'); // Not used, idk how to remove this from UI so I set it to 0
 
-        this.prev_depth = gfx.depth;
+        this.prev_depth = gfx.data.depth;
     }
     set_overlay_color(prop, ...c) {
         let new_color = new THREE.Color(...c);
@@ -54,8 +54,8 @@ class portal extends mod {
         this.params.overlay_color = '#' + new_color.getHexString();
     }
     update(gfx) {
-        this.avg(gfx.depth, this.prev_depth, 1 - this.params.storminess);
-        this.prev_depth = gfx.depth;
+        this.avg(gfx.data.depth, this.prev_depth, 1 - this.params.storminess);
+        this.prev_depth = gfx.data.depth;
 
         gfx.gl.particles.material.uniforms.spot_radius.value = this.params.spot_radius;
         gfx.gl.particles.material.uniforms.spot_brightness.value = this.params.spot_brightness;

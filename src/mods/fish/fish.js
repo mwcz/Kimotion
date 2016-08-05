@@ -234,8 +234,8 @@ export default class fishMod extends mod {
     }
 
     updateHand(gfx) {
-        this.hand.x = gfx.hand.x;
-        this.hand.y = gfx.hand.y;
+        this.hand.x = gfx.data.hand.x;
+        this.hand.y = gfx.data.hand.y;
         if (this.hand.toggle_frames > 0) {
             if (this.hand.img_swap_count > 0) {
                 this.hand.img_swap_count--;

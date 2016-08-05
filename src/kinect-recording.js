@@ -9,7 +9,7 @@ const kinect_recording = () => {
     var recording = new Uint16Array(depth.length);
 
     function read() {
-        return depth;
+        return { depth };
     }
 
     function send_message() {
@@ -47,7 +47,7 @@ const kinect_recording = () => {
         xhr.send();
     }
 
-    fetch_recording('/general_movement.bin');
+    fetch_recording('/handtracking.bin');
 
     return {
         read,

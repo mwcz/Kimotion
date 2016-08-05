@@ -12,19 +12,19 @@ class torus extends mod {
             gfx.gl.geometry.faces[ i + 1 ].color.setHex( hex );
         }
 
-        this.last_depth = gfx.depth;
+        this.last_depth = gfx.data.depth;
         this.rotation = 0.01;
     }
     update(gfx) {
         let scale = 0.1; // new depth gets this much weight
         let dsum = 0;
-        for (let i = 0; i < gfx.depth.length; i += 1) {
-            dsum += Math.abs(this.last_depth[i] - gfx.depth[i]);
+        for (let i = 0; i < gfx.data.depth.length; i += 1) {
+            dsum += Math.abs(this.last_depth[i] - gfx.data.depth[i]);
         }
         this.rotation = (1-scale) * this.rotation + scale * dsum/1e8;
         gfx.gl.torus.rotation.y += this.rotation;
         gfx.gl.torus.rotation.x += this.rotation;
-        this.last_depth = gfx.depth;
+        this.last_depth = gfx.data.depth;
 
         super.update(gfx);
     }

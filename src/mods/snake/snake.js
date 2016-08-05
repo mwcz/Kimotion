@@ -13,7 +13,6 @@ class snake extends mod {
         this.author = 'Ben Pritchett';
         gfx.set(this, '3d');
         this.title = 'snake';
-        this.add_effect('particles');
         this.add_effect('handtracking3d');
 
         this.NUM_BUBBLES = 4;
@@ -94,12 +93,11 @@ class snake extends mod {
         };
         //console.log(this.objective);
 
-        gfx.gl.particles.material.vertexShader = shaders.get_vert('snake');
-        gfx.gl.particles.material.fragmentShader = shaders.get_frag('snake');
         this.waittimer = this.WAIT;
         //console.log(gfx.conf);
     }
     update(gfx) {
+        super.update(gfx);
         this.waittimer--;
         var seconds = new Date().getTime() / 1000;
         if (this.waittimer < 0) {
@@ -107,8 +105,8 @@ class snake extends mod {
         }
         let firstball = 0;
 
-        this.spheres['sphere'+firstball].position.x = gfx.hand.x;
-        this.spheres['sphere'+firstball].position.y = gfx.hand.y;
+        this.spheres['sphere'+firstball].position.x = gfx.data.hand.x;
+        this.spheres['sphere'+firstball].position.y = gfx.data.hand.y;
 
         for (var j = this.NUM_CHILDREN; j > 0; j--) {
             this.spheres['sphere'+firstball]['sphere' + j].position.x = this.spheres['sphere'+firstball].position.x + 25 * Math.sin(2*Math.PI/this.NUM_CHILDREN*j*seconds) * Math.cos(2*Math.PI/this.NUM_CHILDREN*j*seconds);
@@ -194,9 +192,11 @@ class snake extends mod {
         }
 
         for (var j = this.NUM_CHILDREN; j > 0; j--) {
-            this.objective['sphere' + j].position.x = this.objective.position.x + 25 * Math.sin(2*Math.PI/this.NUM_CHILDREN*j*seconds) * Math.cos(2*Math.PI/this.NUM_CHILDREN*j*seconds);
-            this.objective['sphere' + j].position.y = this.objective.position.y + 25 * Math.sin(2*Math.PI/this.NUM_CHILDREN*j*seconds);
-            this.objective['sphere' + j].position.z = this.objective.position.z + 25 * Math.cos(2*Math.PI/this.NUM_CHILDREN*j*seconds);
+            if (this.objective['sphere'+j]) {
+                this.objective['sphere' + j].position.x = this.objective.position.x + 25 * Math.sin(2*Math.PI/this.NUM_CHILDREN*j*seconds) * Math.cos(2*Math.PI/this.NUM_CHILDREN*j*seconds);
+                this.objective['sphere' + j].position.y = this.objective.position.y + 25 * Math.sin(2*Math.PI/this.NUM_CHILDREN*j*seconds);
+                this.objective['sphere' + j].position.z = this.objective.position.z + 25 * Math.cos(2*Math.PI/this.NUM_CHILDREN*j*seconds);
+            }
         };
         /*        if (gfx.gl.camera.rotation.y >= this.getRads(30)) {
                   this.cameraSwitch = true;
@@ -230,7 +230,6 @@ class snake extends mod {
         randy = Math.cos(seconds) * (-1) * 400 + 200;
         randz = Math.cos(seconds) * 200;
         this.lights[2].position.set( randx, randy, randz );
-        super.update(gfx);
     }
 
 }

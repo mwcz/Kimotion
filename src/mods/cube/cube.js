@@ -29,14 +29,14 @@ class cube extends mod {
         let left_depth = 0;
         let right_depth = 0;
 
-        for (let i = 0; i < gfx.depth.length; i += gfx.conf.kinect.res.width) {
+        for (let i = 0; i < gfx.data.depth.length; i += gfx.conf.kinect.res.width) {
             // add up the left half of the depth values
             for (let j = 0; j < gfx.conf.kinect.res.width / 2; ++j) {
-                left_depth += gfx.depth[j];
+                left_depth += gfx.data.depth[j];
             }
             // add up the right half of the depth values
             for (let j = gfx.conf.kinect.res.width / 2; j < gfx.conf.kinect.res.width; ++j) {
-                right_depth += gfx.depth[j];
+                right_depth += gfx.data.depth[j];
             }
         }
 

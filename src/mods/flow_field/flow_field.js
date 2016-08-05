@@ -47,7 +47,7 @@ class flow_field extends mod {
     }
     update(gfx) {
 
-        this.handpos.set(gfx.hand.x, gfx.hand.y);
+        this.handpos.set(gfx.data.hand.x, gfx.data.hand.y);
         for(var i = 0; i < this.particles.length; i++){
             this.particles[i].update();
             this.particles[i].draw();
@@ -57,14 +57,14 @@ class flow_field extends mod {
         if(this.particles.length < 500){
             this.MnowPos.set(this.handpos);
             this.MnowPos.add(random(-this.FREQUENCY,this.FREQUENCY), random(-this.FREQUENCY,this.FREQUENCY) );
-            this.particles[i] = new this.Particle(this.MnowPos,this.Macc,color(gfx.hand.x / width * 360, 100, 100, 0.2));
+            this.particles[i] = new this.Particle(this.MnowPos,this.Macc,color(gfx.data.hand.x / width * 360, 100, 100, 0.2));
         }
         for(var j = 0; j < this.particles.length; j++){
             if(this.particles[j].nowPos.x>=width-this.FREQUENCY || this.particles[j].nowPos.x <= this.FREQUENCY || this.particles[j].nowPos.y>=height-this.FREQUENCY || this.particles[j].nowPos.y <= this.FREQUENCY  || this.particles[j].lifeCount <= 0){
                 this.particles.splice(j,1);
             }
         }
-        ellipse(gfx.hand.x, gfx.hand.y, 20, 20);
+        ellipse(gfx.data.hand.x, gfx.data.hand.y, 20, 20);
 
         super.update(gfx);
     }

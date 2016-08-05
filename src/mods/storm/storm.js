@@ -16,12 +16,12 @@ class storm extends mod {
         gfx.gl.particles.material.vertexShader = shaders.get_vert('storm');
         gfx.gl.particles.material.fragmentShader = shaders.get_frag('storm');
 
-        this.prev_depth = gfx.depth;
+        this.prev_depth = gfx.data.depth;
     }
     update(gfx) {
         // drift particles towards their destinations 10% at a time
-        this.avg(gfx.depth, this.prev_depth, 1 - this.params.storminess);
-        this.prev_depth = gfx.depth;
+        this.avg(gfx.data.depth, this.prev_depth, 1 - this.params.storminess);
+        this.prev_depth = gfx.data.depth;
         super.update(gfx);
     }
     /**

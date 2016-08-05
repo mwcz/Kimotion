@@ -18,8 +18,8 @@ class handtrack extends mod {
     }
     update(gfx) {
 
-        this.sphere.position.x = gfx.hand.x;
-        this.sphere.position.y = gfx.hand.y;
+        this.sphere.position.x = gfx.data.hand.x;
+        this.sphere.position.y = gfx.data.hand.y;
 
         super.update(gfx);
     }

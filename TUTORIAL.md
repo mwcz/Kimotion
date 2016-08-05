@@ -82,7 +82,7 @@ Your mod has some example code already:
 
 The gfx object consists of the following that you can modify in order to make your mod:
   - gfx.conf - This stores the configuration for your mod.  For example, the width of the kinect depth field value can be accessed via `gfx.conf.kinect.res.width`
-  - gfx.depth - This is the depth field supplied by the Kinect.  This will be a 1D array with width x height elements (with the width and height defined in the conf object).
+  - gfx.data.depth - This is the depth field supplied by the Kinect.  This will be a 1D array with width x height elements (with the width and height defined in the conf object).
   - gfx.gl
     - gfx.gl.scene - Current three.js [scene](http://threejs.org/docs/#Reference/Scenes/Scene)
     - gfx.gl.camera - Current three.js [camera](http://threejs.org/docs/#Reference/Cameras/Camera)

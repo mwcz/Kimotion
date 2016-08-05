@@ -28,11 +28,11 @@ class handcube extends mod {
         let sumy  = 0;
         let count = 0;
 
-        for (let i = 0; i < gfx.depth.length; ++i) {
+        for (let i = 0; i < gfx.data.depth.length; ++i) {
             let x = i % gfx.conf.kinect.res.width;
             let y = gfx.conf.kinect.res.height - Math.floor(i / gfx.conf.kinect.res.width);
 
-            if (gfx.depth[i] > this.THRESHOLD_MIN && gfx.depth[i] < this.THRESHOLD_MAX) {
+            if (gfx.data.depth[i] > this.THRESHOLD_MIN && gfx.data.depth[i] < this.THRESHOLD_MAX) {
                 sumx  += x;
                 sumy  += y;
                 count += 1;

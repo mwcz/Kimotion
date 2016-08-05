@@ -8,7 +8,6 @@ const mods = {
     graph,
     handcube,
     handtrack,
-    handviz,
     particles,
     portal,
     sandstorm,

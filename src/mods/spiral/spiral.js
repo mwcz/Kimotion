@@ -27,7 +27,7 @@ class spiral extends mod {
         gfx.gl.particles.set_mid_color('#280072');
         gfx.gl.particles.set_far_color('#02020c');
 
-        this.prev_depth = gfx.depth;
+        this.prev_depth = gfx.data.depth;
     }
     updateUniform(gfx) {
         gfx.gl.particles.system.material.uniforms.spiral_strength = {
@@ -36,8 +36,8 @@ class spiral extends mod {
         gfx.gl.particles.system.material.needsUpdate = true;
     }
     update(gfx) {
-        this.avg(gfx.depth, this.prev_depth, 1 - this.params.smoothing);
-        this.prev_depth = gfx.depth;
+        this.avg(gfx.data.depth, this.prev_depth, 1 - this.params.smoothing);
+        this.prev_depth = gfx.data.depth;
         super.update(gfx);
     }
     /**

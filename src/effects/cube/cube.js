@@ -22,8 +22,8 @@ class cube_effect extends effect {
     }
     update(gfx) {
         let dsum = 0;
-        for (let i = 0; i < gfx.depth.length; i += 1) {
-            dsum += gfx.depth[i];
+        for (let i = 0; i < gfx.data.depth.length; i += 1) {
+            dsum += gfx.data.depth[i];
         }
         let dsum_diff = (dsum - this.prev_dsum) / 5e7;
         this.cube.rotation.y += dsum_diff;

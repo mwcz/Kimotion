@@ -19,8 +19,8 @@ class example2d extends mod {
     }
     update(gfx) {
 
-        if (gfx.hand.x && gfx.hand.y) {
-            rect( gfx.hand.x, gfx.hand.y, 60, 60 );
+        if (gfx.data.hand.x && gfx.data.hand.y) {
+            rect( gfx.data.hand.x, gfx.data.hand.y, 60, 60 );
         }
 
         super.update(gfx);

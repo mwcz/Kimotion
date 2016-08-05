@@ -26,7 +26,7 @@ class sandstorm extends mod {
         // set particle size
         gfx.gl.particles.set_particle_size(3);
 
-        this.prev_depth = gfx.depth;
+        this.prev_depth = gfx.data.depth;
 
         // 
         this.prevpos = { x: 0, y: 0 };
@@ -35,13 +35,13 @@ class sandstorm extends mod {
     }
     update(gfx) {
         // drift particles towards their destinations 10% at a time
-        this.avg(gfx.depth, this.prev_depth, 1 - this.params.storminess);
+        this.avg(gfx.data.depth, this.prev_depth, 1 - this.params.storminess);
 
         // gfx.gl.camera.position.x += ( 100 * Math.sin(performance.now()/2000) - gfx.gl.camera.position.x ) * 0.5;
         // gfx.gl.camera.position.y += ( 100 * Math.cos(performance.now()/2000) - gfx.gl.camera.position.y ) * 0.5;
         // gfx.gl.camera.lookAt(gfx.gl.scene.position);
 
-        this.prev_depth = gfx.depth;
+        this.prev_depth = gfx.data.depth;
 
         // add handtracking-based camera controls
         // camera.position.x += ( mouseX - camera.position.x ) * .05;

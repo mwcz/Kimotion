@@ -84,8 +84,8 @@ const gfx = (() => {
 
     }
 
-    function update() {
-        this.depth = input.read();
+    function update(data) {
+        this.data = input.read();
         this.frame_time = clock.getDelta();
         this.run_time = clock.getElapsedTime();
         render();

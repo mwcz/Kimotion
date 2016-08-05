@@ -255,12 +255,12 @@
 //     "timestamp": 1463449373704006
 // }
 
-const leap_websockets = () => {
+const leap_ws = () => {
 
     console.log('Using Leap motion WebSocket data source');
 
-    var ws;
-    var data;
+    let controller;
+    const data = {};
 
     function ask_for_ws_server() {
         if (localStorage.ws_url) {
@@ -273,28 +273,22 @@ const leap_websockets = () => {
         }
     }
 
-    function create_ws_connection(ws_url) {
-        let ws = new WebSocket('ws://' + ws_url.replace('ws://', ''));
-        ws.onopen = handle_open;
-        ws.onmessage = handle_message;
-        ws.onerror = handle_error;
-        ws.onclose = handle_close;
-        window.onbeforeunload = ws.close.bind(ws);
-        return ws;
+    function start_leap(ws_url) {
+        controller = Leap.loop({
+            frame: function leap_frame(frame) {
+                data.frame = frame;
+            },
+            hand: function leap_hand(hand) {
+                data.handFrame = hand.screenPosition();
+            },
+        });
+
+        // enable some plugins
+        controller.use('screenPosition');
     }
 
     function handle_open() {
         console.log(`WebSocket connection to ${this.url} established.`);
-    }
-
-    function handle_message( ws_message ) {
-        data = ws_message.data;
-    }
-
-    function send_message( app_message ) {
-        if (ws.readyState === 1) {
-            ws.send(app_message);
-        }
     }
 
     function handle_error(event) {
@@ -305,7 +299,7 @@ const leap_websockets = () => {
         console.log(`WebSocket connection to ${this.url} closed.` );
     }
 
-    ws = create_ws_connection(ask_for_ws_server());
+    start_leap();
 
     function read() {
         return data;
@@ -313,6 +307,5 @@ const leap_websockets = () => {
 
     return {
         read,
-        send_message
     };
 };

@@ -56,7 +56,7 @@ const kinect_ws = () => {
     ws = create_ws_connection(ask_for_ws_server());
 
     function read() {
-        return depth;
+        return { depth };
     }
 
     return {
