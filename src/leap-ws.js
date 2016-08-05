@@ -262,17 +262,6 @@ const leap_ws = () => {
     let controller;
     const data = {};
 
-    function ask_for_ws_server() {
-        if (localStorage.ws_url) {
-            return localStorage.ws_url;
-        }
-        else {
-            let ws_url = prompt('Where is the Leap Motion WebSocket server?', localStorage.ws_url || 'localhost:6437');
-            localStorage.ws_url = ws_url;
-            return ws_url;
-        }
-    }
-
     function start_leap(ws_url) {
         controller = Leap.loop({
             frame: function leap_frame(frame) {
@@ -283,20 +272,8 @@ const leap_ws = () => {
             },
         });
 
-        // enable some plugins
+        // enable plugin(s)
         controller.use('screenPosition');
-    }
-
-    function handle_open() {
-        console.log(`WebSocket connection to ${this.url} established.`);
-    }
-
-    function handle_error(event) {
-        console.log(`WebSocket error during connection to ${this.url}`);
-    }
-
-    function handle_close() {
-        console.log(`WebSocket connection to ${this.url} closed.` );
     }
 
     start_leap();
