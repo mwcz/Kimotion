@@ -71,10 +71,13 @@ class graph extends mod {
 
         fill(0);
 
-        let dot_x = this.DRAW_RECT.x + this.DRAW_RECT.w * (gfx.data.hand.x / width);
-        let dot_y = this.DRAW_RECT.y + this.DRAW_RECT.h * (gfx.data.hand.y / height);
+        if (gfx.data.finger) {
+        let dot_x = this.DRAW_RECT.x + this.DRAW_RECT.w * (gfx.data.finger.x / width);
+        let dot_y = this.DRAW_RECT.y + this.DRAW_RECT.h * (gfx.data.finger.y / height);
 
         ellipse( dot_x, dot_y, this.DIA, this.DIA);
+        }
+            
 
         super.update(gfx);
     }

@@ -8,15 +8,12 @@ const leap_ws = () => {
     function start_leap(ws_url) {
         controller = Leap.loop({
             frame: function leap_frame(frame) {
-                data.frame = frame;
-            },
-            hand: function leap_hand(hand) {
-                data.handFrame = hand.screenPosition();
+                data.leapFrame = frame;
             },
         });
 
         // enable plugin(s)
-        controller.use('screenPosition');
+        // controller.use('screenPosition');
     }
 
     start_leap();

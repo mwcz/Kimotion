@@ -5,6 +5,7 @@ class handcube extends mod {
         this.author = 'Michael Clayton';
         this.title = 'Hand Cube';
         this.add_effect('cube');
+        this.add_effect('handtracking3d');
 
         this.THRESHOLD_MIN = 600;
         this.THRESHOLD_MAX = 700;
@@ -24,29 +25,8 @@ class handcube extends mod {
     }
     update(gfx) {
 
-        let sumx  = 0;
-        let sumy  = 0;
-        let count = 0;
-
-        for (let i = 0; i < gfx.data.depth.length; ++i) {
-            let x = i % gfx.conf.kinect.res.width;
-            let y = gfx.conf.kinect.res.height - Math.floor(i / gfx.conf.kinect.res.width);
-
-            if (gfx.data.depth[i] > this.THRESHOLD_MIN && gfx.data.depth[i] < this.THRESHOLD_MAX) {
-                sumx  += x;
-                sumy  += y;
-                count += 1;
-            }
-        }
-
-        let new_x = sumx / count;
-        let new_y = sumy / count;
-
-        let vel_x = this.prev_x - new_x;
-        let vel_y = this.prev_y - new_y;
-
-        gfx.gl.cube.rotation.x = Math.log(this.velocity_x);
-        gfx.gl.cube.rotation.y = Math.log(this.velocity_x);
+        gfx.gl.cube.rotation.x = gfx.data.hand.y / 500;
+        gfx.gl.cube.rotation.y = -gfx.data.hand.x / 500;
 
         super.update(gfx);
 
