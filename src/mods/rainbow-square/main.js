@@ -29,10 +29,16 @@ class rainbow_square extends mod {
         let x = this.lastX - gfx.data.hand.x;
         let y = this.lastY - gfx.data.hand.y;
 
-        // at what angle did the hand move?
-        let a = 360 / Math.PI * Math.atan(y/x) + 180;
+        // at what angle (in radians) did the hand move?
+        let radians = Math.atan(y/x);
+
+        // convert radians to degrees in range of 0 to 360
+        let a = 360 / Math.PI * radians + 180;
+
+        // set the color hue based on the angle
         fill( color(a, 100, 75) );
 
+        // draw the square!
         rect( gfx.data.hand.x, gfx.data.hand.y, 60, 60 );
 
         this.lastX = gfx.data.hand.x;
