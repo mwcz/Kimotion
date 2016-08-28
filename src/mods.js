@@ -4,4 +4,5 @@ const mods = {
     graph,
     handcube,
     snake,
+    rainbow_square,
 };
