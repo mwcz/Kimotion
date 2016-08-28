@@ -1,7 +1,8 @@
 class handtrack extends mod {
     constructor(gfx) {
         super(gfx);
-        gfx.set(this, '3d');
+        this.set_input('leap');
+        this.set_graphics('3d');
         this.author = 'Michael Clayton';
         this.title = 'handtrack';
         this.add_effect('particles');

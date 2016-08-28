@@ -1,7 +1,8 @@
 const gfx = (() => {
     const VALID_TYPES = ['2d', '3d'];
 
-    let type = '2d'; // assume 2d at beginning, mods can update this
+    let default_type = '2d'; // assume 2d at beginning, mods can update this
+    let type = default_type;
 
     let scene;
     let camera;
@@ -20,7 +21,7 @@ const gfx = (() => {
         _.invoke(document.querySelectorAll('canvas'), 'remove');
 
         // set the mode to either 2d or 3d based on the current mod
-        if (_.includes(VALID_TYPES, newtype)) {
+        if (valid_type(newtype)) {
             type = newtype;
             if (type === '2d') {
 
@@ -74,7 +75,8 @@ const gfx = (() => {
             }
         }
         else {
-            throw new Error('Invalid type for gfx.set().  Must be "2d" or "3d"');
+            console.warn(`Sorry, '${newtype}' isn't a valid graphics type.  Assuming '${default_type}' instead.`);
+            set(mod, default_type);
         }
 
         this.update();
@@ -91,12 +93,17 @@ const gfx = (() => {
         render();
     }
 
+    function valid_type(type) {
+        return _.includes(VALID_TYPES, type);
+    }
+
     let gfx = {
         conf,
         set,
         reset,
         depth,
-        update
+        update,
+        default_type,
     };
 
     gfx.reset();

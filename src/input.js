@@ -1,8 +1,34 @@
 const input = (() => {
-    const datasources = [kinect_ws, kinect_recording, leap_ws];
+    const default_input = 'leap';
+    let current = undefined;
 
-    // var input_source = datasources[prompt('0 for Kinect, 1 for recording, 2 for live Leap Motion')]();
-    var input_source = leap_ws();
+    const datasources = {
+        leap,
+        kinect,
+        kinect_recording,
+    };
 
-    return input_source;
+    const api = {
+        read,
+        use,
+    };
+
+    function read() {
+        if (current) {
+            return current.read();
+        }
+    }
+
+    function use(name) {
+        if (_.has(datasources, name)) {
+            current = datasources[name]();
+        }
+        else {
+            console.warn(`'${name}' is not a valid input type.  Valid input types are: ${_.keys(datasources)}.  Assuming ${default_input}.`);
+            use(default_input);
+        }
+    }
+
+    return api;
 })();
+

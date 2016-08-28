@@ -6,7 +6,8 @@ class graph extends mod {
         this.title = 'Graph';
 
         // use 2d mode (p5.js)
-        gfx.set(this, '2d');
+        this.set_input('leap');
+        this.set_graphics('2d');
 
         // handtracking!
         this.add_effect('handtracking2d');

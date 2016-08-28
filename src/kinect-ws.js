@@ -1,5 +1,4 @@
-/* global prompt */
-const kinect_ws = () => {
+const kinect = () => {
 
     console.log('Using Kinect WebSocket data source');
 

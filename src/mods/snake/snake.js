@@ -11,7 +11,8 @@ class snake extends mod {
     constructor(gfx) {
         super(gfx);
         this.author = 'Ben Pritchett';
-        gfx.set(this, '3d');
+        this.set_input('leap');
+        this.set_graphics('3d');
         this.title = 'snake';
         this.add_effect('handtracking3d');
 

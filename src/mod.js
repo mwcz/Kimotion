@@ -4,6 +4,7 @@ class mod {
         this.title   = '';
         this.effects = [];
         this.gfx     = gfx;
+        this.input   = undefined;
         // gfx.set(this, '2d'); // default to 2d
     }
     update(gfx) {
@@ -22,5 +23,11 @@ class mod {
         const effect_prop = `${effect_name}_effect`;
         let new_effect = new effects[effect_prop](this.gfx);
         this.effects.push(new_effect);
+    }
+    set_graphics(type_name) {
+        this.gfx.set(this, type_name);
+    }
+    set_input(source_name) {
+        input.use(source_name);
     }
 }

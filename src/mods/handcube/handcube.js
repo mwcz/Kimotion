@@ -1,7 +1,8 @@
 class handcube extends mod {
     constructor(gfx) {
         super(gfx);
-        gfx.set(this, '3d');
+        this.set_input('leap');
+        this.set_graphics('3d');
         this.author = 'Michael Clayton';
         this.title = 'Hand Cube';
         this.add_effect('cube');
@@ -25,8 +26,8 @@ class handcube extends mod {
     }
     update(gfx) {
 
-        gfx.gl.cube.rotation.x = gfx.data.hand.y / 500;
-        gfx.gl.cube.rotation.y = -gfx.data.hand.x / 500;
+        gfx.gl.cube.rotation.x = -gfx.data.hand.y / 1000;
+        gfx.gl.cube.rotation.y = gfx.data.hand.x / 500;
 
         super.update(gfx);
 

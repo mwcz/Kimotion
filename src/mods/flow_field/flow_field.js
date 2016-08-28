@@ -3,7 +3,8 @@ class flow_field extends mod {
         super(gfx);
 
         // enable 2D mode (see http://p5js.org/ for tutorials and such!)
-        gfx.set(this, '2d');
+        this.set_input('leap');
+        this.set_graphics('2d');
 
         // enable hand/object tracking
         this.add_effect('handtracking2d');

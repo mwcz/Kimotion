@@ -1,4 +1,4 @@
-const leap_ws = () => {
+const leap = () => {
 
     console.log('Using Leap motion WebSocket data source');
 
