@@ -22,7 +22,7 @@ class example2d extends mod {
     }
     update(gfx) {
 
-        rect( gfx.data.hand.x, gfx.data.hand.y, 20, 20 );
+        rect( gfx.data.hand.x, gfx.data.hand.y, 60, 60 );
 
         super.update(gfx);
     }
