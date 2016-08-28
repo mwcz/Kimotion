@@ -2,7 +2,7 @@ class handtracking_effect extends effect {
     constructor(gfx) {
         super(gfx);
 
-        this.ls = 0.5; // lerp scale for smoothing out input
+        this.ls = 0.1; // lerp scale for smoothing out input
 
         gfx.data.hand = { x: 0, y: 0, _last_x: 0, _last_y: 0 };
         gfx.data.finger = { x: 0, y: 0, _last_x: 0, _last_y: 0 };
