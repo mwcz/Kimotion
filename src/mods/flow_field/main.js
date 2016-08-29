@@ -15,7 +15,7 @@ class flow_field extends mod {
         this.title = 'Flow Field';
 
         this.FREQUENCY = 10;
-        this.RADIUS = 3;
+        let RADIUS = 3;
 
         this.Particle = function Particle( posN, accN, colorIn){
             this.nowPos=createVector(posN.x,posN.y);
@@ -31,10 +31,17 @@ class flow_field extends mod {
 
         this.Particle.prototype.draw = function(){
             fill(this.colorN);
-            ellipse(this.nowPos.x,this.nowPos.y,this.RADIUS,this.RADIUS);
+            ellipse(this.nowPos.x,this.nowPos.y,RADIUS,RADIUS);
         };
 
         this.particles = [];
+
+        this.marker = document.createElement('div');
+        this.marker.style = 'border-radius: 50%; background: white; position: absolute;';
+        this.marker.style.borderRadius = '50%';
+        this.marker.style.width = this.marker.style.height = '8px';
+        this.marker.style.position = 'absolute';
+        document.body.appendChild(this.marker);
 
         noStroke();
         fill(0);
@@ -65,7 +72,16 @@ class flow_field extends mod {
                 this.particles.splice(j,1);
             }
         }
-        ellipse(gfx.data.hand.x, gfx.data.hand.y, 20, 20);
+
+        let mc = color(gfx.data.hand.x / width * 360, 100, 100, 0.2);
+        this.marker.style.left = gfx.data.hand.x+'px';
+        this.marker.style.top = gfx.data.hand.y+'px';
+        this.marker.style.background = `rgba(${Math.floor(red(mc))}, ${Math.floor(green(mc))}, ${Math.floor(blue(mc))}, 0.6)`;
+        // this.marker.style.background = 'rgba(0,255,0,0.3)';
+        // ellipse(gfx.data.hand.x, gfx.data.hand.y, 5, 5);
+
+        fill(color(0, 0.001));
+        rect(0, 0, 2*width, 2*height);
 
         super.update(gfx);
     }
