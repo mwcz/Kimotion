@@ -4,6 +4,7 @@ const input = (() => {
 
     const datasources = {
         leap,
+        leap_recording,
         kinect,
         kinect_recording,
     };

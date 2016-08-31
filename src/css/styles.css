@@ -117,3 +117,4 @@ body.bad-browser .dg {
 body.bad-browser #nowplaying {
     display : none;
 }
+#connect-leap { display: none !important; }
