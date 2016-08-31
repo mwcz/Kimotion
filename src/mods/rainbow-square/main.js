@@ -16,7 +16,7 @@ class rainbow_square extends mod {
         this.author = 'Michael Clayton';
         this.title = 'Rainbow Squares';
 
-        background(68, 125, 198); // blue
+        background(0); // black
         fill(255); // white
         noStroke(); // no borders
         colorMode(HSB);
