@@ -37,7 +37,7 @@ server/fakenect_params.sh
 *.pyc
 
 # ignore recording files
-server/*.bin
+src/recordings/**/*.bin
 
 # ignore WebStorm files
 .idea

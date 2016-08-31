@@ -25,6 +25,13 @@ const conf_gui = (() => {
     .name('Kinect Server')
     .onChange(function (server_host) { localStorage.ws_url = server_host; });
 
+    folder.add(conf, 'use_recording')
+    .name('Use recording?')
+    .onChange(function (use_recording) {
+        localStorage.use_recording = use_recording;
+        location.reload();
+    });
+
     folder.add(conf, 'mods', conf.mods)
     .name('Choose mod')
     .onChange(modctrl.set);
@@ -62,11 +69,11 @@ const conf_gui = (() => {
     // .name('Kinect Tilt')
     // .onChange(input.send_message);
 
-    // folder.open();
+    folder.open();
 
     let mod_folder = gui.addFolder('Mod settings');
 
-    // mod_folder.open();
+    mod_folder.open();
 
     // expose the mod config folder to mod authors
     conf.gui = mod_folder;

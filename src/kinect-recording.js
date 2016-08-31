@@ -1,5 +1,5 @@
-const kinect_recording = () => {
-
+const kinect_recording = (recording_file) => {
+    let file = recording_file || 'recordings/kinect/handtracking.bin'
     console.log('Using Kinect recording data source');
 
     var i     = 0;
@@ -16,9 +16,10 @@ const kinect_recording = () => {
         console.log('Attempted to send message to recording, ignored.');
     }
 
-    setInterval(update_frame, 1000/30);
+    requestAnimationFrame(update_frame);
 
     function update_frame() {
+        requestAnimationFrame(update_frame);
         depth = new Uint16Array(recording.subarray(i, i + step));
         i += step;
         i %= recording.length;
@@ -29,9 +30,11 @@ const kinect_recording = () => {
         xhr.open('GET', name, true);
         xhr.responseType = 'arraybuffer';
 
+        console.log(`downloading recording ${file}...`);
+
         xhr.onload = function(e) {
             if (this.status === 200) {
-                console.log(`successfully fetched recording ${name}`);
+                console.log(`successfully downloaded recording ${name}`);
                 i = 0;
                 recording = new Uint16Array(this.response);
             }
@@ -47,7 +50,7 @@ const kinect_recording = () => {
         xhr.send();
     }
 
-    fetch_recording('/handtracking.bin');
+    fetch_recording(file);
 
     return {
         read,
