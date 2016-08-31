@@ -5,4 +5,5 @@ const mods = {
     handcube,
     snake,
     rainbow_square,
+    sandstorm,
 };
