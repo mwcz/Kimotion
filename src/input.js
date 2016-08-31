@@ -20,13 +20,13 @@ const input = (() => {
         }
     }
 
-    function use(name) {
+    function use(name, data) {
         if (_.has(datasources, name)) {
-            current = datasources[name]();
+            current = datasources[name](data);
         }
         else {
             console.warn(`'${name}' is not a valid input type.  Valid input types are: ${_.keys(datasources)}.  Assuming ${default_input}.`);
-            use(default_input);
+            use(default_input, data);
         }
     }
 

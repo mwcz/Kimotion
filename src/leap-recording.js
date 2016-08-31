@@ -1,4 +1,4 @@
-const leap_recording = () => {
+const leap_recording = (recording_file) => {
 
     console.log('Using Leap motion WebSocket data source');
 
@@ -12,7 +12,7 @@ const leap_recording = () => {
             },
         });
         controller.use('playback', {
-            recording: 'recordings/leap/short-wave.json',
+            recording: recording_file || 'recordings/leap/default.json',
             requiredProtocolVersion: 6,
             pauseOnHand: true
         })

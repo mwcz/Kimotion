@@ -27,7 +27,7 @@ class mod {
     set_graphics(type_name) {
         this.gfx.set(this, type_name);
     }
-    set_input(source_name) {
-        input.use(source_name);
+    set_input(source_name, recording_file) {
+        input.use(source_name, recording_file);
     }
 }

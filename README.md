@@ -117,6 +117,8 @@ FAQ
    take it upon myself to copy the installed versions directly into this repo.
    It's a tradeoff, but the benefit is that newcomers can contribute to
    Kimotion without installing anything.
+
+ - [How to make a Leap Motion recording][leap-rec]
  
 [dimo2014]: http://palebluepixel.org/projects/dimo/
 [dimo2015]: http://palebluepixel.org/2015/09/26/make-a-kimotion/
@@ -128,3 +130,4 @@ FAQ
 [threejs]: http://threejs.org/
 [p5js]: http://p5js.org/
 [videos]: https://vimeo.com/couchmode/album/3492711
+[leap-rec]: http://leapmotion.github.io/leapjs-playback/recorder/
