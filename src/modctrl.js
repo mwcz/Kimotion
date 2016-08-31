@@ -28,7 +28,7 @@ const modctrl = (() => {
     }
 
     function names() {
-        return _.without(_.keys(mods), '__esModule', ...blacklist);
+        return _.keys(mods);
     }
 
     function get() {

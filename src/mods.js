@@ -1,4 +1,5 @@
 const mods = {
+    fish,
     example2d,
     flow_field,
     graph,
