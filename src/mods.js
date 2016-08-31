@@ -6,4 +6,5 @@ const mods = {
     snake,
     rainbow_square,
     sandstorm,
+    line_drawing,
 };
