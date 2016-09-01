@@ -9,7 +9,7 @@ class line_drawing extends mod {
         this.set_graphics('2d');
 
         // enable hand/object tracking
-        this.add_effect('handtracking2d');
+        this.add_effect('handtracking2d', 0.00001);
 
         // set your name and title for your mod so we can display it on the
         // screen!
@@ -18,21 +18,17 @@ class line_drawing extends mod {
 
         background(0); // white
         fill(color(255, 16)); // white
-        stroke(color(255, 16)); // black borders
+        stroke(color(255, 8)); // black borders
+        strokeWeight(2);
     }
     update(gfx) {
 
-        let handx = gfx.data.hand.x/1000;
-        let handy = gfx.data.hand.y/1000;
+        let x1 = width * cos(gfx.data.hand.x/850);
+        let x2 = width * sin(gfx.data.hand.x/850);
+        let x3 = width * cos(-gfx.data.hand.x/850);
+        let y1 = height * cos(gfx.data.hand.y/850);
 
-        let x1 = width * cos(handx);
-        let x2 = width * sin(handx);
-        let x3 = width * cos(-handx);
-        let y1 = height * cos(handy);
-        let y2 = height * sin(handy);
-        let y3 = height * cos(-handy);
-
-        triangle( x1, y1, x2, y2, x3, y3 );
+        line( x1, y1, x2, y2 );
 
         super.update(gfx);
     }
