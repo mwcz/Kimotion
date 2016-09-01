@@ -1,8 +1,8 @@
 class handtracking_effect extends effect {
-    constructor(gfx) {
+    constructor(gfx, smoothing) {
         super(gfx);
 
-        this.ls = 0.1; // lerp scale for smoothing out input
+        this.ls = smoothing || 0.9; // lerp scale for smoothing out input
 
         gfx.data.hand = { x: 0, y: 0, _last_x: 0, _last_y: 0 };
         gfx.data.finger = { x: 0, y: 0, _last_x: 0, _last_y: 0 };
@@ -39,10 +39,12 @@ class handtracking_effect extends effect {
                     y -= this.fingerRange.ymin; // shift y into +y quadrants
                     x /= this.fingerRange.x; // scale x down to 0..1
                     y /= this.fingerRange.y; // scale y down to 0..1
-                    gfx.data.finger.x = this.ls * gfx.data.hand._last_x + (1 - this.ls) * x;
-                    gfx.data.finger.y = this.ls * gfx.data.hand._last_y + (1 - this.ls) * y;
-                    gfx.data.finger._last_x = x;
-                    gfx.data.finger._last_y = y;
+                    gfx.data.finger.x = (1 - this.ls) * gfx.data.hand._last_x + this.ls * x;
+                    gfx.data.finger.y = (1 - this.ls) * gfx.data.hand._last_y + this.ls * y;
+                    gfx.data.finger.vx = x - gfx.data.finger._last_x;
+                    gfx.data.finger.vy = y - gfx.data.finger._last_y;
+                    gfx.data.finger._last_x = gfx.data.finger.x;
+                    gfx.data.finger._last_y = gfx.data.finger.y;
                 }
 
                 let palm = hand.stabilizedPalmPosition;
@@ -52,8 +54,10 @@ class handtracking_effect extends effect {
                 y -= this.handRange.ymin; // shift y into +y quadrants
                 x /= this.handRange.x; // scale x down to 0..1
                 y /= this.handRange.y; // scale y down to 0..1
-                gfx.data.hand.x = this.ls * gfx.data.hand._last_x + (1 - this.ls) * x;
-                gfx.data.hand.y = this.ls * gfx.data.hand._last_y + (1 - this.ls) * y;
+                gfx.data.hand.x = (1 - this.ls) * gfx.data.hand._last_x + this.ls * x;
+                gfx.data.hand.y = (1 - this.ls) * gfx.data.hand._last_y + this.ls * y;
+                gfx.data.hand.vx = x - gfx.data.hand._last_x;
+                gfx.data.hand.vy = y - gfx.data.hand._last_y;
                 gfx.data.hand._last_x = x;
                 gfx.data.hand._last_y = y;
 

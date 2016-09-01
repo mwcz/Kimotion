@@ -19,9 +19,9 @@ class mod {
             gfx.conf.gui.remove(gfx.conf.gui.__controllers[i]);
         }
     }
-    add_effect(effect_name) {
+    add_effect(effect_name, params) {
         const effect_prop = `${effect_name}_effect`;
-        let new_effect = new effects[effect_prop](this.gfx);
+        let new_effect = new effects[effect_prop](this.gfx, params);
         this.effects.push(new_effect);
     }
     set_graphics(type_name) {
