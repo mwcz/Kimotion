@@ -4,8 +4,18 @@ class handtracking_effect extends effect {
 
         this.ls = smoothing || 0.9; // lerp scale for smoothing out input
 
-        gfx.data.hand = { x: 0, y: 0, _last_x: 0, _last_y: 0 };
-        gfx.data.finger = { x: 0, y: 0, _last_x: 0, _last_y: 0 };
+        gfx.data.hand = {
+            x: -100,
+            y: -100,
+            _last_x: 0,
+            _last_y: 0
+        };
+        gfx.data.finger = {
+            x: -100,
+            y: -100,
+            _last_x: 0,
+            _last_y: 0
+        };
 
         this.fingerRange = {
             xmin: -420, xmax: 420,
