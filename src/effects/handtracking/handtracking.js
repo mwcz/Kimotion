@@ -25,8 +25,8 @@ class handtracking_effect extends effect {
         this.fingerRange.y = Math.abs(this.fingerRange.ymin - this.fingerRange.ymax);
 
         this.handRange = {
-            xmin: -250, xmax: 250,
-            ymin: -400, ymax: -200,
+            xmin: -200, xmax: 200,
+            ymin: -300, ymax: -90,
         };
         this.handRange.x = Math.abs(this.handRange.xmin - this.handRange.xmax);
         this.handRange.y = Math.abs(this.handRange.ymin - this.handRange.ymax);
