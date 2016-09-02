@@ -8,6 +8,7 @@ const mods = {
     // graph,
     // handcube,
     line_drawing,
+    scope,
     // particles,
     portal,
     rainbow_square,
