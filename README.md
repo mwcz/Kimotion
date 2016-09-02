@@ -118,8 +118,37 @@ FAQ
    It's a tradeoff, but the benefit is that newcomers can contribute to
    Kimotion without installing anything.
 
- - [How to make a Leap Motion recording][leap-rec]
- 
+Making a Leap Motion Recording
+------------------------------
+
+First, create a recording:
+
+ 1. With your Leap plugged in, go to the [Leap recorder][leap-rec] page.
+ 2. Click **Record** to begin the recording
+ 3. **Wave your hand around!**
+ 4. When done, click **Record** again to stop the recording.
+ 5. Click **Download**
+
+You should now have a file named something like
+`leap-playback-recording-110fps.json.lz`.  Now let's copy that recording into Kimotion.
+
+ 1. Move your `leap-playback-recording-110fps.json.lz` file into your mod's
+    directory.  For example, `src/mods/mymod/`.
+ 2. Rename it to something shorter (optional), like `recording.json.lz`.
+ 3. Open your mod's `main.js` file, find the `set_input` call and add the path
+    to your recording.
+
+For example:
+
+    // before
+    this.set_input('leap');
+    // after!
+    this.set_input('leap', 'mods/example2d/recording.json.lz');
+
+Your mod now has its own recording!  Refresh your mod to see it.  Make sure the
+**"Use recording?"** box is checked!
+
+
 [dimo2014]: http://palebluepixel.org/projects/dimo/
 [dimo2015]: http://palebluepixel.org/2015/09/26/make-a-kimotion/
 [server]: /server
