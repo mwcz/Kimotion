@@ -25,8 +25,8 @@ class line_drawing extends mod {
 
         let x1 = width * cos(gfx.data.hand.x/850);
         let x2 = width * sin(gfx.data.hand.x/850);
-        let x3 = width * cos(-gfx.data.hand.x/850);
         let y1 = height * cos(gfx.data.hand.y/850);
+        let y2 = height * sin(gfx.data.hand.y/850);
 
         line( x1, y1, x2, y2 );
 
