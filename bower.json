@@ -29,7 +29,8 @@
     "lodash": "^4.14.0",
     "p5.play": "https://github.com/molleindustria/p5.play.git",
     "leapjs": "^0.6.4",
-    "p5.js": "p5js#^0.5.3"
+    "p5.js": "p5js#^0.5.3",
+    "ShaderParticleEngine": "https://github.com/squarefeet/ShaderParticleEngine.git#^1.0.5"
   },
   "devDependencies": {}
 }
