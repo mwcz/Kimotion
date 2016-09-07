@@ -1,3 +1,5 @@
+// The list of mods.  Commented out mods are inactive.
+
 const mods = {
     // colorcycle,
     // cube,
@@ -5,6 +7,7 @@ const mods = {
     example2d,
     fish,
     flow_field,
+    gale,
     // graph,
     // handcube,
     line_drawing,
