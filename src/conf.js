@@ -1,10 +1,14 @@
 const conf = (() => {
-    let use_recording = localStorage.use_recording ?
-        JSON.parse(localStorage.use_recording) : true;
+
+    function lsget(name, default_value) {
+        return localStorage[name] ? JSON.parse(localStorage[name]) : default_value;
+    }
+
     let conf = {
         mods : modctrl.names(),
         server : localStorage.ws_url || 'localhost:1337',
-        use_recording: use_recording,
+        use_recording: lsget('use_recording', true),
+        show_conf_gui: lsget('show_conf_gui', true),
         timer : {
             enabled: false,
             duration: 1.0,

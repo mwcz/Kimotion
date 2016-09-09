@@ -1,7 +1,13 @@
 const conf_gui = (() => {
     let gui = new dat.GUI();
 
+    // if set to hide, hide
+    if (!conf.show_conf_gui) {
+        gui.close();
+    }
+
     let folder = gui.addFolder('Kimotion global settings');
+    let mod_folder = gui.addFolder('Mod settings');
 
     function get_ctrl(folder, prop_name) {
         let ctrl = _.where(folder.__controllers, { 'property': prop_name});
@@ -24,6 +30,16 @@ const conf_gui = (() => {
     folder.add(conf, 'server')
     .name('Kinect Server')
     .onChange(function (server_host) { localStorage.ws_url = server_host; });
+
+    folder.add(conf, 'show_conf_gui')
+    .name('Show settings?')
+    .onChange(function (show) {
+        localStorage.show_conf_gui = show;
+        if (!show) {
+            // dat.GUI.toggleHide();
+            gui.close();
+        }
+    });
 
     folder.add(conf, 'use_recording')
     .name('Use recording?')
@@ -71,8 +87,6 @@ const conf_gui = (() => {
 
     folder.open();
 
-    let mod_folder = gui.addFolder('Mod settings');
-
     mod_folder.open();
 
     // expose the mod config folder to mod authors
@@ -82,4 +96,6 @@ const conf_gui = (() => {
     if (conf.timer.enabled) {
         gui.close();
     }
+
+    return gui;
 })();
