@@ -1,35 +1,36 @@
 Make a Kimotion!
 ================
 
-A framework for building interactive art exhibits.
+A framework for building interactive art.
 
-A :movie_camera:[video series][videos] exists to demonstrate several Kimotion
-mods!
+![Kimotion sample](src/images/readme-images/pics.jpg)
 
-![Kimotion sample](src/images/readme_hero.png)
-
-This [very brief slide deck][slides] will give you a quick introduction and
-history of the project.
+Pics are good but [videos are better][videos].
 
 Quick-start
-------------------------
+-----------
 
-You can get started very quickly by skipping some of Kimotion's optional
-features.  Here's the fastest way to get set up:
+Here's the fastest way to get set up:
 
  1. Clone or download this repository
  2. `./start.sh`
  3. Open [http://localhost:8000](http://localhost:8000)
 
-All `start.sh` does is launch a webserver that serves the `src` directory, so
-if you want to use your own webserver, just copy or symlink the src directory's
-contents into your webroot.
+By default, Kimotion plays a recording, so you don't need a Kinect or Leap to
+have fun.
 
-Full installation
------------------
+Creating your own mod
+---------------------
 
-In order to run Kimotion with live data from a Kinect or a Leap Motion, a few
-more things need to be installed:
+This needs to be added to the README.  Until then, please see [Kimotion Modding
+101][modding-101].
+
+
+Kinect installation
+-------------------
+
+In order to run Kimotion with live data from a Kinect, a few more things need
+to be installed:
 
  - [Node.js][node] and npm: Fedora: `yum install nodejs npm`, Ubuntu: `apt-get
    install nodejs npm`
@@ -37,51 +38,25 @@ more things need to be installed:
  - [NumPy][numpy]: Fedora: `yum install numpy`, Ubuntu: `apt-get install
    python-numpy`
 
-You may optionally also install [libfreenect][freenect] (with python bindings),
-which you'll need in order to hook up a real Kinect via USB.  If you plan to
-use Kimotion's replay capability, you won't need freenect (there are two
-recordings you can use in the `src/recordings/kinect` directory).  On Fedora,
-`yum install libfreenect libfreenect-python`, on Ubuntu: `apt-get install
-freenect python-freenect`.
+ - [libfreenect][freenect] (with python bindings), which you'll need in order
+   to hook up a real Kinect via USB.  On Fedora, `yum install libfreenect
+   libfreenect-python`, on Ubuntu: `apt-get install freenect python-freenect`.
 
-Once all that stuff is installed, clone this repo (or fork it and clone your
-fork), cd into it and...
-
-    npm install
-
-Then unzip one of the recordings and launch the websocket server:
-
-    cd server
-    unzip handtracking.zip
-    python server.py -m -f handtracking.bin
-
-If you chose to install libfreenect, and have a Kinect with a USB cable plugged
-in, you can simply launch the server with no arguments to get a live feed from
-your kinect.
+Once those are installed, launch the websocket server:
 
     cd server
     python server.py
 
-Then, in another terminal, launch the HTTP server that serves up the client...
-
-    grunt connect
-
-Open [http://localhost:9001](http://localhost:9001) in your browser, and...
-
-Voila!
+Then open Kimotion (see quick-start), choose a mod that uses the Kinect, like
+'sandstorm'.  Voila!
 
 ![DiMo 2014 Silhouettes photo](src/images/readme_img.png)
 
-Creating your own mod
----------------------
+Leap Motion installation
+------------------------
 
-Each visualization is called a "mod".  The easiest way to create your own mod
-is with this handy grunt command:
-
-    grunt newmod:your_name_here
-
-For example, if you ran `grunt newmod:coolmod`, it would create
-`src/mods/coolmod/coolmod.js`, which you can then begin to edit.
+This needs to be added to the README.  Until then, please see [Kimotion Modding
+101][modding-101].
 
 2D mods and 3D mods
 -------------------
@@ -93,7 +68,7 @@ started with, so I recommend using it first.
 
 To enable 2D mode, place this in your mod's constructor:
 
-    gfx.set(this, '2d');
+    this.set_graphics('2d');
 
 **3D mode** uses the equally excellent [threejs][threejs] library.  It's larger
 than p5, and has a steeper learning curve, but if you'd like to use some 3D
@@ -102,7 +77,7 @@ some examples.
 
 To enable 3D mode, place this in your mod's constructor:
 
-    gfx.set(this, '3d');
+    this.set_graphics('3d');
 
 Exhibits
 --------
@@ -118,10 +93,10 @@ FAQ
    It's a tradeoff, but the benefit is that newcomers can contribute to
    Kimotion without installing anything.
 
-Making a Leap Motion Recording
-------------------------------
+Making your own Leap Motion Recording
+-------------------------------------
 
-First, create a recording:
+Follow these steps to create a recording:
 
  1. With your Leap plugged in, go to the [Leap recorder][leap-rec] page.
  2. Click **Record** to begin the recording
@@ -160,3 +135,4 @@ Your mod now has its own recording!  Refresh your mod to see it.  Make sure the
 [p5js]: http://p5js.org/
 [videos]: https://vimeo.com/couchmode/album/3492711
 [leap-rec]: http://leapmotion.github.io/leapjs-playback/recorder/
+[modding-101]: http://palebluepixel.org/2016/08/28/kimotion-modding-101/
