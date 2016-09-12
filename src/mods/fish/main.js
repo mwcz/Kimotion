@@ -435,6 +435,7 @@
 
             this.updateHand(gfx);
 
+            // Check for collisions
             for (let i = 0; i < fishes.length; ++i) {
                 let fish = fishes[i];
 
