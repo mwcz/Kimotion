@@ -478,6 +478,7 @@
             this.highScores = null;
             this.totalFrames = 0;
             this.remaining = TIME_LIMIT;
+            this.lure = true;
         }
 
         resetGameState() {
@@ -544,8 +545,24 @@
             for (let i = 0; i < fishes.length; ++i) {
                 let fish = fishes[i];
 
-                // draw and move the fish
-                image(fish.img, fish.x -= fish.speed * params.fishSpeed, fish.y);
+                if (this.lure && fish.type != SHARK) {
+                    // move fish toward hand
+                    let handV = createVector(this.hand.x, this.hand.y);
+                    let fishV = createVector(fish.x, fish.y);
+                    let direction = p5.Vector.sub(handV, fishV);
+                    direction.normalize();
+                    direction.mult(10);
+
+                    fishV.add(direction);
+
+                    fish.x = fishV.x;
+                    fish.y = fishV.y;
+
+                    image(fish.img, fish.x, fish.y);
+                } else {
+                    // draw and move the fish
+                    image(fish.img, fish.x -= fish.speed * params.fishSpeed, fish.y);
+                }
 
                 // if off screen reset
                 if (fish.direction == LEFT && fish.x + fish.img_width <= 0) {
