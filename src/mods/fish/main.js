@@ -7,6 +7,7 @@
     const PURPLE = 'purple';
     const GOLD = 'gold';
     const SHARK = 'shark';
+    const WORM = 'worm';
     const HAND_IMG_SWAP_DELAY = 10;
     const MESSAGE_FRAMES = 100;
     const WAIT_SOUND_LOAD_FRAMES = 50;
@@ -24,7 +25,8 @@
         numBlue: 3,
         numPurple: 2,
         numRed: 1,
-        fishSpeed: 1
+        numWorms: 1,
+        fishSpeed: 1,
     };
 
     // Sounds stored
@@ -250,6 +252,23 @@
             this.coin_penalty = 10;
         }
     }
+    class WormSprite extends FishSprite {
+        constructor() {
+            super();
+
+            this.type = WORM;
+
+            this.max_outer_x = 8000;
+            this.min_outer_x = 5000;
+
+            this.img_height = 204;
+            this.img_width = 500;
+
+            this.max_speed = 20;
+            this.min_speed = 10;
+        }
+    }
+
     class HandSprite extends Sprite {
         constructor() {
             super();
@@ -323,6 +342,7 @@
             this.addFishSliderGUI(gfx, 'numBlue', 'Num Blue', BLUE, BlueFishSprite);
             this.addFishSliderGUI(gfx, 'numPurple', 'Num Purple', PURPLE, PurpleFishSprite);
             this.addFishSliderGUI(gfx, 'numRed', 'Num Red', RED, RedFishSprite);
+            this.addFishSliderGUI(gfx, 'numWorms', 'Num Worms', WORM, WormSprite);
             gfx.conf.gui.add(params, 'fishSpeed', 0, 10).step(0.1).name('Fish Speed');
 
             // enable hand/object tracking
@@ -442,7 +462,11 @@
                 if (this.detectIntersect(fish)) {
                     if (fish.type == SHARK) {
                         this.handleSharkBite(fish);
-                    } else {
+                    }
+                    else if (fish.type == WORM) {
+                        this.handleWormCapture(fish);
+                    }
+                    else {
                         if (fish.type == GOLD) {
                             sound_1up.play();
                         } else {
@@ -478,7 +502,7 @@
             this.highScores = null;
             this.totalFrames = 0;
             this.remaining = TIME_LIMIT;
-            this.lure = true;
+            this.lure = false;
         }
 
         resetGameState() {
@@ -710,6 +734,14 @@
             if (score < 0) {
                 score = 0;  // don't let score go negative
             }
+        }
+
+        handleWormCapture(worm) {
+            //TODO: play sound
+
+            //Add attraction bonus
+            this.lure = true;
+            this.resetFish(fish);
         }
 
         updateCoins(coinArray, isVisibleCallback, offScreenCallback) {
