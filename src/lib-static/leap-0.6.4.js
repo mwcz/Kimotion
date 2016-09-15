@@ -432,8 +432,8 @@ BrowserConnection.prototype.startFocusLoop = function() {
   });
 
   var blurListener = window.addEventListener('blur', function(e) {
-    connection.windowVisible = false;
-    updateFocusState();
+    // connection.windowVisible = false;
+    // updateFocusState();
   });
 
   this.on('disconnect', function() {
