@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 if hash http-server 2>/dev/null; then
-    http-server -g src
+    cd src && http-server -g
 else
     cd src && python -m SimpleHTTPServer
 fi
