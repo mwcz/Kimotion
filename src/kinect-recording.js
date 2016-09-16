@@ -1,7 +1,7 @@
 const kinect_recording = (recording_file) => {
     console.log('Using Kinect recording data source');
 
-    const file = recording_file || 'recordings/kinect/handtracking.bin'
+    const file = recording_file || 'recordings/kinect/short-handtracking.bin'
 
     const step  = conf.kinect.res.width * conf.kinect.res.height;
     let i     = 0;

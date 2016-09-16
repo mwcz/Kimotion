@@ -123,6 +123,26 @@ For example:
 Your mod now has its own recording!  Refresh your mod to see it.  Make sure the
 **"Use recording?"** box is checked!
 
+Using Kinect recordings
+-----------------------
+
+If you'd like to use a Kinect recording, I highly recommend installing the
+`http-server` package from npm.
+
+    npm install -g http-server
+
+Now, when you run Kimotion's `./start.sh`, it will launch http-server instead,
+with gzip enabled.  Kinect recordings are huge and otherwise take a long time
+to download, even from localhost.
+
+The default recording will play if you have **Use recording?** checked, but you
+can choose from [other recordings][recordings] as well.  In your mod's
+constructor, pass the recording file you wish to use into `set_input`.
+
+    this.set_input('kinect', 'recordings/kinect/handtracking.bin');
+
+(Note: the recordings are all gzipped.  If you don't install http-server,
+you'll need to extract them before using a recording.)
 
 [dimo2014]: http://palebluepixel.org/projects/dimo/
 [dimo2015]: http://palebluepixel.org/2015/09/26/make-a-kimotion/
@@ -136,3 +156,4 @@ Your mod now has its own recording!  Refresh your mod to see it.  Make sure the
 [videos]: https://vimeo.com/couchmode/album/3492711
 [leap-rec]: http://leapmotion.github.io/leapjs-playback/recorder/
 [modding-101]: http://palebluepixel.org/2016/08/28/kimotion-modding-101/
+[recordings]: https://github.com/mwcz/Kimotion/tree/master/src/recordings/kinect

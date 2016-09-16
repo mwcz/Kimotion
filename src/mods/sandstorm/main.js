@@ -1,7 +1,7 @@
 class sandstorm extends mod {
     constructor(gfx) {
         super(gfx);
-        this.set_input('kinect');
+        this.set_input('kinect', 'recordings/kinect/short-handtracking.bin');
         this.set_graphics('3d');
 
         this.author = 'Michael Clayton';
