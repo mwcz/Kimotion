@@ -258,14 +258,14 @@
 
             this.type = WORM;
 
-            this.max_outer_x = 8000;
-            this.min_outer_x = 5000;
+            this.max_outer_x = 10000;
+            this.min_outer_x = 7000;
 
             this.img_height = 167;
             this.img_width = 188;
 
-            this.max_speed = 20;
-            this.min_speed = 10;
+            this.max_speed = 30;
+            this.min_speed = 20;
         }
     }
 
@@ -378,6 +378,7 @@
             changeFishes(BLUE, params.numBlue, BlueFishSprite);
             changeFishes(PURPLE, params.numPurple, PurpleFishSprite);
             changeFishes(RED, params.numRed, RedFishSprite);
+            changeFishes(WORM, params.numWorms, WormSprite);
 
             // initialize all the fishes initial positions, direction, speed
             this.initFish();
@@ -733,6 +734,9 @@
             if (this.hand.recentSharkBite || score <= 0) {
                 return; // do nothing if we recently were bitten by shark
             }
+
+            // Make sure we drop the worm bonus
+            this.hand.lure = false;
 
             // Flash hand red
             this.hand.recentSharkBite = true;
