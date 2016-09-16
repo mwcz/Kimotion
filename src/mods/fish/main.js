@@ -261,8 +261,8 @@
             this.max_outer_x = 8000;
             this.min_outer_x = 5000;
 
-            this.img_height = 204;
-            this.img_width = 500;
+            this.img_height = 167;
+            this.img_width = 188;
 
             this.max_speed = 20;
             this.min_speed = 10;
@@ -280,17 +280,25 @@
 
             this.recentSharkBite = false;
             this.img_red_path = 'mods/fish/assets/hand_red.png';
+            this.img_hand_worm_path = 'mods/fish/assets/hand_worm.png';
             this.img_red = null;
             this.img_swap_count = HAND_IMG_SWAP_DELAY;
             this.is_red = false;
             this.img_red_animated = this.img;
 
             this.toggle_frames = 0;
+
+            this.worm_frames = 0;
+            this.lure = false;
         }
 
         setRed() {
             this.is_red = true;
             this.img_red_animated = this.img_red;
+        }
+
+        setWorm() {
+            this.img_red_animated = this.img_worm ;
         }
 
         setYellow() {
@@ -308,6 +316,9 @@
 
         resetState() {
             this.recentSharkBite = false;
+            this.lure = false;
+            this.worm_frames = 0;
+            this.toggle_frames = 0;
             this.img_swap_count = HAND_IMG_SWAP_DELAY;
             this.setYellow();
         }
@@ -375,6 +386,7 @@
             this.water_img = loadImage("mods/fish/assets/underwater1.jpg");
             this.hand.img = loadImage(this.hand.img_path);
             this.hand.img_red = loadImage(this.hand.img_red_path);
+            this.hand.img_worm = loadImage(this.hand.img_hand_worm_path);
             this.hand.resetState();
             this.coin_img = loadImage("mods/fish/assets/coin.png");
             this.chest.img = loadImage(this.chest.img_path);
@@ -502,7 +514,6 @@
             this.highScores = null;
             this.totalFrames = 0;
             this.remaining = TIME_LIMIT;
-            this.lure = false;
         }
 
         resetGameState() {
@@ -543,6 +554,13 @@
             } else if (this.hand.recentSharkBite) {
                 this.hand.resetState();
             }
+
+            if (this.hand.worm_frames > 0) {
+                this.hand.worm_frames--;
+                if (this.hand.worm_frames <= 0) {
+                    this.hand.resetState();
+                }
+            }
             image(this.hand.img_red_animated, this.hand.x, this.hand.y);
         }
 
@@ -569,13 +587,13 @@
             for (let i = 0; i < fishes.length; ++i) {
                 let fish = fishes[i];
 
-                if (this.lure && fish.type != SHARK) {
+                if (this.hand.lure && fish.type != SHARK && fish.type != WORM) {
                     // move fish toward hand
                     let handV = createVector(this.hand.x, this.hand.y);
                     let fishV = createVector(fish.x, fish.y);
                     let direction = p5.Vector.sub(handV, fishV);
                     direction.normalize();
-                    direction.mult(10);
+                    direction.mult(15);
 
                     fishV.add(direction);
 
@@ -737,11 +755,15 @@
         }
 
         handleWormCapture(worm) {
-            //TODO: play sound
+            sound_coin.play();
+
+            // Switch hand image
+            this.hand.worm_frames = 500;
+            this.hand.setWorm();
 
             //Add attraction bonus
-            this.lure = true;
-            this.resetFish(fish);
+            this.hand.lure = true;
+            this.resetFish(worm);
         }
 
         updateCoins(coinArray, isVisibleCallback, offScreenCallback) {
