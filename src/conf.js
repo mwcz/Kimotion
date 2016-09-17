@@ -10,8 +10,8 @@ const conf = (() => {
         use_recording: lsget('use_recording', true),
         show_conf_gui: lsget('show_conf_gui', true),
         timer : {
-            enabled: false,
-            duration: 1.0,
+            enabled: lsget('cycle_mods', false),
+            duration: lsget('cycle_duration', 1.0),
             remaining: 1.0, // minutes remaining on current mod
             tick: 1/60, // update time remaining every this many minutes
         },

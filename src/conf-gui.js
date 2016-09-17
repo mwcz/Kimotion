@@ -1,11 +1,6 @@
 const conf_gui = (() => {
     let gui = new dat.GUI();
 
-    // if set to hide, hide
-    if (!conf.show_conf_gui) {
-        gui.close();
-    }
-
     let folder = gui.addFolder('Kimotion global settings');
     let mod_folder = gui.addFolder('Mod settings');
 
@@ -53,6 +48,7 @@ const conf_gui = (() => {
     .onChange(modctrl.set);
 
     function timer_ctrl(enabled) {
+        localStorage.cycle_mods = enabled;
         if (enabled) {
             conf.timer.remaining = conf.timer.duration;
             timer.start(
@@ -76,6 +72,7 @@ const conf_gui = (() => {
     folder.add(conf.timer, 'duration', 0.1, 10)
     .name('Mins per mod')
     .onChange(function (new_dur) {
+        localStorage.cycle_duration = new_dur;
         if (conf.timer.enbled) {
             timer.start(new_dur, conf.timer.tick, update_remaining_time, modctrl.next);
         }
@@ -96,6 +93,17 @@ const conf_gui = (() => {
     if (conf.timer.enabled) {
         gui.close();
     }
+
+    // if set to hide, hide
+    if (conf.show_conf_gui) {
+        gui.open();
+        console.log('opened gui');
+    }
+    else {
+        gui.close();
+        console.log('closed gui');
+    }
+
 
     return gui;
 })();
