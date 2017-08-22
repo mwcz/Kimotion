@@ -55,6 +55,21 @@ Then open Kimotion (see quick-start), choose a mod that uses the Kinect, like
 Leap Motion installation
 ------------------------
 
+To install the Leap Motion on Fedora, follow these steps:
+
+    Q. How can I install on Fedora?
+    A. For Fedora 21 and later, first install alien and convert Leap-*-x64.deb
+    into a rpm package as follows.
+    sudo yum update
+    sudo yum install alien
+    sudo alien -rv --scripts Leap-*-x64.deb
+    Next, run:
+    sudo rpm -ivh --nodeps --force leap-*-2-x86_64.rpm
+
+    Q. How do I uninstall on Fedora?
+    A. Run:
+    rpm -ev leap-*-2-x86_64.rpm
+
 This needs to be added to the README.  Until then, please see [Kimotion Modding
 101][modding-101].
 
