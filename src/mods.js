@@ -21,6 +21,7 @@ const mods = {
     // spotlights,
     // storm,
     // torus,
-		tulips,
+    tulips,
     wallflower,
+    totality,
 };
