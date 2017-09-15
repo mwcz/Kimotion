@@ -43,9 +43,12 @@ const conf_gui = (() => {
         location.reload();
     });
 
-    folder.add(conf, 'mods', conf.mods)
+    const modSelect = folder.add(conf, 'mods', conf.mods)
     .name('Choose mod')
     .onChange(modctrl.set);
+
+    // pre-select the current mod
+    modSelect.__select.selectedIndex = modctrl.getIndex();
 
     function timer_ctrl(enabled) {
         localStorage.cycle_mods = enabled;

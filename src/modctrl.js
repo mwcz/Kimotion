@@ -35,6 +35,10 @@ const modctrl = (() => {
         return curmod;
     }
 
+    function getIndex() {
+        return i;
+    }
+
     function update(_gfx) {
         curmod.update(gfx);
 
@@ -64,6 +68,7 @@ const modctrl = (() => {
     return {
         next,
         get,
+        getIndex,
         set,
         names,
         update,
