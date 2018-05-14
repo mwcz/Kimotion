@@ -1,6 +1,7 @@
 uniform float uCanvasWidth;
 uniform float uCanvasHeight;
-uniform vec2 uHand;
+uniform float uAspect;
+uniform vec3 uHand;
 
 varying vec2 vScreenSpace;
 varying vec3 vColor;
@@ -15,20 +16,17 @@ vec3 hand_point( vec2 frag_pos, vec2 hand_pos) {
 }
 
 void main() {
-    /* vec4 worldSpace = vec4(position, 1.0); */
-    /* vec4 clipSpace = projectionMatrix * ( modelViewMatrix * worldSpace ); */
-    /* vec3 ndc = clipSpace.xyz / clipSpace.w; */
-
-    /* vec2 vScreenSpace = (ndc.xy * .5 + .5) * vec2(uCanvasWidth, uCanvasHeight); */
-    /* vScreenSpace.y = uCanvasHeight - vScreenSpace.y; */
 
     vec4 worldPosition = modelMatrix * vec4(position, 1.0);
 
     // Position in normalized screen coords: ADD CAMERA
     vScreenSpace = (projectionMatrix * viewMatrix * worldPosition).xy;
 
-    vColor = vec3(position.y, position.y, position.y);// hand_point( position.xy, uHand );
-    vPosition = vec2(uv.x, uv.y);
+    vColor = vec3(position.y, position.y, position.y);
+    /* float padding = 0.1; */
+    /* float coordScale = 1. + 2. * padding; */
+    /* vPosition = vec2(padding + coordScale * uv.x * uAspect, padding + coordScale * (1. - uv.y)); */
+    vPosition = vec2(uv.x * uAspect / 2., (1. -uv.y) / 2.);
 
     gl_Position  = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
 

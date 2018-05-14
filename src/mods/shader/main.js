@@ -1,4 +1,5 @@
 class shader extends mod {
+
     constructor(gfx) {
         super(gfx);
         this.set_input('leap');
@@ -10,8 +11,10 @@ class shader extends mod {
         this._drawQuad(gfx);
         this._setCamera(gfx);
     }
+
     update(gfx) {
-        this.quad.material.uniforms.uHand.value.set(gfx.data.hand.x, gfx.data.hand.y);
+        this.quad.material.uniforms.uHand.value.set(gfx.data.hand.x - 0.5, gfx.data.hand.y, gfx.data.hand.z);
+        this.quad.material.uniforms.uTime.value = gfx.run_time;
 
         super.update(gfx);
     }
@@ -29,10 +32,11 @@ class shader extends mod {
                     uCanvasWidth: { value: canvas.clientWidth },
                     uCanvasHeight: { value: canvas.clientHeight },
                     uAspect: { value: canvas.clientWidth / canvas.clientHeight },
-                    uHand: new THREE.Uniform(new THREE.Vector2()),
+                    uHand: new THREE.Uniform(new THREE.Vector3()),
                 },
                 depthWrite: false,
                 depthTest: false,
+                side: THREE.DoubleSide,
             })
         );
         this.gfx.gl.scene.add(this.quad);

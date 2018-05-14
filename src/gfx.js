@@ -60,7 +60,7 @@ const gfx = (() => {
                 camera.position.x = 0;
                 camera.position.y = 0;
                 camera.position.z = 1100;
-                renderer = new THREE.WebGLRenderer();
+                renderer = new THREE.WebGLRenderer({ antialias: true });
                 renderer.setClearColor( 0x000000, 1 );
                 renderer.setSize( window.innerWidth, window.innerHeight );
                 document.body.appendChild( renderer.domElement );

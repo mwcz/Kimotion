@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node_modules/.bin/http-server src",
+    "start": "browser-sync start --server --serveStatic src/ --files 'src/**/*' --no-inject-changes --directory",
     "postinstall": "node_modules/.bin/bower install"
   },
   "repository": {
