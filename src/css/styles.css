@@ -61,7 +61,7 @@ body {
 }
 header {
     position : absolute;
-    left     : 10px;
+    right    : 10px;
     bottom   : 10px;
     padding  : 0;
     margin   : 0;
@@ -73,6 +73,7 @@ header h1 {
     display        : inline-block;
     clear          : right;
     letter-spacing : 2px;
+    font-size   : 1.4em;
 }
 header h1 a {
     text-decoration: none;
@@ -85,14 +86,14 @@ header h1 .prefix {
 
 #nowplaying {
     position    : absolute;
-    top         : 10px;
+    bottom      : 10px;
     left        : 10px;
     padding     : 0;
     margin      : 0;
     background  : rgba(0,0,0,0.5);
     margin      : 4px 0;
     padding     : 4px 8px;
-    font-size   : 1.5em;
+    font-size   : 1.4em;
     color       : rgba(255,255,255,0.5);
     font-weight : bold;
 }
