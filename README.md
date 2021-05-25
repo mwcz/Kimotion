@@ -99,6 +99,8 @@ Exhibits
 
  - [Digital Motion 2014][dimo2014]
  - [Kimotion @ Digital Motion 2015][dimo2015]
+ - [Kimotion @ Digital Motion 2016](https://clayto.com/2017/01/kimotion-at-geekspark-2016/)
+ - [Kimotion @ Digital Motion 2017](https://clayto.com/2017/09/geekspark-2017/#digital-motion)
 
 FAQ
 ---
